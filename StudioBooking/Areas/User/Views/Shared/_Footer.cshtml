@@ -1,0 +1,46 @@
+﻿@using StudioBooking.ViewModels
+@{
+    var layoutViewModel = (LayoutViewModel)(ViewData["LayoutViewModel"] ?? new LayoutViewModel());
+}
+<!--begin::Footer-->
+<div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
+    <!--begin::Container-->
+    <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
+        <!--begin::Copyright-->
+        <div class="text-dark order-2 order-md-1">
+            <span class="text-muted font-weight-bold mr-2">&copy; 2021</span>
+            <a href="/" target="_blank" class="text-dark-75 text-hover-primary">@layoutViewModel.WebsiteSetting.CopyRightText</a>
+        </div>
+        <!--end::Copyright-->
+        <!--begin::Nav-->
+        <ul class="menu menu-gray-600 menu-hover-primary fw-bold order-1">
+            @if (!string.IsNullOrEmpty(layoutViewModel.WebsiteSetting.FacebookLink))
+            {
+                <li class="menu-item">
+                    <a href="@layoutViewModel.WebsiteSetting.FacebookLink" target="_blank" class="nav-link pr-3"><i class="flaticon-facebook-logo-button"></i></a>
+                </li>
+            }
+            @if (!string.IsNullOrEmpty(layoutViewModel.WebsiteSetting.TwitterLink))
+            {
+                <li class="menu-item">
+                    <a href="@layoutViewModel.WebsiteSetting.TwitterLink" target="_blank" class="nav-link pr-3"><i class="flaticon-twitter-logo-button"></i></a>
+                </li>
+            }
+            @if (!string.IsNullOrEmpty(layoutViewModel.WebsiteSetting.InstagramLink))
+            {
+                <li class="menu-item">
+                    <a href="@layoutViewModel.WebsiteSetting.InstagramLink" target="_blank" class="nav-link pr-3"><i class="flaticon-instagram-logo"></i></a>
+                </li>
+            }
+            @if (!string.IsNullOrEmpty(layoutViewModel.WebsiteSetting.LinkedinLink))
+            {
+                <li class="menu-item">
+                    <a href="@layoutViewModel.WebsiteSetting.LinkedinLink" target="_blank" class="nav-link pr-3"><i class="flaticon-linkedin-logo"></i></a>
+                </li>
+            }
+        </ul>
+        <!--end::Nav-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Footer-->

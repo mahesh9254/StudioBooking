@@ -1,0 +1,17 @@
+﻿@using CCAvenue
+@model StudioBooking.DTO.CCAvenuePymentRequestDTO
+@{
+    Layout = "/Views/Shared/_Layout_Bookings.cshtml";
+    ViewBag.Title = "Redirecting...";
+}
+<form id="nonseamless" method="post" name="redirect" action="@CCAvenueConfig.URL">
+    <input type="hidden" asp-for="encRequest" />
+    <input type="hidden" asp-for="access_code" />    
+</form>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#nonseamless").submit();
+        });
+    </script>
+}

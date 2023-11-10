@@ -1,0 +1,101 @@
+﻿@using StudioBooking.Infrastructure
+@model StudioBooking.DTO.CancelBookingDTO
+<!--begin::Form-->
+<form id="kt_modal_cancel_form" class="form" action="#">
+    <div class="card-body">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" id="CancelBookingId" value="@Model.Id" />
+        <div class="form-group row mb-5">
+            <label class="col-lg-3 col-form-label text-lg-right">Booking ID:</label>
+            <div class="col-lg-3">
+                <span class="form-control-plaintext font-weight-bolder">@Model.BookingId</span>
+            </div>
+            <label class="col-lg-3 col-form-label text-lg-right" asp-for="BookingStatus">Status:</label>
+            <div class="col-lg-3">
+                <span class="form-control-plaintext font-weight-bolder">@Model.BookingStatus.ToString()</span>
+            </div>
+        </div>
+        @*<div class="form-group row">
+            <label class="col-lg-3 col-form-label text-lg-right" asp-for="CategoryName">Studio:</label>
+            <div class="col-lg-3">
+                <span class="form-control-plaintext font-weight-bolder">@Model.CategoryName</span>
+            </div>
+            <label class="col-lg-3 col-form-label text-lg-right" asp-for="ServiceName">Service:</label>
+            <div class="col-lg-3">
+                <span class="form-control-plaintext font-weight-bolder">@Model.ServiceName</span>
+            </div>
+        </div>*@
+        <div class="form-group row mb-5">
+            <label class="col-lg-3 col-form-label text-lg-right" asp-for="BookingDate">BookingDate:</label>
+            <div class="col-lg-3">
+                <span class="form-control-plaintext font-weight-bolder">@Model.BookingDate</span>
+            </div>
+            <label class="col-lg-3 col-form-label text-lg-right" asp-for="BookingDate">Timing:</label>
+            <div class="col-lg-3">
+                <span class="form-control-plaintext font-weight-bolder">@Model.StartTime - @Model.EndTime</span>
+            </div>
+        </div>
+        <div class="form-group row mb-5">
+            <label class="col-lg-3 col-form-label text-lg-right" asp-for="Total">Total Paid:</label>
+            <div class="col-lg-3">
+                <span class="form-control-plaintext font-weight-bolder">@Model.Total</span>
+            </div>
+            <label class="col-lg-3 col-form-label text-lg-right" asp-for="RefundAmount">Refund Amout:</label>
+            <div class="col-lg-3">
+                <span class="form-control-plaintext font-weight-bolder">@Model.RefundAmount</span>
+            </div>
+        </div>
+        <div class="form-group row fv-row mb-5">
+            <label class="col-lg-4 col-form-label text-lg-right" asp-for="PaymentProvider">Refund Mode:</label>
+            <div class="col-lg-6">
+                @{
+                    var paymentProviders = Html.GetEnumSelectList<Enums.PaymentProvider>().Where(b => b.Text == "UPI" || b.Text == "BankTransfer");
+                }
+                <select asp-for="PaymentProvider" asp-items="paymentProviders" class="form-control form-control-solid">
+                    <option selected="selected" value="">---Select Payment Mode---</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row fv-row mb-5 name">
+            <label class="col-lg-4 col-form-label text-lg-right" id="nameLabel" asp-for="Name">Bank/UPI Provider:</label>
+            <div class="col-lg-6">
+                <input asp-for="Name" class="form-control form-control-solid" placeholder="Enter name" />
+            </div>
+        </div>
+        <div class="form-group row fv-row mb-5 account">
+            <label class="col-lg-4 col-form-label text-lg-right" id="accountLabel" asp-for="Account">Account/UPI Number:</label>
+            <div class="col-lg-6">
+                <input asp-for="Account" class="form-control form-control-solid" placeholder="Account, UPI, GPay, etc" />
+            </div>
+        </div>
+        <div class="form-group row fv-row mb-5 ifsc">
+            <label class="col-lg-4 col-form-label text-lg-right" asp-for="IFSC">IFSC Code:</label>
+            <div class="col-lg-6">
+                <input asp-for="IFSC" class="form-control form-control-solid ifsc-code" placeholder="Enter ifsc code" />
+            </div>
+        </div>
+        <!--begin::Alert-->
+        <div class="alert bg-light-primary border border-primary d-flex flex-column flex-sm-row p-5 mb-10">
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-column pe-0 pe-sm-10">
+                <!--begin::Title-->
+                <h5 class="mb-1">Info by KSB:</h5>
+                <!--end::Title-->
+                <!--begin::Content-->
+                <span>Only 50% of total booking amount will be refunded to the selected refund mode. In case of advance booking no refund will be given. It can take upto 48 hours to reflect in bank account once cancellation request is approved.</span>
+                <!--end::Content-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Alert-->
+    </div>
+    <div class="card-footer">
+        <div class="row">            
+            <div class="col-lg-12 text-center">
+                <button type="reset" class="btn btn-secondary" data-kt-cancel-modal-action="cancel">Cancel</button>
+                <button type="submit" class="btn btn-danger mr-2" data-kt-cancel-modal-action="submit">Confirm Cancellation</button>
+            </div>
+        </div>
+    </div>
+</form>
+<!--end::Form-->

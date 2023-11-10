@@ -1,0 +1,332 @@
+﻿@using StudioBooking.Infrastructure;
+@model StudioBooking.Areas.Admin.Models.AccountViewModel
+<!--begin::Subheader-->
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">
+                    @(string.IsNullOrEmpty(Model.User.UserId) ? "Create" : "Update") Account
+                </h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="/Admin/" class="text-muted">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/Admin/Account/@(Model.User.Role == UserRole.Basic ? "Customers" : "Index")" class="text-muted">@(Model.User.Role == UserRole.Basic ? "Customer" : "User") List</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="Admin/Category/Create" class="text-muted"> @(string.IsNullOrEmpty(Model.User.UserId) ? "Create" : "Update")</a>
+                    </li>
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+    </div>
+</div>
+<!--end::Subheader-->
+@if (!string.IsNullOrEmpty(Model.User.UserId))
+{
+    <div class="card card-custom pt-4 mb-6 mb-xl-9">
+        <!--begin::Card header-->
+        <div class="card-header border-0">
+            <!--begin::Card title-->
+            <div class="card-title">
+                <h2 class="fw-bolder">Wallet Balance</h2>
+            </div>
+            <!--end::Card title-->
+            <!--begin::Card toolbar-->
+            <div class="card-toolbar">
+                <a href="javascript:;" class="btn btn-sm btn-flex btn-light-primary" id="btn_modal_adjust_balance" data-id="@Model.User.UserId">
+                    <!--begin::Svg Icon | path: icons/duotone/General/Edit.svg-->
+                    <span class="svg-icon svg-icon-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24"></rect>
+                                <path d="M7.10343995,21.9419885 L6.71653855,8.03551821 C6.70507204,7.62337518 6.86375628,7.22468355 7.15529818,6.93314165 L10.2341093,3.85433055 C10.8198957,3.26854411 11.7696432,3.26854411 12.3554296,3.85433055 L15.4614112,6.9603121 C15.7369117,7.23581259 15.8944065,7.6076995 15.9005637,7.99726737 L16.1199293,21.8765672 C16.1330212,22.7048909 15.4721452,23.3869929 14.6438216,23.4000848 C14.6359205,23.4002097 14.6280187,23.4002721 14.6201167,23.4002721 L8.60285976,23.4002721 C7.79067946,23.4002721 7.12602744,22.7538546 7.10343995,21.9419885 Z" fill="#000000" fill-rule="nonzero" transform="translate(11.418039, 13.407631) rotate(-135.000000) translate(-11.418039, -13.407631)"></path>
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->Adjust Balance
+                </a>
+            </div>
+            <!--end::Card toolbar-->
+        </div>
+        <!--end::Card header-->
+        <!--begin::Card body-->
+        <div class="card-body pt-0">
+            @foreach (var wallet in Model.Wallets)
+            {
+                if (wallet.WalletType == Enums.WalletType.Points)
+                {
+                    <div class="fw-bolder fs-2 mb-5">
+                        @Math.Round((wallet.BalanceAmount ?? 0),2)
+                        <span class="text-muted fs-4 fw-bold">Coins</span>
+                        <div class="fs-7 fw-normal text-muted">Balance will be used for booking of services and bundles on website.</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="fw-bolder fs-2">
+                        @Math.Round((wallet.BalanceHours ?? 0),2)
+                        <span class="text-muted fs-4 fw-bold">Hrs</span>
+                        <div class="fs-7 fw-normal text-muted">Balance will be used for booking of services on website.</div>
+                    </div>
+                }
+            }
+        </div>
+        <!--end::Card body-->
+    </div>
+    <!--begin::Modal - Adjust Balance-->
+    <div class="modal" id="kt_modal_adjust_balance" tabindex="-1" aria-hidden="true">
+        <!--begin::Modal dialog-->
+        <div class="modal-dialog modal-dialog-centered mw-650px">
+            <!--begin::Modal content-->
+            <div class="modal-content">
+                <!--begin::Modal header-->
+                <div class="modal-header">
+                    <!--begin::Modal title-->
+                    <h2 class="fw-bolder">Adjust Balance</h2>
+                    <!--end::Modal title-->
+                    <!--begin::Close-->
+                    <div id="kt_modal_adjust_balance_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+                        <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+                        <span class="svg-icon svg-icon-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                    <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
+                                    <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+                                </g>
+                            </svg>
+                        </span>
+                        <!--end::Svg Icon-->
+                    </div>
+                    <!--end::Close-->
+                </div>
+                <!--end::Modal header-->
+                <!--begin::Modal body-->
+                <div class="modal-body scroll-y mx-5 mx-xl-15 my-7" id="kt_modal_adjust_balance_body">
+                </div>
+                <!--end::Modal body-->
+            </div>
+            <!--end::Modal content-->
+        </div>
+        <!--end::Modal dialog-->
+    </div>
+    <!--end::Modal - New Card-->
+}
+<div class="card card-custom card-sticky mb-6 mb-xl-9" id="kt_page_sticky_card">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">
+                @(string.IsNullOrEmpty(Model.User.UserId) ? "Create" : "Update") <i class="mr-2"></i>
+                @*<small class="">try to scroll the page</small>*@
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <a href="/Admin/Account/@(Model.User.Role == UserRole.Basic ? "Customers" : "Index")" class="btn btn-light-primary font-weight-bolder mr-2">
+                <i class="ki ki-long-arrow-back icon-sm"></i>
+                Back
+            </a>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary font-weight-bolder" onclick="submitForm()">
+                    <i class="ki ki-check icon-sm"></i>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" style="padding-bottom:0px">
+        <!--begin::Form-->
+        <form asp-action="SaveUser" asp-area="Admin" asp-controller="Account" method="post" class="form" id="kt_form">
+            @Html.HiddenFor(t => t.User.UserId)
+            @Html.HiddenFor(t => t.Customer.Id)
+            @Html.HiddenFor(t => t.Customer.Name)
+            <div class="row">
+                <div class="col-xl-2"></div>
+                <div class="col-xl-8">
+                    @if (Model.User.Role != UserRole.Basic)
+                    {
+                        <div class="form-group row">
+                            <label asp-for="User.Role" class="col-3">Role</label>
+                            <div class="col-9">
+                                <select asp-for="User.Role" asp-items="Model.Roles" required="true">
+                                    <option selected="selected" value="">---Select Role---</option>
+                                </select>
+                                <span asp-validation-for="User.Role" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(t => t.User.Role)
+                    }
+                    <div class="form-group row">
+                        <label asp-for="User.FirstName" class="col-3">First Name</label>
+                        <div class="col-9">
+                            <input asp-for="User.FirstName" class="form-control form-control-solid" required="true" placeholder="First Name" />
+                            <span asp-validation-for="User.FirstName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="User.LastName" class="col-3">Last Name</label>
+                        <div class="col-9">
+                            <input asp-for="User.LastName" class="form-control form-control-solid" required="true" placeholder="Last Name" />
+                            <span asp-validation-for="User.LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="User.Email" class="col-3">Email</label>
+                        <div class="col-9">
+                            <input asp-for="User.Email" class="form-control form-control-solid" placeholder="Email"></input>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="User.Mobile" class="col-3">Mobile</label>
+                        <div class="col-9">
+                            <input asp-for="User.Mobile" class="form-control form-control-solid" required="true" placeholder="Mobile"></input>
+                            <span asp-validation-for="User.Mobile" class="text-danger"></span>
+                        </div>
+                    </div>
+                    @if (string.IsNullOrEmpty(Model.User.UserId))
+                    {
+                        <div class="form-group row">
+                            <label asp-for="User.Password" class="col-3">Password</label>
+                            <div class="col-9">
+                                <input asp-for="User.Password" class="form-control form-control-solid" placeholder="Password" />
+                                <span asp-validation-for="User.Password" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="User.ConfirmPassword" class="col-3">Confirm Password</label>
+                            <div class="col-9">
+                                <input asp-for="User.ConfirmPassword" class="form-control form-control-solid" placeholder="Confirm Password" />
+                                <span asp-validation-for="User.ConfirmPassword" class="text-danger"></span>
+                            </div>
+                        </div>
+                    }
+                    @*<div class="form-group row">
+                    <label asp-for="Customer.CompanyName" class="col-3">Company Name</label>
+                    <div class="col-9">
+                    <input asp-for="Customer.CompanyName" class="form-control form-control-solid" placeholder="Company Name" />
+                    </div>
+                    </div>
+                    <div class="form-group row">
+                    <label asp-for="Customer.GstNumber" class="col-3">GST Number</label>
+                    <div class="col-9">
+                    <input asp-for="Customer.GstNumber" class="form-control sform-control-solid" placeholder="GST Number" />
+                    </div>
+                    </div>*@
+                    @if (Model.User.Role == UserRole.Basic)
+                    {
+                        <div class="form-group row">
+                            <label asp-for="Customer.AddressLine1" class="col-3">Address Line 1</label>
+                            <div class="col-9">
+                                <input asp-for="Customer.AddressLine1" class="form-control form-control-solid" required="true" placeholder="Address Line 1" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Customer.AddressLine2" class="col-3">Address Line 2</label>
+                            <div class="col-9">
+                                <input asp-for="Customer.AddressLine2" class="form-control form-control-solid" placeholder="Address Line 2" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Customer.Landmark" class="col-3">Landmark</label>
+                            <div class="col-9">
+                                <input asp-for="Customer.Landmark" class="form-control form-control-solid" placeholder="Landmark" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Customer.City" class="col-3">City</label>
+                            <div class="col-9">
+                                <input asp-for="Customer.City" class="form-control form-control-solid" placeholder="City" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Customer.State" class="col-3">State</label>
+                            <div class="col-9">
+                                <input asp-for="Customer.State" class="form-control form-control-solid" placeholder="State" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label asp-for="Customer.PinCode" class="col-3">Pincode</label>
+                            <div class="col-9">
+                                <input asp-for="Customer.PinCode" class="form-control form-control-solid" placeholder="Pincode" />
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-xl-2"></div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    @if (!string.IsNullOrEmpty(Model.User.UserId))
+    {
+        <div class="card-body" style="padding-top:0">
+            <!--begin::Form-->
+            <form asp-action="UpdatePassword" asp-area="Admin" asp-controller="Account" method="post" class="form" id="kt_form">
+                @Html.ValidationSummary()
+                @Html.HiddenFor(t => t.User.UserId)
+                <div class="row">
+                    <div class="col-xl-2"></div>
+                    <div class="col-xl-8">
+                        <div class="separator separator-dashed my-10"></div>
+                        <div class="my-5">
+                            <h3 class=" text-dark font-weight-bold mb-10">Change Password:</h3>
+                            <div class="form-group row">
+                                <label asp-for="User.Password" class="col-3">Password</label>
+                                <div class="col-9">
+                                    <input asp-for="User.Password" class="form-control form-control-solid" placeholder="Password" />
+                                    <span asp-validation-for="User.Password" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label asp-for="User.ConfirmPassword" class="col-3">Confirm Password</label>
+                                <div class="col-9">
+                                    <input asp-for="User.ConfirmPassword" class="form-control form-control-solid" placeholder="Confirm Password" />
+                                    <span asp-validation-for="User.ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="kt-portlet__foot">
+                                <div class="kt-form__actions kt-form__actions--center">
+                                    <button type="submit" class="btn btn-primary mr-2">Update Password</button>
+                                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2"></div>
+                </div>
+            </form>
+            <!--end::Form-->
+        </div>
+    }
+</div>
+@section Scripts
+    {
+    <script src="~/js/customerupdate.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var errorMessage = @Html.Raw(Json.Serialize(Model.ErrorMessage));
+            var result = @Json.Serialize(Model.Result);
+            baseController.actionResult("Save", result, errorMessage, "@(string.IsNullOrEmpty(Model.User.UserId) ? ("/Admin/Account/" + (Model.User.Role == UserRole.Basic ? "Create" : "Add")) : ("/Admin/Account/Update/" + Model.User.UserId))");
+            KTModalAdjustBalance.init();
+        });
+        function submitForm() {
+            $("#kt_form").submit();
+        }
+
+        $("#btn_modal_adjust_balance").click(function () {
+            $("#kt_modal_adjust_balance").show();
+        });
+    </script>
+}

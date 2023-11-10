@@ -1,0 +1,106 @@
+﻿@using StudioBooking.Infrastructure
+@using StudioBooking.ViewModels
+@model StudioBooking.Areas.User.Models.DashboardViewModel
+@{
+    var layoutViewModel = (LayoutViewModel)(ViewData["LayoutViewModel"] ?? new LayoutViewModel());
+    var customer = Model.User.Customers.FirstOrDefault();
+    var upcomingBooking = Model.Bookings.OrderBy(b => Defaults.ConvertDateTime(b.BookingDate, Defaults.DefaultDateFormat)).ThenBy(b => DateTime.Parse(b.StartTime)).FirstOrDefault();
+}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container">
+        <!--begin::Row-->
+        <div class="row g-5 g-xl-8">
+            <div class="col-xl-4">
+                <!--begin::Statistics Widget 2-->
+                <div class="card card-xl-stretch mb-xl-8">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex align-items-center pt-3 pb-0">
+                        <div class="d-flex flex-column flex-grow-1 py-2 py-lg-13 me-2">
+                            <a href="#" class="fw-bolder text-dark fs-4 mb-2 text-hover-primary">@(layoutViewModel.FirstName + " " + layoutViewModel.LastName)</a>
+                            <span class="fw-bold text-muted fs-5">@customer.Id.ToString(Defaults.CustomerPrefix)</span>
+                            <div class="text-gray-600">
+                                <a href="javascript:;" class="text-gray-600 text-hover-primary">@(Model.User.Email == "rb" + Model.User.Mobile + "@rbstudios.info" ? string.Empty : Model.User.Email)</a>
+                            </div>
+                        </div>
+                        <img src="@layoutViewModel.ProfilePic" alt="" class="align-self-end h-100px" />
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Statistics Widget 2-->
+            </div>
+            <div class="col-xl-4">
+                <!--begin::Statistics Widget 2-->
+                <div class="card bgi-no-repeat card-xl-stretch mb-5 mb-xl-8" style="background-position: right top; background-size: 30% auto; background-image: url('/lib/Assets/media/svg/shapes/abstract-4.svg')">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex align-items-center pt-3 pb-0">
+                        <div class="d-flex flex-column flex-grow-1 py-2 py-lg-13 me-2">
+                            <a href="#" class="fw-bolder text-dark fs-4 mb-2 text-hover-primary">Credits</a>
+                            @if (Model.Hours > 0)
+                            {
+                                <div class="fw-bolder fs-2">
+
+                                    <span class="text-muted fs-4 fw-bold">Hrs</span>
+                                    <div class="fs-7 fw-normal text-muted">Hrs can be redeemed while booking studio services.</div>
+                                </div>
+                                <div class="separator separator-dashed my-3"></div>
+                            }
+                            <div class="fw-bolder fs-2">
+                                @Model.Coins
+                                <span class="text-muted fs-4 fw-bold">₹</span>
+                                <div class="fs-7 fw-normal text-muted">Credits can be redeemed while booking studio services.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Statistics Widget 2-->
+            </div>
+            <div class="col-xl-4">
+                <!--begin::Statistics Widget 1-->
+                <div class="card bgi-no-repeat card-xl-stretch mb-xl-8" style="background-position: right top; background-size: 30% auto; background-image: url(../assets/media/svg/shapes/abstract-1.svg)">
+                    <!--begin::Body-->
+                    <div class="card-body">
+                        <a href="/User/Booking/" class="card-title fw-bolder text-muted text-hover-primary fs-4">Upcoming Booking</a>
+                        <div class="fw-bolder text-primary my-6">
+                            @(upcomingBooking != null ? upcomingBooking.StartTime + " - " + upcomingBooking.EndTime : "No Booking Available")
+                            @if (upcomingBooking == null)
+                            {
+                                <br />
+                                <br />
+                                <a href="/Booking" class="btn btn-sm btn-primary">
+                                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Plus.svg-->
+                                    <span class="svg-icon svg-icon-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
+                                            <rect fill="#000000" opacity="0.5" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000)" x="4" y="11" width="16" height="2" rx="1" />
+                                        </svg>
+                                    </span>
+                                    <!--end::Svg Icon-->Create New Booking
+                                </a>
+                            }
+                        </div>
+                        <p class="text-dark-75 fw-bold fs-5 m-0">
+                            @if (upcomingBooking != null)
+                            {
+                                @upcomingBooking.BookingDate
+                                <br />
+                                @(upcomingBooking.CategoryName +
+                                    " - " + upcomingBooking.TotalHours + "hr(s)")
+                            }
+                        </p>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Statistics Widget 1-->
+            </div>
+        </div>
+        <!--end::Row-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Post-->
+@section scripts{
+
+}

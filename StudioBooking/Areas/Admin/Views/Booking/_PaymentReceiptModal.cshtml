@@ -1,0 +1,86 @@
+﻿@using StudioBooking.Infrastructure
+@model StudioBooking.Areas.Admin.Models.PaymentReceiptViewModel
+<!--begin::Form-->
+<form id="kt_modal_payment_form" class="form" action="#">
+    <div class="row">
+        <div class="col-xl-12">
+            <input type="hidden" asp-for="PaymentReceipt.Id" />
+            <input type="hidden" asp-for="PaymentReceipt.BookingId" />
+            <!--begin::Input group-->
+            <div class="form-group row fv-row">
+                <label asp-for="PaymentReceipt.PaymentProvider" class="col-3">
+                    Payment Provider
+                </label>
+                <div class="col-9">
+                    <select asp-for="PaymentReceipt.PaymentProvider" style="width:100%" asp-items="Html.GetEnumSelectList<Enums.PaymentProvider>()" class="form-control form-control-solid" required="true">
+                        <option selected="selected" value="">---Select Payment Provider---</option>
+                    </select>
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="form-group row fv-row">
+                <label asp-for="PaymentReceipt.PaymentStatus" class="col-3">
+                    Payment Provider
+                </label>
+                <div class="col-9">
+                    <select asp-for="PaymentReceipt.PaymentStatus" style="width:100%" class="form-control form-control-solid" required="true">
+                        <option selected="selected" value="">---Select Payment Type---</option>
+                        <option value="1">Advance</option>
+                        <option value="2">Full Payment</option>
+                    </select>
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="form-group row fv-row">
+                <label asp-for="PaymentReceipt.PaymentDate" class="col-3">
+                    Payment Date
+                </label>
+                <div class="col-9">
+                    <input asp-for="PaymentReceipt.PaymentDate" type="text" class="form-control form-control-solid" placeholder="Payment Date" />
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="form-group row fv-row">
+                <label asp-for="PaymentReceipt.Amount" class="col-3">
+                    Amount
+                </label>
+                <div class="col-9">
+                    <input asp-for="PaymentReceipt.Amount" class="form-control form-control-solid" placeholder="Amount" />
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="form-group row fv-row">
+                <label asp-for="PaymentReceipt.ReferenceId" class="col-3">
+                    ReferenceId
+                </label>
+                <div class="col-9">
+                    <input asp-for="PaymentReceipt.ReferenceId" class="form-control form-control-solid" placeholder="ReferenceId" />
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="form-group row fv-row">
+                <label asp-for="PaymentReceipt.Remarks" class="col-3">
+                    Remarks
+                </label>
+                <div class="col-9">
+                    <textarea asp-for="PaymentReceipt.Remarks" class="form-control form-control-solid" placeholder="Remarks" rows="3"></textarea>
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Actions-->
+            <div class="text-center pt-15">
+                <button type="reset" class="btn btn-light me-3" data-kt-payment-modal-action="cancel">Discard</button>
+                <button type="submit" class="btn btn-primary" data-kt-payment-modal-action="submit">
+                    <span class="indicator-label">Submit</span>
+                </button>
+            </div>
+            <!--end::Actions-->
+        </div>
+    </div>
+</form>
+<!--end::Form-->

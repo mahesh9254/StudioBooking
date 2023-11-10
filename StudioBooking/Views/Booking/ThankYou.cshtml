@@ -1,0 +1,48 @@
+﻿@using StudioBooking.Infrastructure
+@model StudioBooking.DTO.TransactionDTO
+@section Style{
+    <style type="text/css">
+        .highlighter-secondary {
+            color: #501943 !important;
+        }
+
+        .error-page {
+            margin-top: 30px;
+        }
+    </style>
+}
+<section class="error-page onepage-screen-area">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="content">
+                    <span class="title-highlighter highlighter-secondary"> <i class="fa fa-exclamation-circle"></i> Booking ID: @((Model.BookingId ?? 0).ToString(Defaults.BookingPrefix))</span>
+                    @if (Model.BookingStatus == Enums.BookingStatus.Booked)
+                    {
+                        <h1 class="title">Your studio booking has been confirmed.</h1>
+                        <p>Check your email for details.</p>
+                        <a href="/User/Home" class="axil-btn btn-bg-secondary right-icon">Back To Home <i class="fal fa-long-arrow-right"></i></a>
+                    }
+                    else
+                    {
+                        <h1 class="title">Your studio booking is pending for confirmation.</h1>
+                        <p>You will receive confirmation email along with payment link once booking is approved.</p>
+                        <a href="/User/Home" class="axil-btn btn-bg-secondary right-icon">Back To Home <i class="fal fa-long-arrow-right"></i></a>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="thumbnail">
+                    <img src="~/lib/eTrade/assets/images/others/payment-successful.png" alt="payment-success">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').removeClass('home-page').addClass('about-page');
+        });
+    </script>
+}

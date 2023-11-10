@@ -1,0 +1,449 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-StudioBooking-3ea37910-f921-4601-b975-c53a8290b942</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\**" />
+    <Content Remove="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\**" />
+    <EmbeddedResource Remove="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\**" />
+    <None Remove="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\css\select2.css" />
+    <Content Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\css\select2.min.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Apis.Auth" Version="1.60.0" />
+    <PackageReference Include="Google.Apis.Calendar.v3" Version="1.60.0.3017" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.12" />
+    <PackageReference Include="Rotativa" Version="1.7.4-rc" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\User\Data\" />
+    <Folder Include="wwwroot\lib\studiobooking\img\category\gear\" />
+    <Folder Include="wwwroot\lib\studiobooking\img\logo\" />
+    <Folder Include="wwwroot\lib\studiobooking\img\gallery\" />
+    <Folder Include="wwwroot\lib\studiobooking\img\client\" />
+    <Folder Include="wwwroot\lib\studiobooking\img\team\" />
+    <Folder Include="wwwroot\lib\studiobooking\img\website\" />
+    <Folder Include="wwwroot\lib\studiobooking\img\service\" />
+    <Folder Include="wwwroot\lib\studiobooking\img\profile\" />
+    <Folder Include="wwwroot\lib\Ver7.1.6\Assets\fonts\" />
+    <Folder Include="wwwroot\lib\Ver7.1.6\Assets\resources\" />
+    <Folder Include="wwwroot\Rotativa\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\lib\Assets\css\pages\login-3.css" />
+    <None Include="wwwroot\lib\Assets\css\skins\aside\dark.css" />
+    <None Include="wwwroot\lib\Assets\css\skins\brand\dark.css" />
+    <None Include="wwwroot\lib\Assets\css\skins\header\base\light.css" />
+    <None Include="wwwroot\lib\Assets\css\skins\header\menu\light.css" />
+    <None Include="wwwroot\lib\Assets\css\style.bundle.css" />
+    <None Include="wwwroot\lib\Assets\fonts\fontawesome-webfont3e6e.eot" />
+    <None Include="wwwroot\lib\Assets\fonts\fontawesome-webfont3e6e.svg" />
+    <None Include="wwwroot\lib\Assets\fonts\fontawesome-webfont3e6e.ttf" />
+    <None Include="wwwroot\lib\Assets\fonts\fontawesome-webfont3e6e.woff" />
+    <None Include="wwwroot\lib\Assets\fonts\fontawesome-webfont3e6e.woff2" />
+    <None Include="wwwroot\lib\Assets\fonts\fontawesome-webfontd41d.eot" />
+    <None Include="wwwroot\lib\Assets\js\pages\dashboard.js" />
+    <None Include="wwwroot\lib\Assets\js\pages\dropzonejs.js" />
+    <None Include="wwwroot\lib\Assets\js\pages\login-general.js" />
+    <None Include="wwwroot\lib\Assets\js\scripts.bundle.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\bootbox\bootbox.all.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\bootbox\bootbox.all.min.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\bootbox\bootbox.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\bootbox\bootbox.locales.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\bootbox\bootbox.locales.min.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\bootbox\bootbox.min.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\fullcalendar\fullcalendar.bundle.css" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\fullcalendar\fullcalendar.bundle.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\gmaps\gmaps.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\af.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\ar.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\az.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\bg.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\bn.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\bs.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\ca.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\cs.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\da.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\de.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\dsb.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\el.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\en.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\eo.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\es.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\et.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\eu.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\fa.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\fi.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\fr.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\gl.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\he.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\hi.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\hr.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\hsb.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\hu.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\hy.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\id.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\is.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\it.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\ja.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\ka.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\km.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\ko.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\lt.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\lv.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\mk.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\ms.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\nb.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\ne.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\nl.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\pa.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\pl.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\ps.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\pt-BR.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\pt.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\ro.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\ru.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\sk.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\sl.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\sq.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\sr-Cyrl.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\sr.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\sv.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\te.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\th.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\tk.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\tr.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\uk.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\vi.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\zh-CN.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\i18n\zh-TW.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\select2.full.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\select2.full.min.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\select2.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\select2-4.1.0\js\select2.min.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\.editorconfig" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\.gitignore" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\.jshintrc" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\.nojekyll" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\assets\flashcanvas.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\assets\flashcanvas.swf" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\assets\journal.eot" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\assets\journal.svg" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\assets\journal.ttf" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\assets\journal.woff" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\assets\jquery.signaturepad.css" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\assets\json2.min.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\assets\pen.cur" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\CHANGELOG.md" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\documentation.md" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\examples\accept-multiple-signatures.html" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\examples\accept-signature.html" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\examples\full-window.html" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\examples\regenerate-signature.html" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\examples\require-drawn-signature.html" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\examples\sample-signature-output.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\Gruntfile.coffee" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\jquery.signaturepad.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\jquery.signaturepad.min.js" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\LICENSE" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\pen.psd" />
+    <None Include="wwwroot\lib\Assets\plugins\custom\signature-pad-master\README.md" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\%40fortawesome\fa-solid-900.ttf" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\%40fortawesome\fa-solid-900.woff" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\%40fortawesome\fa-solid-900.woff2" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\flaticon.css" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\Flaticon2.eot" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\Flaticon2.svg" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\Flaticon2.ttf" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\Flaticon2.woff" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\Flaticon2.woff2" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\font\Flaticon2.eot" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\font\Flaticon2.svg" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\font\Flaticon2.ttf" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\font\Flaticon2.woff" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\font\Flaticon2.woff2" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon2\license.html" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon\flaticon.css" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon\Flaticon.eot" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon\Flaticon.svg" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon\Flaticon.ttf" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon\Flaticon.woff" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon\font\Flaticon.eot" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon\font\Flaticon.svg" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon\font\Flaticon.ttf" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon\font\Flaticon.woff" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\flaticon\license.html" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\css\line-awesome.css" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\fonts\line-awesome.eot" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\fonts\line-awesome.svg" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\fonts\line-awesome.ttf" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\fonts\line-awesome.woff" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\fonts\line-awesome.woff2" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\line-awesome.eot" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\line-awesome.svg" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\line-awesome.ttf" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\line-awesome.woff" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\line-awesome\line-awesome.woff2" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\summernote\summernote.eot" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\summernote\summernote.ttf" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\summernote\summernote.woff" />
+    <None Include="wwwroot\lib\Assets\plugins\global\fonts\summernote\summernote.woff2" />
+    <None Include="wwwroot\lib\Assets\plugins\global\login\plugins.bundle.css" />
+    <None Include="wwwroot\lib\Assets\plugins\global\login\plugins.bundle.js" />
+    <None Include="wwwroot\lib\Assets\plugins\global\plugins.bundle.css" />
+    <None Include="wwwroot\lib\Assets\plugins\global\plugins.bundle.js" />
+    <None Include="wwwroot\lib\Assets\resources\images\fileicon.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\login-background.jpeg" />
+    <None Include="wwwroot\lib\Assets\resources\images\logo\Bonexlogo.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\logo\favicon.ico" />
+    <None Include="wwwroot\lib\Assets\resources\images\logo\logo-light.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\logo\logo.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\logo\M I T Z T E C H %282%29.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\logo\M I T Z T E C H.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\logo\Mitz Tech.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\logo\MT.ico" />
+    <None Include="wwwroot\lib\Assets\resources\images\logo\MT.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\logo\stamp.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\misc\abstract-1.svg" />
+    <None Include="wwwroot\lib\Assets\resources\images\misc\bg-1.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\misc\bg-2.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\saudi-arabia.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\timeline\images\login-background.jpeg" />
+    <None Include="wwwroot\lib\Assets\resources\images\timeline\images\meeting1.jpeg" />
+    <None Include="wwwroot\lib\Assets\resources\images\timeline\images\meeting2.jpeg" />
+    <None Include="wwwroot\lib\Assets\resources\images\united-states.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\uploadIcon.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\100_1.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\100_11.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\100_12.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\100_13.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\100_14.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\100_2.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\100_4.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\100_5.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\100_8.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\100_9.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\300_21.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\300_25.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\user.png" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\user1.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\user4.jpg" />
+    <None Include="wwwroot\lib\Assets\resources\images\users\user5.jpg" />
+    <None Include="wwwroot\js\main.js" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\css\style.bundled1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\css\themes\layout\aside\darkd1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\css\themes\layout\aside\lightd1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\css\themes\layout\brand\darkd1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\css\themes\layout\brand\lightd1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\css\themes\layout\header\base\darkd1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\css\themes\layout\header\base\lightd1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\css\themes\layout\header\menu\darkd1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\css\themes\layout\header\menu\lightd1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\js\pages\widgetsd1cf.js" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\js\scripts.bundled1cf.js" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\fullcalendar\fullcalendar.bundled1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\fullcalendar\fullcalendar.bundled1cf.js" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-brands-400.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-brands-400.svg" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-brands-400.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-brands-400.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-brands-400.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-brands-400d41d.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-regular-400.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-regular-400.svg" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-regular-400.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-regular-400.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-regular-400.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-regular-400d41d.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-solid-900.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-solid-900.svg" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-solid-900.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-solid-900.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-solid-900.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\%40fortawesome\fa-solid-900d41d.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\flaticon.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\Flaticon2.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\Flaticon2.svg" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\Flaticon2.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\Flaticon2.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\Flaticon2.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\font\Flaticon2.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\font\Flaticon2.svg" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\font\Flaticon2.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\font\Flaticon2.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\font\Flaticon2.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon2\license.html" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon\flaticon.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon\Flaticon.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon\Flaticon.svg" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon\Flaticon.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon\Flaticon.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon\font\Flaticon.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon\font\Flaticon.svg" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon\font\Flaticon.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon\font\Flaticon.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\flaticon\license.html" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\keenthemes-icons\Ki.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\keenthemes-icons\Ki.svg" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\keenthemes-icons\Ki.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\keenthemes-icons\Ki.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\keenthemes-icons\Kid41d.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\css\line-awesome.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\fonts\line-awesome.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\fonts\line-awesome.svg" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\fonts\line-awesome.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\fonts\line-awesome.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\fonts\line-awesome.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\la-solid-900.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\la-solid-900.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\la-solid-900.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\line-awesome.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\line-awesome.svg" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\line-awesome.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\line-awesome.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\line-awesome\line-awesome.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\summernote\summernote.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\summernote\summernote.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\summernote\summernote.woff" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\summernote\summernote.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\fonts\summernote\summernoted41d.eot" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\plugins.bundled1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\global\plugins.bundled1cf.js" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\prismjs\prismjs.bundled1cf.css" />
+    <None Include="wwwroot\lib\Ver7.1.6\Assets\plugins\prismjs\prismjs.bundled1cf.js" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\css\style.bundle.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\css\themes\layout\aside\dark.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\css\themes\layout\aside\light.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\css\themes\layout\brand\dark.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\css\themes\layout\brand\light.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\css\themes\layout\header\base\dark.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\css\themes\layout\header\base\light.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\css\themes\layout\header\menu\dark.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\css\themes\layout\header\menu\light.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\js\pages\widgets8414.js" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\js\scripts.bundle8414.js" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\custom\fullcalendar\fullcalendar.bundle.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\custom\fullcalendar\fullcalendar.bundle8414.js" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\custom\prismjs\prismjs.bundle.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\custom\prismjs\prismjs.bundle8414.js" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-brands-400.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-brands-400.svg" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-brands-400.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-brands-400.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-brands-400.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-brands-400d41d.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-regular-400.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-regular-400.svg" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-regular-400.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-regular-400.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-regular-400.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-regular-400d41d.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-solid-900.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-solid-900.svg" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-solid-900.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-solid-900.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-solid-900.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\%40fortawesome\fa-solid-900d41d.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\flaticon.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\Flaticon2.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\Flaticon2.svg" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\Flaticon2.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\Flaticon2.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\Flaticon2.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\font\Flaticon2.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\font\Flaticon2.svg" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\font\Flaticon2.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\font\Flaticon2.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\font\Flaticon2.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon2\license.html" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon\flaticon.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon\Flaticon.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon\Flaticon.svg" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon\Flaticon.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon\Flaticon.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon\font\Flaticon.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon\font\Flaticon.svg" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon\font\Flaticon.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon\font\Flaticon.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\flaticon\license.html" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\keenthemes-icons\Ki.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\keenthemes-icons\Ki.svg" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\keenthemes-icons\Ki.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\keenthemes-icons\Ki.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\keenthemes-icons\Kid41d.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\css\line-awesome.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\fonts\line-awesome.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\fonts\line-awesome.svg" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\fonts\line-awesome.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\fonts\line-awesome.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\fonts\line-awesome.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\la-solid-900.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\la-solid-900.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\la-solid-900.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\line-awesome.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\line-awesome.svg" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\line-awesome.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\line-awesome.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\line-awesome\line-awesome.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\summernote\summernote.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\summernote\summernote.ttf" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\summernote\summernote.woff" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\summernote\summernote.woff2" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\fonts\summernote\summernoted41d.eot" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\plugins.bundle.rtl8414.css" />
+    <None Include="wwwroot\lib\Ver7.1.7\assets\plugins\global\plugins.bundle8414.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cashfree\Cashfree.csproj" />
+    <ProjectReference Include="..\CCAvenue\CCAvenue.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MCPG.CCA.Util">
+      <HintPath>..\CCAvenue\MCPG.CCA.Util.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\lib\Assets\resources\MCPG.CCA.Util.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\lib\CalendarAPI\rbstudio.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Rotativa\wkhtmltoimage.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Rotativa\wkhtmltopdf.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

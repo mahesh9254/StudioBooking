@@ -1,0 +1,54 @@
+﻿@using StudioBooking.Infrastructure
+@model StudioBooking.DTO.CategoryGearDTO
+<form id="areaForm" novalidate enctype="multipart/form-data">
+    @Html.HiddenFor(t => t.Id)
+    @Html.HiddenFor(t => t.CategoryDetailId)
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Content">Content</label>
+        <textarea asp-for="Content" class="form-control form-control-solid" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="Type">Content Cecoration</label>
+        <div class="radio-inline">
+            <label class="radio">
+                <input asp-for="Type" type="radio" value="@((int)Enums.GearContentType.Basic)" />
+                <span></span>Default
+            </label>
+            <label class="radio">
+                <input asp-for="Type" type="radio" value="@((int)Enums.GearContentType.Icon)" />
+                <span></span>Icon
+            </label>
+           @* <label class="radio">
+                <input asp-for="Type" type="radio" value="@((int)Enums.GearContentType.Image)" />
+                <span></span>Image
+            </label>*@
+        </div>
+    </div>
+    <div class="form-group iconInput @(Model.Type == Enums.GearContentType.Icon ? "" : "hide")">
+        <label asp-for="Icon">Icon</label>
+        <div class="input-icon">
+            <input asp-for="Icon" class="form-control form-control-solid" placeholder="Enter icon name" />
+            <span>
+                <i class="flaticon2-search-1 icon-md" id="iconName"></i>
+            </span>
+        </div>
+    </div>
+    <div class="form-group imageInput @(Model.Type == Enums.GearContentType.Image ? "" : "hide")">
+        <label asp-for="Image">Image</label>
+        <div class="col-9">
+            <div class="image-input image-input-outline" id="kt_image_1">
+                <div class="image-input-wrapper" style="background-image: url('@(string.IsNullOrEmpty(Model.Image) ? Defaults.UploadImage : (AppConfig.CategoryGearImageUrl + Model.Image))')"></div>
+                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Upload Image">
+                    <i class="fa fa-pen icon-sm text-muted"></i>
+                    <input asp-for="ImageFile" accept=".png, .jpg, .jpeg" class="custom-file-input" />
+                </label>
+                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Discard Image">
+                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                </span>
+            </div>
+            <span class="form-text text-muted">Allowed file types:  png, jpg, jpeg.</span>
+        </div>
+    </div>
+
+</form>

@@ -1,0 +1,170 @@
+﻿@using StudioBooking.Infrastructure
+@model StudioBooking.ViewModels.ServiceViewModel
+<!-- Begin page-name -->
+<section class="page-name v-separator mb-xs-20 mb-md-25 mb-lg-65">
+    <div class="dark-line"></div>
+    <div class="page-name-content">
+        <div class="container">
+            <h1>Service</h1>
+            <ul class="bread-crumbs">
+                <li><a href="/">Home</a></li>
+                <li><a href="/Service/">Service</a></li>
+                <li><p>@Model.ServicePrice.ServiceName</p></li>
+            </ul>
+        </div>
+        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=" class="page-name__bg lazy" data-src="/lib/studiobooking/img/category/bg_rates.jpg" alt="bg">
+    </div>
+</section>
+<!-- End page-name -->
+<main class="v-separator pb-xs-25 pb-md-25 pb-lg-60">
+    <!-- Begin product -->
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 pt-xs-25 pt-md-25 pt-lg-60 pb-xs-25 pb-md-25 pb-lg-60">
+                    <div class="product-slider-wrap">
+                        <div class="product-slider"
+                             data-slick='{
+										"slidesToShow": 1,
+										"swipeToSlide": true,
+										"adaptiveHeight": true,
+										"arrows": false,
+										"dots": false
+									}'>
+                            <div class="tt-slide">
+                                @if (!string.IsNullOrEmpty(Model.ServicePrice.Image))
+                                {
+                                    <img src="@(AppConfig.CategoryImageUrl + Model.ServicePrice.Image)" alt="service image">
+                                }
+                                else
+                                {
+                                    @if (Model.ServicePrice.ServiceName == "Rehearsal")
+                                    {
+                                        <img src="~/lib/studiobooking/img/service/bg_studio_1-384x216xc.jpg" alt="Product Images">
+                                    }
+                                    @if (Model.ServicePrice.ServiceName == "DIY Video Shoot/Recording")
+                                    {
+                                        <img src="~/lib/studiobooking/img/service/bg_studio_4-384x216xc.jpg" alt="Product Images">
+                                    }
+                                    @if (Model.ServicePrice.ServiceName == "Audio Recording")
+                                    {
+                                        <img src="~/lib/studiobooking/img/service/bg_studio_2-384x216xc.jpg" alt="Product Images">
+                                    }
+                                    @if (Model.ServicePrice.ServiceName == "Live Streaming")
+                                    {
+                                        <img src="~/lib/studiobooking/img/service/bg_studio_3-384x216xc.jpg" alt="Product Images">
+                                    }
+                                    @if (Model.ServicePrice.ServiceName.Contains("Bundles"))
+                                    {
+                                        <img src="~/lib/studiobooking/img/service/bg_event_space-384x216xc.jpg" alt="Product Images">
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 pt-xs-25 pt-md-25 pt-lg-60 pb-xs-25 pb-md-25 pb-lg-60">
+                    <div class="product-description">
+                        <h3>@Model.ServicePrice.ServiceName</h3>
+                        @Html.HiddenFor(s=> s.ServicePrice.Id)
+                        @Html.HiddenFor(s=> s.ServicePrice.MinHours)
+                        @Html.HiddenFor(s=> s.ServicePrice.StartTime)
+                        @Html.HiddenFor(s=> s.ServicePrice.EndTime)
+                        @Html.HiddenFor(s=> s.ServicePrice.Price)
+                        <div class="product-card__price">
+                            <span>Starting at - ₹@Model.ServicePrice.Price/hr</span>
+                            @*<p>+ Free Shipping</p>*@
+                        </div>
+                        <div class="product-info">
+                            <ul>
+                                @if (Model.ServicePrice.ServiceType == Enums.ServiceType.Calculated)
+                                {
+                                    <li>
+                                        <p>Minimum @Model.ServicePrice.MinHours/hr(s) Booking</p>
+                                    </li>
+                                    <li>
+                                        <p>Advance Booking Available</p>
+                                    </li>
+                                    <li>
+                                        <p>One Time Rescheduling</p>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <p>@Model.ServicePrice.MinHours/hr(s) Studio Reservation</p>
+                                    </li>
+                                    <li>
+                                        <p>Redeem whenever you needed</p>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                        <form asp-action="AddToCart" asp-controller="Service" method="post" class="form" id="kt_form">
+                            @Html.HiddenFor(s=> s.Cart.ServicePriceId)
+                            <button type="button" class="button white btn-border" onclick="bookNow()">
+                                <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19.844 3.13703C19.6965 2.94012 19.4648 2.82422 19.2187 2.82422H4.50324L4.07422 1.35863C3.97676 1.02566 3.67141 0.796875 3.32445 0.796875H0.78125C0.349766 0.796875 0 1.14664 0 1.57812C0 2.00961 0.349766 2.35938 0.78125 2.35938H2.7391C2.8532 2.74918 5.73898 12.6073 5.85555 13.0055C5.95301 13.3384 6.2584 13.5672 6.60531 13.5672H16.5314C16.8783 13.5672 17.1837 13.3384 17.2811 13.0055L19.9685 3.82496C20.0377 3.58887 19.9915 3.33395 19.844 3.13703ZM15.9461 12.0047H7.19066L4.96066 4.38672H18.1761L15.9461 12.0047Z" />
+                                    <path d="M7.79776 17.2031C8.38024 17.2031 8.85244 16.7309 8.85244 16.1484C8.85244 15.5659 8.38024 15.0938 7.79776 15.0938C7.21527 15.0938 6.74307 15.5659 6.74307 16.1484C6.74307 16.7309 7.21527 17.2031 7.79776 17.2031Z" />
+                                    <path d="M15.3385 17.2031C15.921 17.2031 16.3932 16.7309 16.3932 16.1484C16.3932 15.5659 15.921 15.0938 15.3385 15.0938C14.7561 15.0938 14.2839 15.5659 14.2839 16.1484C14.2839 16.7309 14.7561 17.2031 15.3385 17.2031Z" />
+                                </svg>book now
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.ServicePrice.CategoryDesciption) || !string.IsNullOrEmpty(Model.ServicePrice.AdditionalInformation))
+                {
+                    var isDescription = !string.IsNullOrEmpty(Model.ServicePrice.CategoryDesciption);
+                    <div class="col-12">
+                        <div class="product-tabs">
+                            <div class="tab-wrap" data-tab-container>
+                                <div class="tab-links">
+                                    @if (!string.IsNullOrEmpty(Model.ServicePrice.CategoryDesciption))
+                                    {
+                                        <div class="tab-links__item @(isDescription ? "active" : string.Empty)" data-show-tab="1">Description</div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.ServicePrice.AdditionalInformation))
+                                    {
+                                        <div class="tab-links__item @(!isDescription ? "active" : string.Empty)" data-show-tab="2">Additional Information</div>
+                                    }
+                                </div>
+                                <div class="tab-blocks">
+                                    @if (!string.IsNullOrEmpty(Model.ServicePrice.CategoryDesciption))
+                                    {
+                                        <div class="tab-blocks__item @(isDescription ? "active" : string.Empty)" data-show-tab="1">
+                                            <div class="tab-text">
+                                                <h4>Service Description</h4>
+                                                <p>@Html.Raw(Model.ServicePrice.Description)</p>
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.ServicePrice.AdditionalInformation))
+                                    {
+                                        <div class="tab-blocks__item @(!isDescription ? "active" : string.Empty)" data-show-tab="2">
+                                            <div class="tab-text">
+                                                <h4>Additional Information</h4>
+                                                <p>@Html.Raw(Model.ServicePrice.AdditionalInformation)</p>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+    <!-- End product -->
+</main>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').removeClass('home-page').addClass('product-page');
+        });
+        function bookNow() {
+            //window.location.href = "/Booking/";
+            //$("#kt_form").submit();
+        }
+    </script>
+}

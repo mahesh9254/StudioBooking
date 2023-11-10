@@ -1,0 +1,112 @@
+﻿@using StudioBooking.Infrastructure
+@using StudioBooking.DTO
+@model List<TransactionDTO>
+<!--begin::Toolbar-->
+<div class="toolbar" id="kt_toolbar">
+    <!--begin::Container-->
+    <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+        <!--begin::Page title-->
+        <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+            <!--begin::Title-->
+            <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">Transaction List</h1>
+            <!--end::Title-->
+            <!--begin::Separator-->
+            <span class="h-20px border-gray-200 border-start mx-4"></span>
+            <!--end::Separator-->
+            <!--begin::Breadcrumb-->
+            <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    <a href="/User/" class="text-muted text-hover-primary">Dashboard</a>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-200 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">Transactions</li>
+                <!--end::Item-->
+            </ul>
+            <!--end::Breadcrumb-->
+        </div>
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Toolbar-->
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container">
+        <!--begin::Card-->
+        <div class="card">
+            <!--begin::Card header-->
+            <div class="card-header border-0 pt-6">
+                <!--begin::Card title-->
+                <div class="card-title">
+                    <h2>Transaction List</h2>
+                </div>
+                <!--begin::Card title-->
+            </div>
+            <!--end::Card header-->
+            <!--begin::Card body-->
+            <div class="card-body pt-0">
+                <!--begin::Table-->
+                <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_transactions">
+                    <!--begin::Table head-->
+                    <thead>
+                        <!--begin::Table row-->
+                        <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
+                            <th class="min-w-125px">Transaction ID</th>
+                            <th>Booking ID</th>
+                            <th>DateTime</th>
+                            <th>Transaction Type</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                        </tr>
+                        <!--end::Table row-->
+                    </thead>
+                    <!--end::Table head-->
+                    <!--begin::Table body-->
+                    <tbody class="text-gray-600 fw-bold">
+                        @foreach (var transaction in Model)
+                        {
+                            <!--begin::Table row-->
+                            <tr>
+                                <td class="align-items-center">
+                                    @transaction.Id.ToString(Defaults.TransactionPrefix)
+                                </td>
+                                <td>@transaction.BookingId?.ToString(Defaults.BookingPrefix)</td>
+                                <td>@transaction.CreatedDate</td>
+                                <td>
+                                    @{
+                                        var tType = Defaults.GetTransactionTypeCSS(transaction.TransactionType);
+                                    }
+                                    <div class="badge badge-light-@(tType.GetType().GetProperty("css").GetValue(tType, null))">@tType.GetType().GetProperty("text").GetValue(tType, null)</div>
+                                </td>
+                                <td>
+                                    @{
+                                        var status = Defaults.GetTransactionStatusCSS(transaction.Status);
+                                    }
+                                    <div class="badge badge-light-@(status.GetType().GetProperty("css").GetValue(status, null))">@status.GetType().GetProperty("text").GetValue(status, null)</div>
+                                </td>                               
+                                <td>₹@transaction.Amount</td>
+                            </tr>
+                            <!--end::Table row-->
+                        }
+                    </tbody>
+                    <!--end::Table body-->
+                </table>
+                <!--end::Table-->
+            </div>
+            <!--end::Card body-->
+        </div>
+        <!--end::Card-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Post-->
+@section scripts{
+        <script src="~/js/user/transactions.js" type="text/javascript" asp-append-version="true"></script>
+}

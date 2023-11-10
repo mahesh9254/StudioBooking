@@ -1,0 +1,193 @@
+﻿@using StudioBooking.Infrastructure
+@model StudioBooking.ViewModels.PaymentReceiptViewModel
+@{
+    Layout = "/Views/Shared/_Layout-PaymentReceipt.cshtml";
+    var endTime = Convert.ToDateTime(Model.Booking.EndTime);
+    var startTime = Convert.ToDateTime(Model.Booking.StartTime);
+    var totalHours = (endTime - startTime).TotalHours;
+}
+<!--begin::Post-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container">
+        <!--begin::Invoice 2 main-->
+        <div class="card">
+            <!--begin::Body-->
+            <div class="card-body p-lg-20">
+                <!--begin::Layout-->
+                <div class="d-flex flex-column flex-xl-row">
+                    <!--begin::Content-->
+                    <div class="flex-lg-row-fluid me-xl-18 mb-10 mb-xl-0">
+                        <!--begin::Invoice 2 content-->
+                        <div class="mt-n1">
+                            <!--begin::Top-->
+                            <div class="d-flex flex-stack pb-10 justify-content-center">
+                                <!--begin::Logo-->
+                                <a href="/">
+                                    <img alt="Logo" src="~/lib/studiobooking/img/logo/RB-Studios-Logo_PaymentReceiptLogo.png" style="max-height:140px" />
+                                </a>
+                                <!--end::Logo-->
+                            </div>
+                            <!--end::Top-->
+                            <!--begin::Wrapper-->
+                            <div class="m-0">
+                                <!--begin::Label-->
+                                @*<div class="fw-bolder fs-3 text-gray-800 mb-8"> #@Model.Booking.BookingId</div>*@
+                                <!--end::Label-->
+                                <!--begin::Row-->
+                                <div class="row g-5 mb-11">
+                                    <!--end::Col-->
+                                    <div class="col-sm-6">
+                                        <!--end::Label-->
+                                        <div class="fw-bold fs-7 text-gray-600 mb-1">BookingId:</div>
+                                        <!--end::Label-->
+                                        <!--end::Col-->
+                                        <div class="fw-bolder fs-6 text-gray-800">@Model.Booking.BookingId</div>
+                                        <!--end::Col-->
+                                    </div>
+                                    <!--end::Col-->
+                                    <!--end::Col-->
+                                    <div class="col-sm-6">
+                                        <div class="fw-bold fs-7 text-gray-600 mb-1">Booking Date:</div>
+                                        <div class="fw-bolder fs-6 text-gray-800">@Model.Booking.BookingDate</div>
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Row-->
+                                <!--begin::Row-->
+                                <div class="row g-5 mb-12">
+                                    <!--end::Col-->
+                                    <div class="col-sm-6">
+                                        <!--end::Label-->
+                                        <div class="fw-bold fs-7 text-gray-600 mb-1">Customer Details:</div>
+                                        <!--end::Label-->
+                                        <!--end::Text-->
+                                        <div class="fw-bolder fs-6 text-gray-800">@Model.Customer.Name</div>
+                                        <!--end::Text-->
+                                        <!--end::Description-->
+                                        <div class="fw-bold fs-7 text-gray-600">
+                                            @{
+                                                var address = Model.Customer.AddressLine1;
+                                                if (!string.IsNullOrEmpty(Model.Customer.AddressLine2))
+                                                    address += "," + Model.Customer.AddressLine2;
+                                            }
+                                            @address,
+                                            <br />@Model.Customer.Landmark @Model.Customer.City, @Model.Customer.State, @Model.Customer.PinCode
+                                            <br /><b>Mobile:</b>@Model.Customer.Mobile
+                                        </div>
+                                        <!--end::Description-->
+                                    </div>
+                                    <!--end::Col-->
+                                    <!--end::Col-->
+                                    <div class="col-sm-6">
+                                        <!--end::Label-->
+                                        <div class="fw-bold fs-7 text-gray-600 mb-1">Issued By:</div>
+                                        <!--end::Label-->
+                                        <!--end::Text-->
+                                        <div class="fw-bolder fs-6 text-gray-800">R&amp;B Studios</div>
+                                        <!--end::Text-->
+                                        <!--end::Description-->
+                                        <div class="fw-bold fs-7 text-gray-600">
+                                            Venus Tower, 702/905, <br> B Wing, Veera Desai Rd, Azad Nagar, Andheri West, <br> Mumbai, Maharashtra 400053
+                                        </div>
+                                        <!--end::Description-->
+                                    </div>
+                                    <!--end::Col-->
+                                </div>
+                                <!--end::Row-->
+                                <!--begin::Content-->
+                                <div class="flex-grow-1">
+                                    <!--begin::Table-->
+                                    <div class="table-responsive border-bottom mb-9">
+                                        <table class="table mb-3">
+                                            <thead>
+                                                <tr class="border-bottom fs-6 fw-bolder text-muted">
+                                                    <th class="min-w-175px pb-2">Service</th>
+                                                    <th class="min-w-70px text-end pb-2">Unit (Hours)</th>
+                                                    <th class="min-w-80px text-end pb-2">Rate</th>
+                                                    <th class="min-w-100px text-end pb-2">Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="fw-bolder text-gray-700 fs-5 text-end">
+                                                    <td class="d-flex align-items-center pt-6">
+                                                        <i class="fa fa-genderless fs-2 me-2"></i>@Model.Booking.ServiceName
+                                                    </td>
+                                                    <td class="pt-6" style="text-align:center">@totalHours</td>
+                                                    <td class="pt-6">₹@Math.Round(Model.Booking.RatePerHour,2)</td>
+                                                    <td class="pt-6 text-dark fw-boldest">₹@Math.Round(totalHours * (double)Model.Booking.RatePerHour,2)</td>
+                                                </tr>
+                                                @foreach (var addOn in Model.AddOns)
+                                                {
+                                                    <tr class="fw-bolder text-gray-700 fs-5 text-end">
+                                                        <td class="d-flex align-items-center pt-6">
+                                                            <i class="fa fa-genderless fs-2 me-2"></i>@addOn.Name
+                                                        </td>
+                                                        <td class="pt-6"><sub>N/A</sub></td>
+                                                        <td class="pt-6"><sub>N/A</sub></td>
+                                                        <td class="pt-6 text-dark fw-boldest">@(addOn.AdjustmentType == (int)Enums.AdjustmentType.Deduct ? "-" : "") ₹@addOn.Amount</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <!--end::Table-->
+                                    <!--begin::Container-->
+                                    <div class="d-flex justify-content-end">
+                                        <!--begin::Section-->
+                                        <div class="mw-300px">
+                                            <!--begin::Item-->
+                                            <div class="d-flex flex-stack mb-3">
+                                                <!--begin::Accountname-->
+                                                <div class="fw-bold pe-10 text-gray-600 fs-7">Total:</div>
+                                                <!--end::Accountname-->
+                                                <!--begin::Label-->
+                                                <div class="text-end fw-bolder fs-6 text-gray-800">₹ @Math.Round(Model.Booking.Total,2)</div>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Item-->
+                                            <!--begin::Item-->
+                                            <div class="d-flex flex-stack mb-3">
+                                                <!--begin::Accountnumber-->
+                                                <div class="fw-bold pe-10 text-gray-600 fs-7">Amount Paid</div>
+                                                <!--end::Accountnumber-->
+                                                <!--begin::Number-->
+                                                <div class="text-end fw-bolder fs-6 text-gray-800">₹ @Math.Round(Model.Booking.AdvancePaid,2)</div>
+                                                <!--end::Number-->
+                                            </div>
+                                            <!--end::Item-->
+                                            <!--begin::Item-->
+                                            <div class="d-flex flex-stack">
+                                                <!--begin::Code-->
+                                                <div class="fw-bold pe-10 text-gray-600 fs-7">Balance Due</div>
+                                                <!--end::Code-->
+                                                <!--begin::Label-->
+                                                <div class="text-end fw-bolder fs-6 text-gray-800">₹ @Math.Round(Model.Booking.Total - Model.Booking.AdvancePaid,2)</div>
+                                                <!--end::Label-->
+                                            </div>
+                                            <!--end::Item-->
+                                        </div>
+                                        <!--end::Section-->
+                                    </div>
+                                    <!--end::Container-->
+                                </div>
+                                <!--end::Content-->
+                            </div>
+                            <!--end::Wrapper-->
+                        </div>
+                        <!--end::Invoice 2 content-->
+                    </div>
+                    <!--end::Content-->
+                </div>
+                <!--end::Layout-->
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Invoice 2 main-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Post-->
+@section scripts{
+    <script src="~/js/main.js" type="text/javascript" asp-append-version="true"></script>
+}

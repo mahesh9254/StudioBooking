@@ -1,0 +1,69 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="axil-signin-area">
+
+    <!-- Start Header -->
+    <div class="signin-header">
+        <div class="row align-items-center">
+            <div class="col-sm-4">
+                <a href="/" class="site-logo"><img src="~/lib/studiobooking/img/logo/RB-Studios-Logo_edited.png" alt="logo" style="max-width: 45% !important;"></a>
+            </div>
+            <div class="col-sm-8">
+                <div class="singin-header-btn">
+                    <p>Not a registed?</p>
+                    <a asp-page="./Register" class="axil-btn btn-bg-secondary sign-up-btn">Register Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Header -->
+
+    <div class="row">
+        <div class="col-xl-4 col-lg-6">
+            <div class="axil-signin-banner bg_image bg_image--9">
+                <h3 class="title">We Offer the Best Studios</h3>
+            </div>
+        </div>
+        <div class="col-lg-6 offset-xl-2">
+            <div class="axil-signin-form-wrap">
+                <div class="axil-signin-form">
+                    <h3 class="title">Sign in to R & B Studios.</h3>
+                    <p class="b2 mb--55">Enter your detail below</p>
+                    <form id="account" method="post" class="singin-form">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Input.Email">Email/Mobile</label>
+                            <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true">
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Password">Password</label>
+                            <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true">
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        @* <div>
+                        <div class="checkbox">
+                        <label asp-for="Input.RememberMe" class="form-label">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        @Html.DisplayNameFor(m => m.Input.RememberMe)
+                        </label>
+                        </div>
+                        </div>*@
+                        <div class="form-group d-flex align-items-center justify-content-between">
+                            <button id="login-submit" type="submit" class="axil-btn btn-bg-primary submit-btn">Sign In</button>
+                            <a asp-page="./ForgotPassword" class="forgot-btn">Forget password?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

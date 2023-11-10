@@ -1,0 +1,26 @@
+﻿@model StudioBooking.DTO.CustomerAddressDTO
+<div class="col-lg-6">
+    <div class="address-info mb--40">
+        <div class="addrss-header d-flex align-items-center justify-content-between">
+            <div class="customer-address">
+                <input type="checkbox" id="address-@Model.Id" class="chk-customer-address" value="@Model.Id" @(Model.IsDefault ? "checked" : "")>
+                <label for="address-@Model.Id">@Model.Name</label>
+            </div>
+        </div>
+        <ul class="address-details">
+            <li>
+                @Model.AddressLine1
+                @if (!string.IsNullOrEmpty(Model.AddressLine2) || !string.IsNullOrEmpty(Model.Landmark))
+                {
+                    <br>
+                    @((Model.AddressLine2 ?? string.Empty) + " " + (Model.Landmark ?? string.Empty))
+                }
+                @if (!string.IsNullOrEmpty(Model.City) || !string.IsNullOrEmpty(Model.State))
+                {
+                    <br>
+                    @((Model.City ?? string.Empty) + " " + (Model.State ?? string.Empty) + " " + (Model.PinCode))
+                }
+            </li>
+        </ul>
+    </div>
+</div>

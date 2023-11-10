@@ -1,0 +1,197 @@
+﻿@using StudioBooking.Infrastructure;
+@using System.Text.RegularExpressions;
+@model StudioBooking.ViewModels.StudioViewModel
+@{
+    Regex reg = new Regex("[*'\",_&#^@/]");
+    Regex reg1 = new Regex("[ ]");
+}
+@section Style{
+    <style type="text/css">
+        .header-studio {
+            display: table;
+            width: 100%;
+            height: 300;
+            min-height: 300px;
+            overflow: hidden;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+            .header-studio .inner {
+                display: table-cell;
+                width: 100%;
+                vertical-align: bottom;
+                padding-bottom: 50px;
+            }
+
+            .header-studio h1, .header-studio span {
+                color: #ffffff;
+                background: #551a4bb8;
+                padding: 15px;
+                display: inline-block;
+                margin-bottom: 4px;
+            }
+
+        @@media screen and (min-width: 768px) {
+            .header-studio .col-lg-6 {
+                padding-left: 0 !important;
+            }
+        }
+
+        .axil-post-wrapper .post-heading {
+            padding-bottom:0;
+        }
+    </style>
+}
+<!-- Start Blog Area  -->
+<div class="axil-blog-area">
+    <div class="header header-studio" style="background-image:url('/lib/eTrade/assets/images/bg/bg_studio_2.jpg');">
+        <div class="inner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h1 class="entry-title">@Model.Category.Name</h1><br>
+                        <span><i class="feather icon-maximize-2"></i> 600 sqft</span>
+
+                        <span><i class="feather icon-users"></i> 7 people</span>
+
+                        @*<span><i class="feather icon-dollar-sign"></i> from $20/hr</span>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End .single-post -->
+    @foreach (var detail in Model.CategoryDetails)
+    {
+        if (!string.IsNullOrEmpty(detail.Description))
+        {
+            <div class="post-single-wrapper position-relative">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 axil-post-wrapper">
+                            <div class="post-heading">
+                                <h2 class="title">@detail.Title</h2>
+                            </div>
+                            <div>
+                                @Html.Raw(detail.Description)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    <!-- Start Expolre Product Area  -->
+    <div class="axil-product-area bg-color-white axil-section-gap pb--0">
+        <div class="container">
+            <div class="product-area pb--20">
+                <div class="axil-isotope-wrapper">
+                    <div class="product-isotope-heading">
+                        <div class="section-title-wrapper">
+                            @*<span class="title-highlighter highlighter-primary"><i class="far fa-shopping-basket"></i> Our Services</span>*@
+                            <h2 class="title">@Model.Category.Name - Services</h2>
+                        </div>
+                        @* <div class="isotope-button">
+                        <button data-filter="*" class="is-checked"><span class="filter-text">All</span></button>
+                        @foreach (var service in Model.ServicePrices.Select(s => s.ServiceName).Distinct())
+                        {
+                        var str1 = reg.Replace(service, string.Empty);
+                        str1 = reg1.Replace(str1, "-");
+                        <button data-filter=".@str1" class=""><span class="filter-text">@str1</span></button>
+                        }
+                        </div>*@
+                    </div>
+                    <div class="row row--15 isotope-list">
+                        @foreach (var service in Model.ServicePrices)
+                        {
+                            var str1 = reg.Replace(service.ServiceName, string.Empty);
+                            str1 = reg1.Replace(str1, "-");
+                            <div class="col-xl-3 col-lg-4 col-sm-6 col-12 mb--30 product @str1">
+                                <div class="axil-product product-style-one">
+                                    <div class="thumbnail">
+                                        <a href="/Service/Detail/@service.Id">
+                                            @if (service.ServiceName == "Rehearsal")
+                                            {
+                                                <img src="~/lib/studiobooking/img/service/bg_studio_1-384x216xc.jpg" alt="Product Images">
+                                            }
+                                            @if (service.ServiceName == "DIY Audio/Video Shoot")
+                                            {
+                                                <img src="~/lib/studiobooking/img/service/bg_studio_4-384x216xc.jpg" alt="Product Images">
+                                            }
+                                            @if (service.ServiceName == "Audio Recording")
+                                            {
+                                                <img src="~/lib/studiobooking/img/service/bg_studio_2-384x216xc.jpg" alt="Product Images">
+                                            }
+                                            @if (service.ServiceName == "Live Streaming")
+                                            {
+                                                <img src="~/lib/studiobooking/img/service/bg_studio_3-384x216xc.jpg" alt="Product Images">
+                                            }
+                                            @if (service.ServiceName.Contains("Bundles"))
+                                            {
+                                                <img src="~/lib/studiobooking/img/service/bg_event_space-384x216xc.jpg" alt="Product Images">
+                                            }
+                                        </a>
+                                        <div class="product-hover-action">
+                                            <ul class="cart-action">
+                                                <li class="select-option"><a href="/Service/Detail/@service.Id">Book Now</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <div class="inner">
+                                            <h5 class="title"><a href="/Service/Detail/@service.Id">@service.ServiceName</a></h5>
+                                            <div class="product-price-variant">
+                                                <span class="price current-price">₹@service.Price/@(service.ServiceType == Enums.ServiceType.Basic ? (service.MinHours + " hrs") : "hr")</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Expolre Product Area  -->
+</div>
+<!-- End Blog Area  -->
+@section Scripts{
+    <script type="text/javascript">
+        var axilMasonary = function () {
+            $('.axil-isotope-wrapper').imagesLoaded(function () {
+                // filter items on button click
+                //$('.isotope-button').on('click', 'button', function () {
+                //    var filterValue = $(this).attr('data-filter');
+                //    $grid.isotope({
+                //        filter: filterValue
+                //    });
+                //});
+
+                // init Isotope
+                var $grid = $('.isotope-list').isotope({
+                    //itemSelector: '.product',
+                    percentPosition: true,
+                    transitionDuration: '0.7s',
+                    layoutMode: 'fitRows',
+                    masonry: {
+                        // use outer width of grid-sizer for columnWidth
+                        columnWidth: 1,
+                    }
+                });
+            });
+
+            $('.isotope-button button').on('click', function (event) {
+                $(this).siblings('.is-checked').removeClass('is-checked');
+                $(this).addClass('is-checked');
+                event.preventDefault();
+            });
+        };
+
+        $(document).ready(function () {
+            axilMasonary();
+        });
+    </script>
+}

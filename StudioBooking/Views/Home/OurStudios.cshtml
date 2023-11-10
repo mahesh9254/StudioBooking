@@ -1,0 +1,93 @@
+﻿@using StudioBooking.Infrastructure
+@using StudioBooking.ViewModels
+@model StudioBooking.ViewModels.StudioViewModel
+@{
+    ViewData["Title"] = "About Us";
+    var layoutViewModel = (LayoutViewModel)(ViewData["LayoutViewModel"] ?? new LayoutViewModel());
+    var categories = Model.CategoryDetails.GroupBy(c => c.CategoryId).Select(c => new { Category = c, CategoryDetails = c.ToList() }).ToList();
+    var count = 1;
+}
+<!-- Begin page-name -->
+<section class="page-name v-separator mb-xs-20 mb-md-25 mb-lg-65">
+    <div class="dark-line"></div>
+    <div class="page-name-content">
+        <div class="container">
+            <h1>Our Studios</h1>
+            <ul class="bread-crumbs">
+                <li><a href="/">Home</a></li>
+                <li><a href="/Home/OurStudios">Studios</a></li>
+            </ul>
+        </div>
+        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=" class="page-name__bg lazy" data-src="/lib/studiobooking/img/category/bg_rates.jpg" alt="bg">
+    </div>
+</section>
+<!-- End page-name -->
+<main>
+    <!-- Begin recording tab -->
+    <section class="pt-xs-25 pt-md-25 pt-lg-60 pb-xs-25 pb-md-25 pb-lg-60" id="Studios">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Studios</h2>
+                <p>R & B Studios is a 1500 square feet facility with 3 live rooms and 2 control rooms</p>
+            </div>
+        </div>
+        <div class="tab-wrap" data-tab-container>
+            <div class="tab-links">
+                @foreach (var category in categories)
+                {
+                    <div class="tab-links__item @(count == 1 ? "active" : "")" data-show-tab="@category.Category.First().CategoryId">@category.Category.First().CategoryName</div>
+                    count = count + 1;
+                }
+            </div>
+            <div class="tab-blocks">
+                @{
+                    count = 1;
+                }
+                @foreach (var category in categories)
+                {
+                    <div class="tab-blocks__item @(count == 1 ? "active" : "")" data-show-tab="@category.Category.First().CategoryId">
+                        <div class="tab-slider white-arrow inner-dots studio-slider"
+                             data-slick='{
+                                                         "slidesToShow": 1,
+                                                         "swipeToSlide": true,
+                                                         "adaptiveHeight": true,
+                                                         "arrows": true,
+                                                         "dots": true,
+                                                         "responsive": [
+                                                         ]
+                                                     }'>
+                            <div class="tt-slider">
+                                <div class="tab-slider__item">
+                                    <div class="studio-slide lazy" style="background-repeat: no-repeat !important;background-size: contain !important;background-position:center top !important" data-src="@(AppConfig.CategoryImageUrl + category.CategoryDetails.FirstOrDefault().CategoryImage)"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-text">
+                            @foreach (var detail in category.CategoryDetails)
+                            {
+                                if (!string.IsNullOrWhiteSpace(detail.Description))
+                                {
+                                    <h4><span class="theme-color">@category.Category.First().CategoryName</span> – @detail.Title</h4>
+                                    <p>@Html.Raw(detail.Description)</p>
+                                }
+                            }
+                        </div>
+
+                    </div>
+                    count = count + 1;
+                }
+            </div>
+        </div>
+    </section>
+    <!-- End recording tab -->
+    
+</main>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').removeClass('home-page').addClass('about-page');
+        });
+        
+    </script>
+}

@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+@using StudioBooking.Data;
+@using StudioBooking.Data.Models;
+@using StudioBooking.ViewModels;
+@using StudioBooking.Infrastructure;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    var layoutViewModel = (LayoutViewModel)(ViewData["LayoutViewModel"] ?? new LayoutViewModel());
+
+    var isAdmin = false;
+    if (SignInManager.Context.User.Identity.IsAuthenticated)
+    {
+        var user = await UserManager.FindByNameAsync(SignInManager.Context.User.Identity.Name);
+        var roles = await UserManager.GetRolesAsync(user);
+        if (roles.Any(r => r == UserRole.Admin || r == UserRole.SuperAdmin || r == UserRole.Moderator))
+        {
+            isAdmin = true;
+        }
+    }
+}
+<!-- Brgin header -->
+<div class="header-wrap">
+    <header>
+        <a href="/" class="logo">
+            <img src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=" class="lazy" data-src="@(AppConfig.WebsiteSettingsImageUrl + layoutViewModel.WebsiteSetting.Logo)" alt="logo" style="max-height:55px">
+            <span class="logo-text">
+                <span>@layoutViewModel.WebsiteSetting.Name.Replace(layoutViewModel.WebsiteSetting.Name.Split(" ").LastOrDefault(),"")</span>
+                <span style="text-align:center;font-size:small">@layoutViewModel.WebsiteSetting.Name.Split(" ").LastOrDefault()</span>
+            </span>
+        </a>
+        <div class="header-right">
+            <nav class="main-nav" data-menu-gradient>
+                <ul class="menu">
+                    <li class="menu-item active"><a href="/">HOME</a></li>
+                    <li class="menu-item"><a href="/Home/About">ABOUT</a></li>
+                    <li class="menu-item"><a href="/Home/OurStudios">STUDIOS</a></li>
+                    <li class="menu-item"><a href="/Service">SERVICES</a></li>
+                    <li class="menu-item"><a href="/Home/Rates">PRICES</a></li>
+                    @*<li class="menu-item"><a href="javascript:;">GALLERY</a></li>*@
+                    <li class="menu-item"><a href="/Home/Testimonials">TESTIMONIALS</a></li>
+                    @*<li class="menu-item"><a href="javascript:;">CONTACTS</a></li>*@
+                    @* <li class="menu-item"><a href="/User/Home">DASHBOARD</a></li>*@
+                    @if (SignInManager.Context.User.Identity.IsAuthenticated || SignInManager.Context.Request.Path == "/Booking/ThankYou")
+                    {
+                        <li class="menu-item"><a href="@(isAdmin ? "/Admin/Home" : "/User/Home")">DASHBOARD</a></li>
+                    }
+                    else
+                    {
+                        <li class="menu-item"><a href="/Identity/Account/Login">LOGIN</a></li>
+                    }
+                </ul>
+                <span class="menu-gradient"></span>
+            </nav>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+</div>
+<!-- End header -->

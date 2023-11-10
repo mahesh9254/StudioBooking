@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>R & B | @ViewBag.Title</title>
+<meta name="description" content="Latest updates and statistic charts">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Page Vendor Stylesheets(used by this page)-->
+    <link href="~/lib/Assets/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendor Stylesheets-->
+    <!--begin::Global Stylesheets Bundle(used by all pages)-->
+    <link href="~/lib/Assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/Assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Global Theme Styles-->
+    <link rel="shortcut icon" href="~/lib/studiobooking/img/logo/logo.svg" />
+    @await RenderSectionAsync("style", required: false)
+</head>
+<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-enabled aside-fixed">
+    @RenderBody()
+       <!-- begin::Global Config(global config for global JS sciprts) -->
+    <!--begin::Javascript-->
+    <!--begin::Global Javascript Bundle(used by all pages)-->
+    <script src="~/lib/Assets/plugins/global/plugins.bundle.js"></script>
+    <script src="~/lib/Assets/js/scripts.bundle.js"></script>
+    <!--end::Global Javascript Bundle-->
+    <!--begin::Page Vendors Javascript(used by this page)-->
+    <script src="~/lib/Assets/plugins/custom/datatables/datatables.bundle.js"></script>
+    <!--end::Page Vendors Javascript-->
+    <!--end::Global Config-->
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="~/lib/Assets/js/custom/widgets.js"></script>
+    <script src="~/lib/Assets/plugins/custom/bootbox/bootbox.min.js"></script>
+    <script src="~/js/main.js"></script>
+    <!--end::Page Scripts-->
+    <script src="~/lib/Assets/plugins/custom/bootbox/bootbox.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

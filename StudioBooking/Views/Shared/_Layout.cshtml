@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>R & B | @ViewBag.Title</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/lib/studiobooking/img/logo/RB-Studios-Logo_edited.png">
+
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <!--====>> Google fonts <<====-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&amp;display=swap" rel="stylesheet">
+    <link href="~/lib/voicer/vendor/fancybox/dist/jquery.fancybox.min.css" type="text/css" rel="stylesheet" />
+    <link href="~/lib/voicer/css/index.css" type="text/css" rel="stylesheet" />
+    @await RenderSectionAsync("Style", required: false)
+</head>
+<body class="home-page">
+    <div class="preloader">
+        <div class="loader-container">
+            <div class="rectangle-1">&nbsp;</div>
+            <div class="rectangle-2">&nbsp;</div>
+            <div class="rectangle-3">&nbsp;</div>
+            <div class="rectangle-4">&nbsp;</div>
+            <div class="rectangle-5">&nbsp;</div>
+            <div class="rectangle-6">&nbsp;</div>
+            <div class="rectangle-5">&nbsp;</div>
+            <div class="rectangle-4">&nbsp;</div>
+            <div class="rectangle-3">&nbsp;</div>
+            <div class="rectangle-2">&nbsp;</div>
+            <div class="rectangle-1">&nbsp;</div>
+        </div>
+    </div>
+    <partial name="_Header" />
+    @RenderBody()
+    <partial name="_Footer" />
+    <div class="to-top">
+        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 0.132813C7.1276 0.132813 7.25065 0.1556 7.36914 0.201172C7.48763 0.25586 7.597 0.328777 7.69726 0.419922L13.7129 6.43555C13.9043 6.62695 14 6.85938 14 7.13281C14 7.40625 13.9043 7.63867 13.7129 7.83008C13.5215 8.02148 13.2936 8.11719 13.0293 8.11719C12.7559 8.11719 12.5234 8.02148 12.332 7.83008L7 2.49805L1.66797 7.83008C1.47656 8.02149 1.2487 8.11719 0.984374 8.11719C0.710937 8.11719 0.478515 8.02149 0.287109 7.83008C0.0957026 7.63867 -5.76444e-07 7.40625 -6.00349e-07 7.13281C-6.24253e-07 6.85938 0.0957025 6.62695 0.287109 6.43555L6.30273 0.419923C6.40299 0.328777 6.51237 0.25586 6.63086 0.201173C6.74935 0.1556 6.87239 0.132813 7 0.132813Z" fill="white" />
+        </svg>
+    </div>
+    <div class="to-top">
+        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 0.132813C7.1276 0.132813 7.25065 0.1556 7.36914 0.201172C7.48763 0.25586 7.597 0.328777 7.69726 0.419922L13.7129 6.43555C13.9043 6.62695 14 6.85938 14 7.13281C14 7.40625 13.9043 7.63867 13.7129 7.83008C13.5215 8.02148 13.2936 8.11719 13.0293 8.11719C12.7559 8.11719 12.5234 8.02148 12.332 7.83008L7 2.49805L1.66797 7.83008C1.47656 8.02149 1.2487 8.11719 0.984374 8.11719C0.710937 8.11719 0.478515 8.02149 0.287109 7.83008C0.0957026 7.63867 -5.76444e-07 7.40625 -6.00349e-07 7.13281C-6.24253e-07 6.85938 0.0957025 6.62695 0.287109 6.43555L6.30273 0.419923C6.40299 0.328777 6.51237 0.25586 6.63086 0.201173C6.74935 0.1556 6.87239 0.132813 7 0.132813Z" fill="white" />
+        </svg>
+    </div>
+    <!-- ===> Juery 3.2.1 JS <==== -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- ===> Juery UI 1.12.1 JS <==== -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- ===> Bootstrap 4 JS <==== -->
+    <script src="~/lib/voicer/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- ===> Lazy loader JS <==== -->
+    <script src="~/lib/voicer/vendor/lazy-load/jquery.lazy.min.js"></script>
+
+    <!-- ===> Slick slider JS <==== -->
+    <script src="~/lib/voicer/vendor/slick/slick/slick.min.js"></script>
+
+    <!-- ===> Paroller JS <==== -->
+    <script src="~/lib/voicer/vendor/paroller/dist/jquery.paroller.min.js"></script>
+
+    <!-- ===> scrollbar JS <==== -->
+    <script src="~/lib/voicer/vendor/scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <!-- ===> Tilt JS <==== -->
+    <script src="~/lib/voicer/vendor/tilt/tilt.jquery.js"></script>
+
+    <!-- ===> Fancybox JS <==== -->
+    <script src="~/lib/voicer/vendor/fancybox/dist/jquery.fancybox.min.js"></script>
+
+    <!-- ===> Input mask JS <==== -->
+    <script src="~/lib/voicer/vendor/input-mask/jquery.mask.min.js"></script>
+
+    <!-- Data picker -->
+    <script src="~/lib/voicer/vendor/bootstrap-datetimepicker/moment.js"></script>
+    <script src="~/lib/voicer/vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+
+    <!-- Masonry JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+
+    <!-- Images loader -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.min.js"></script>
+    <script src="~/lib/voicer/vendor/shuffle/isotope.js"></script>
+
+    <!-- Form validator -->
+    <script src="~/lib/voicer/vendor/form-validation/jquery.form.js"></script>
+    <script src="~/lib/voicer/vendor/form-validation/jquery.validate.min.js"></script>
+
+    <!-- ===> noUiSlider JS <==== -->
+    <!-- <script src="~/lib/voicer/vendor/touchpunch/touchpunch.js"></script> -->
+    <script src="~/lib/voicer/vendor/noUiSlider/nouislider.min.js"></script>
+    <script src="~/lib/voicer/vendor/wnumb/wNumb.js"></script>
+
+    <!-- ===> Player JS <==== -->
+    @*    <script src="~/lib/voicer/vendor/awp-player/wavesurfer.min.js"></script>
+    <script src="~/lib/voicer/vendor/awp-player/jsmediatags.min.js"></script>
+    <script src="~/lib/voicer/vendor/awp-player/new_cb.js"></script>
+    <script src="~/lib/voicer/vendor/awp-player/new.js"></script>*@
+    <script src="https://cdn.jsdelivr.net/gh/stevenschobert/instafeed.js@2.0.0rc1/src/instafeed.min.js"></script>
+    @*<script src="~/lib/voicer/vendor/instafeed/instafeed.min.js"></script>*@
+
+
+    @*<!-- ===> Common JS <==== -->*@
+    <script src="~/lib/voicer/js/common.js"></script>
+
+    @*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuHS2And3EtzpWBoMSqCIIiJzAEynp5ms&amp;callback=initMap" async defer></script>*@
+    <script>
+        var lastActive = localStorage.getItem("activeLink");
+        window.onload = (event) => {
+            const url = window.location.href.split('?')[0];
+            const flag = activeMenu(url);
+            if (!flag) {
+                if (window.location.origin + "/" === url)
+                    lastActive = url;
+                activeMenu(lastActive);
+            }
+        };
+
+        function activeMenu(url) {
+            var flag = false;
+            $("li.menu-item").each(function () {
+                if (this.childNodes[0].nodeName === "A") {
+                    if (this.childNodes[0].href === url) {
+                        localStorage.setItem("activeLink", url);
+                        $('li').removeClass('active');
+                        $(this).addClass('active');
+                        //$(this).closest('ul').closest('li').addClass("menu-open active");
+                        flag = true;
+                    }
+                } else {
+                    if (this.childNodes[1])
+                        if (this.childNodes[0].nodeName === "A")
+                            if (this.childNodes[0].href === url) {
+                                lastActive = url;
+                                localStorage.setItem("activeLink", url);
+                                $('li').removeClass('active');
+                                $(this).addClass('active');
+                                flag = true;
+                            }
+
+                }
+            });
+            menuHover();
+            return flag;
+        }
+        function logOff() {
+            $("#frmLogout").submit();
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

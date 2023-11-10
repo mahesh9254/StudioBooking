@@ -1,0 +1,254 @@
+﻿@using StudioBooking.Infrastructure;
+@model StudioBooking.Areas.Admin.Models.ServicePriceViewModel
+@{
+    var range = Enumerable.Range(1, 20).Select(s => new SelectListItem { Value = s.ToString(), Text = s.ToString() });
+    var hoursRange = new SelectList(range, "Value", "Text", "2");
+}
+@section Style{
+    <style type="text/css">
+        .label-1 {
+            color: #fff;
+            background-color: #a4bdfc;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+
+        .label-2 {
+            color: #fff;
+            background-color: #7ae7bf;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+
+        .label-3 {
+            color: #fff;
+            background-color: #dbadff;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+
+        .label-4 {
+            color: #fff;
+            background-color: #ff887c;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+
+        .label-5 {
+            color: #fff;
+            background-color: #fbd75b;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+
+        .label-6 {
+            color: #fff;
+            background-color: #ffb878;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+
+        .label-7 {
+            color: #fff;
+            background-color: #46d6db;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+
+        .label-8 {
+            color: #fff;
+            background-color: #e1e1e1;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+
+        .label-9 {
+            color: #fff;
+            background-color: #5484ed;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+
+        .label-10 {
+            color: #fff;
+            background-color: #51b749;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+
+        .label-11 {
+            color: #fff;
+            background-color: #dc2127;
+            width: 28px !important;
+            vertical-align: middle;
+        }
+    </style>
+}
+<!--begin::Subheader-->
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">
+                    Create Service Price
+                </h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="/Admin/" class="text-muted">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/Admin/ServicePrice" class="text-muted">Service Prices</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/ServicePrice/Create" class="text-muted"> @(Model.ServicePrice.Id == 0 ? "Create Service Price" : "Update Service Price")</a>
+                    </li>
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+    </div>
+</div>
+<!--end::Subheader-->
+<div class="card card-custom card-sticky" id="kt_page_sticky_card">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">
+                @(Model.ServicePrice.Id == 0 ? "Create Service Price" : "Update Service Price") <i class="mr-2"></i>
+                @*<small class="">try to scroll the page</small>*@
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <a href="/Admin/ServicePrice" class="btn btn-light-primary font-weight-bolder mr-2">
+                <i class="ki ki-long-arrow-back icon-sm"></i>
+                Back
+            </a>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary font-weight-bolder" onclick="submitForm()">
+                    <i class="ki ki-check icon-sm"></i>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body" style="padding-bottom:0px">
+        <!--begin::Form-->
+        <form asp-action="SaveServicePrice" asp-area="Admin" asp-controller="ServicePrice" method="post" class="form" id="kt_form">
+            @Html.HiddenFor(t => t.ServicePrice.Id)
+            <div class="row">
+                <div class="col-xl-2"></div>
+                <div class="col-xl-8">
+                    <div class="form-group row">
+                        <label asp-for="ServicePrice.CategoryId" class="col-3">Studio Category</label>
+                        <div class="col-9">
+                            <select asp-for="ServicePrice.CategoryId" asp-items="Model.Categories">
+                                <option selected="selected" value="">---Select Studio Category---</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="ServicePrice.ServiceId" class="col-3">Studio Service</label>
+                        <div class="col-9">
+                            <select asp-for="ServicePrice.ServiceId" asp-items="Model.Services">
+                                <option selected="selected" value="">---Select Service Type---</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="ServicePrice.Price" class="col-3">Price</label>
+                        <div class="col-9">
+                            <input asp-for="ServicePrice.Price" class="form-control form-control-solid" required="true" placeholder="Price" />
+                            <span asp-validation-for="ServicePrice.Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="ServicePrice.MinHours" class="col-3">Min Hours</label>
+                        <div class="col-9">
+                            <select asp-for="ServicePrice.MinHours" asp-items="hoursRange">
+                                <option selected="selected" value="">---Select MinHours---</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="ServicePrice.CalenderName" class="col-3">CalenderName</label>
+                        <div class="col-9">
+                            <input asp-for="ServicePrice.CalenderName" class="form-control form-control-solid" required="true" placeholder="Calender Name" />
+                            <span asp-validation-for="ServicePrice.CalenderName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="ServicePrice.EventColorId" class="col-3">Event ColorId</label>
+                        <div class="col-9">
+                            <select asp-for="ServicePrice.EventColorId">
+                                <option selected="selected" value="">---Select Calendar Color---</option>
+                                @if (Model.EventColors != null)
+                                    @foreach (var color in Model.EventColors)
+                                    {
+                                        <option value="@color.Value">@color.Value</option>
+                                    }
+                            </select>
+                            @if (Model.ServicePrice.EventColorId?.Length > 0)
+                            {
+                                <span class="label label-xl label-inline label-rounded label-@Model.ServicePrice.EventColorId" id="spnColorId"></span>
+                            }
+                            else
+                            {
+                                <span class="" id="spnColorId"></span>
+                            }
+                            <span asp-validation-for="ServicePrice.EventColorId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="ServicePrice.Description" class="col-3">Description</label>
+                        <div class="col-9">
+                            <textarea asp-for="ServicePrice.Description" class="summernote"></textarea>
+                            <span asp-validation-for="ServicePrice.Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="ServicePrice.AdditionalInformation" class="col-3">AdditionalInformation</label>
+                        <div class="col-9">
+                            <textarea asp-for="ServicePrice.AdditionalInformation" class="summernote"></textarea>
+                            <span asp-validation-for="ServicePrice.AdditionalInformation" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2"></div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+</div>
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var errorMessage = @Html.Raw(Json.Serialize(Model.ErrorMessage));
+            var result = @Json.Serialize(Model.Result);
+            $("#ServicePrice_CategoryId").select2({ placeholder: "--Select Studio--" });
+            $("#ServicePrice_ServiceId").select2({ placeholder: "--Select Service--" });
+            $("#ServicePrice_MinHours").select2({ placeholder: "--Select MinHours--" });
+            $("#ServicePrice_EventColorId").select2({ placeholder: "--Select Event Color--" });
+            $(".summernote").summernote({
+                height: 400,
+                tabsize: 2
+            });
+            baseController.actionResult("Save", result, errorMessage, "@(Model.ServicePrice.Id == 0 ? ("/Admin/ServicePrice/Create") : ("/Admin/ServicePrice/Edit/" + Model.ServicePrice.Id))");
+        });
+
+        $(document).on("change", "#ServicePrice_EventColorId", function () {
+            $("#spnColorId").removeAttr("class");
+            $("#spnColorId").attr("class", "label label-xl label-inline label-rounded " + "label-" + this.value);
+        });
+
+        function submitForm() {
+            $("#kt_form").submit();
+        }
+    </script>
+}

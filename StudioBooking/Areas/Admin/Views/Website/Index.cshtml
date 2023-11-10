@@ -1,0 +1,259 @@
+﻿@using StudioBooking.Infrastructure
+@model StudioBooking.Areas.Admin.Models.WebsiteSettingViewModel
+<!--begin::Subheader-->
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">
+                    Website Settings
+                </h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="/Admin/" class="text-muted">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/Admin/Website" class="text-muted">Website Settings</a>
+                    </li>
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+    </div>
+</div>
+<!--end::Subheader-->
+<!-- begin:: Content -->
+<div class="card card-custom card-sticky" id="kt_page_sticky_card">
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label">
+                Website Settings <i class="mr-2"></i>
+
+            </h3>
+        </div>
+        <div class="card-toolbar">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary font-weight-bolder" onclick="submitForm()">
+                    <i class="ki ki-check icon-sm"></i>
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <!--begin::Form-->
+        <form asp-action="Update" asp-area="Admin" asp-controller="Website" method="post" class="form" id="kt_form" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            @Html.HiddenFor(t => t.WebsiteSetting.Id)
+            @Html.HiddenFor(t => t.WebsiteSetting.Logo)
+            @Html.HiddenFor(t => t.WebsiteSetting.FooterLogo)
+            @Html.HiddenFor(t => t.WebsiteSetting.Favicon)
+            <div class="row">
+                <div class="col-xl-2"></div>
+                <div class="col-xl-8">
+                    <div class="form-group row">
+                        <label class="col-3">
+                            Logo Images
+                            <br />
+                            <span class="form-text text-muted">Allowed file types:  png, jpg, jpeg.</span>
+                        </label>
+                        <div class="col-3">
+                            <div class="image-input image-input-outline" id="kt_image_1">
+                                <div class="image-input-wrapper" style="background-image: url('@(string.IsNullOrEmpty(Model.WebsiteSetting.Logo) ? Defaults.UploadImage : (AppConfig.WebsiteSettingsImageUrl + Model.WebsiteSetting.Logo))')"></div>
+                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Upload Image">
+                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                    <input asp-for="WebsiteSetting.LogoName" accept=".png, .jpg, .jpeg" class="custom-file-input" />
+                                </label>
+                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Discard Image">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="image-input image-input-outline" id="kt_image_2">
+                                <div class="image-input-wrapper" style="background-image: url('@(string.IsNullOrEmpty(Model.WebsiteSetting.FooterLogo) ? Defaults.UploadImage : (AppConfig.WebsiteSettingsImageUrl + Model.WebsiteSetting.FooterLogo))')"></div>
+                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Upload Image">
+                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                    <input asp-for="WebsiteSetting.FooterLogoName" accept=".png, .jpg, .jpeg" class="custom-file-input" />
+                                </label>
+                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Discard Image">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="image-input image-input-outline" id="kt_image_3">
+                                <div class="image-input-wrapper" style="background-image: url('@(string.IsNullOrEmpty(Model.WebsiteSetting.Favicon) ? Defaults.UploadImage : (AppConfig.WebsiteSettingsImageUrl + Model.WebsiteSetting.Favicon))')"></div>
+                                <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Upload Image">
+                                    <i class="fa fa-pen icon-sm text-muted"></i>
+                                    <input asp-for="WebsiteSetting.FaviconName" accept=".png, .jpg, .jpeg" class="custom-file-input" />
+                                </label>
+                                <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Discard Image">
+                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Studio Name</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.Name" class="form-control form-control-solid" placeholder="Studio Name" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Tag Line</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.TagLine" class="form-control form-control-solid" placeholder="Tag Line" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="WebsiteSetting.Email" class="col-3">Email</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.Email" class="form-control form-control-solid" type="email" placeholder="Email" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label asp-for="WebsiteSetting.Mobile" class="col-3">Mobile</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.Mobile" class="form-control form-control-solid" placeholder="Mobile" />
+                        </div>
+                    </div>
+                    @* <div class="form-group row">
+                    <label asp-for="WebsiteSetting.TermsAndConditions" class="col-3">Terms And Conditions</label>
+                    <div class="col-9">
+                    <textarea asp-for="WebsiteSetting.TermsAndConditions" class="form-control form-control-solid" placeholder="Terms And Conditions" rows="3"></textarea>
+                    </div>
+                    </div>
+                    <div class="form-group row">
+                    <label asp-for="WebsiteSetting.Aboutus" class="col-3">AboutUs</label>
+                    <div class="col-9">
+                    <textarea asp-for="WebsiteSetting.Aboutus" class="form-control form-control-solid" placeholder="About Us" rows="3"></textarea>
+                    </div>
+                    </div>*@
+                    <div class="form-group row">
+                        <label asp-for="WebsiteSetting.Address" class="col-3">Footer Address</label>
+                        <div class="col-9">
+                            <textarea asp-for="WebsiteSetting.Address" class="form-control form-control-solid" placeholder="Address" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Year</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.Year" class="form-control form-control-solid" placeholder="Year" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Copyright Text</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.CopyRightText" class="form-control form-control-solid" placeholder="Copy Right Text" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Facebook Link</label>
+                        <div class="input-group col-9">
+                            <div class="input-group-prepend"><span class="input-group-text"><i class="flaticon-facebook-logo-button"></i></span></div>
+                            <input asp-for="WebsiteSetting.FacebookLink" class="form-control form-control-solid" placeholder="Facebook Link" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Twitter Link</label>
+                        <div class="input-group col-9">
+                            <div class="input-group-prepend"><span class="input-group-text"><i class="flaticon-twitter-logo-button"></i></span></div>
+                            <input asp-for="WebsiteSetting.TwitterLink" class="form-control form-control-solid" placeholder="Twitter Link" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Instagram Link</label>
+                        <div class="input-group col-9">
+                            <div class="input-group-prepend"><span class="input-group-text"><i class="flaticon-instagram-logo"></i></span></div>
+                            <input asp-for="WebsiteSetting.InstagramLink" class="form-control form-control-solid" placeholder="Instagram Link" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Linkedin Link</label>
+                        <div class="input-group col-9">
+                            <div class="input-group-prepend"><span class="input-group-text"><i class="flaticon-linkedin-logo"></i></span></div>
+                            <input asp-for="WebsiteSetting.LinkedinLink" class="form-control form-control-solid" placeholder="Linkedin Link" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Pinterest Link</label>
+                        <div class="input-group col-9">
+                            <div class="input-group-prepend"><span class="input-group-text"><i class="flaticon-pin"></i></span></div>
+                            <input asp-for="WebsiteSetting.DiscordLink" class="form-control form-control-solid" placeholder="Discord Link" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">GoogleMap Link</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.GoogleMapUrl" class="form-control form-control-solid" placeholder="GoogleMap Link" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Email Account</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.EmailAccount" class="form-control form-control-solid" placeholder="Email Account" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">UserId</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.EmailAccountUserId" class="form-control form-control-solid" placeholder="Email Account UserId" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-3">Account Password</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.EmailAccountPassword" type="password" class="form-control form-control-solid" placeholder="Email Account Password" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        d
+                        <label class="col-3">Account SMTP</label>
+                        <div class="col-9">
+                            <input asp-for="WebsiteSetting.EmailAccountSmtp" class="form-control form-control-solid" placeholder="Email Account SMTP" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2"></div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+</div>
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            WebsiteSettingImageUpload.init();
+            var errorMessage = @Html.Raw(Json.Serialize(Model.ErrorMessage));
+            var result = @Json.Serialize(Model.Result);
+            baseController.actionResult("Save", result, errorMessage, "/Admin/Website/");
+        });
+        function submitForm() {
+            $("#kt_form").submit();
+        }
+
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+
+        var WebsiteSettingImageUpload = {
+            init: function () {
+                new KTImageInput("kt_image_1"),
+                    new KTImageInput("kt_image_2"),
+                    new KTImageInput("kt_image_3")
+            }
+        };
+    </script>
+
+}

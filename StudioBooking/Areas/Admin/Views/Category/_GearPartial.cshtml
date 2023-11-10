@@ -1,0 +1,63 @@
+﻿@using StudioBooking.Infrastructure
+@model StudioBooking.DTO.CategoryGearDTO
+<!--begin::Item-->
+<div class="d-flex align-items-center mb-5">
+    @Html.HiddenFor(t => t.Id)
+    @Html.HiddenFor(t => t.CategoryDetailId)
+    @Html.HiddenFor(t => t.Content)
+    @Html.HiddenFor(t => t.Type)
+    @Html.HiddenFor(t => t.Icon)
+    @Html.HiddenFor(t => t.Image)
+    <!--begin::Symbol-->
+    <div class="symbol symbol-40 symbol-light-success mr-5">
+        @if (Model.Type == Enums.GearContentType.Image)
+        {
+            <span class="symbol-label">
+                <img src="https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/media/svg/avatars/009-boy-4.svg" class="h-75 align-self-end" alt="" />
+            </span>
+        }
+    </div>
+    <!--end::Symbol-->
+    <!--begin::Text-->
+    <div class="d-flex flex-column flex-grow-1 font-weight-bold">
+        <a href="javascript:;" class="text-dark text-hover-primary mb-1 font-size-lg">@Model.Content</a>
+        @*<span class="text-muted"></span>*@
+    </div>
+    <!--end::Text-->
+    <!--begin::Dropdown-->
+    <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="left">
+        <a href="javascript:;" class="btn btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="ki ki-bold-more-hor"></i>
+        </a>
+        <div class="dropdown-menu p-0 m-0 dropdown-menu-md dropdown-menu-right">
+            <!--begin::Navigation-->
+            <ul class="navi navi-hover">
+                <li class="navi-header font-weight-bold py-4">
+                    <span class="font-size-lg">Choose Action:</span>
+                    <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
+                </li>
+                <li class="navi-separator mb-3 opacity-70"></li>
+                @if (Model.Id > 0)
+                {
+                    <li class="navi-item">
+                        <a href="javascript:;" class="navi-link" onclick="openGearPopup(@Model.Id,@Model.CategoryDetailId)">
+                            <span class="navi-text">
+                                <span class="label label-xl label-inline label-light-success">Edit</span>
+                            </span>
+                        </a>
+                    </li>
+                }
+                <li class="navi-item">
+                    <a href="javascript:;" class="navi-link" onclick="deleteGear(@Model.Id,$(this))">
+                        <span class="navi-text">
+                            <span class="label label-xl label-inline label-light-danger">Delete</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <!--end::Navigation-->
+        </div>
+    </div>
+    <!--end::Dropdown-->
+</div>
+<!--end::Item-->

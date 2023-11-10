@@ -1,0 +1,16 @@
+﻿@model StudioBooking.Data.Models.PaymentGatewayResponse
+@{
+    Layout = "/Views/Shared/_Layout_Bookings.cshtml";
+    ViewBag.Title = "Booking";
+}
+<input asp-for="PaymentSessionId" type="hidden" />
+@section Scripts{
+    <script src="https://sdk.cashfree.com/js/ui/2.0.0/cashfree.sandbox.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            const paymentSessionId = $("#PaymentSessionId").val();
+            var cashfree = new Cashfree(paymentSessionId);
+            cashfree.redirect();
+        });
+    </script>
+}

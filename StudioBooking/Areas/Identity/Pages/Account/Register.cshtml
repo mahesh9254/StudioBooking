@@ -1,0 +1,172 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+@section Style{
+    <style type="text/css">
+        .signin-header {
+            padding: 20px 90px;
+        }
+
+        .axil-signin-form-wrap {
+            height: calc(100vh - 100px);
+            margin: 100px -30px -30px;
+        }
+
+        .axil-signin-form {
+            max-width: 100% !important;
+        }
+
+        @@media screen and (max-width: 768px) {
+            .cinput {
+                margin-bottom: 30px;
+            }
+
+            .row {
+                margin-left: 10px;
+            }
+
+            .mb--30 {
+                margin-bottom: 0px;
+            }
+        }
+    </style>
+}
+<div class="axil-signin-area">
+
+    <!-- Start Header -->
+    <div class="signin-header">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <a href="/" class="site-logo"><img src="~/lib/studiobooking/img/logo/RB-Studios-Logo_edited.png" alt="logo" style="max-width: 45% !important;"></a>
+            </div>
+            @* <div class="col-md-6">
+            <div class="singin-header-btn">
+            <p>Already a registed?</p>
+            <a asp-page="./Login" class="axil-btn btn-bg-secondary sign-up-btn">Log In</a>
+            </div>
+            </div>*@
+        </div>
+    </div>
+    <!-- End Header -->
+
+    <div class="row">
+        <div class="col-xl-4 col-lg-6">
+            <div class="axil-signin-banner bg_image bg_image--10">
+                <h3 class="title">We Offer the Best Studios</h3>
+            </div>
+        </div>
+        <div class="col-lg-6 offset-xl-1">
+            <div class="axil-signin-form-wrap">
+                <div class="axil-signin-form row--10">
+                    <h3 class="title">I'm New Here</h3>
+                    <p class="b2 mb--55">Enter your detail below</p>
+                    <form class="singin-form" id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row mb--30">
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.FirstName">First Name<span>*</span></label>
+                                    <input asp-for="Input.FirstName" class="form-control" autocomplete="first name" aria-required="true">
+                                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.LastName">Last Name<span>*</span></label>
+                                    <input asp-for="Input.LastName" class="form-control" autocomplete="last name" aria-required="true">
+                                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb--30">
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.Email">Email</label>
+                                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true">
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.Mobile">Mobile<span>*</span></label>
+                                    <input asp-for="Input.Mobile" class="form-control" autocomplete="mobile" aria-required="true">
+                                    <span asp-validation-for="Input.Mobile" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb--30">
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.AddressLine1">Address Line 1</label>
+                                    <input asp-for="Input.AddressLine1" class="form-control" required="true" />
+                                    <span asp-validation-for="Input.AddressLine1" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.AddressLine2">Address Line 2</label>
+                                    <input asp-for="Input.AddressLine2" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb--30">
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.Landmark">Landmark</label>
+                                    <input asp-for="Input.Landmark" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.City">City</label>
+                                    <input asp-for="Input.City" class="form-control" required="true" />
+                                    <span asp-validation-for="Input.City" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb--30">
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.State">State</label>
+                                    <input asp-for="Input.State" class="form-control" required="true" />
+                                    <span asp-validation-for="Input.State" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.PinCode">Pincode</label>
+                                    <input asp-for="Input.PinCode" class="form-control" required="true" />
+                                    <span asp-validation-for="Input.PinCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb--30">
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.Password">Password<span>*</span></label>
+                                    <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true">
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 cinput">
+                                <div class="form-group">
+                                    <label asp-for="Input.ConfirmPassword">Confirm Password<span>*</span></label>
+                                    <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true">
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button id="registerSubmit" type="submit" class="axil-btn btn-bg-primary submit-btn">Create Account</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

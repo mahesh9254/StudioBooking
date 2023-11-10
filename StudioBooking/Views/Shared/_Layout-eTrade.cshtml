@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>R & B | @ViewBag.Title</title>
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/lib/studiobooking/img/logo/RB-Studios-Logo_edited.png">
+
+    <!-- CSS ============================================ -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="~/lib/eTrade/assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="~/lib/eTrade/assets/css/vendor/font-awesome.css">
+    <link rel="stylesheet" href="~/lib/eTrade/assets/css/style.min.css">
+    @await RenderSectionAsync("Style", required: false)
+</head>
+<body class="sticky-header">
+    <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
+    <partial name="_Header-eTrade" />
+    <main role="main" class="main-wrapper">
+        @RenderBody()
+    </main>
+    <!-- JS ============================================ -->
+    <!-- Modernizer JS -->
+    <script src="~/lib/eTrade/assets/js/vendor/modernizr.min.js"></script>
+    <!-- jQuery JS -->
+    <script src="~/lib/eTrade/assets/js/vendor/jquery.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="~/lib/eTrade/assets/js/vendor/bootstrap.min.js"></script>
+    <script src="~/lib/eTrade/assets/js/vendor/jquery-ui.min.js"></script>
+    <!-- Main JS -->
+    <script src="~/lib/eTrade/assets/js/main.js"></script>
+    <script>
+        function logOff() {
+            $("#frmLogout").submit();
+        }
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

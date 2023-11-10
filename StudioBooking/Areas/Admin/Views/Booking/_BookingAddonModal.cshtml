@@ -1,0 +1,117 @@
+﻿@using StudioBooking.Infrastructure;
+@model StudioBooking.DTO.AddOnDTO
+
+<!--begin::Modal - Adjust Balance-->
+<div class="modal" id="kt_modal_addon" tabindex="-1" aria-hidden="true">
+    <!--begin::Modal dialog-->
+    <div class="modal-dialog modal-dialog-centered mw-650px">
+        <!--begin::Modal content-->
+        <div class="modal-content">
+            <!--begin::Modal header-->
+            <div class="modal-header">
+                <!--begin::Modal title-->
+                <h2 class="fw-bolder">Adjust Balance</h2>
+                <!--end::Modal title-->
+                <!--begin::Close-->
+                <div id="kt_modal_addon_close" class="btn btn-icon btn-sm btn-active-icon-primary">
+                    <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
+                    <span class="svg-icon svg-icon-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g transform="translate(12.000000, 12.000000) rotate(-45.000000) translate(-12.000000, -12.000000) translate(4.000000, 4.000000)" fill="#000000">
+                                <rect fill="#000000" x="0" y="7" width="16" height="2" rx="1" />
+                                <rect fill="#000000" opacity="0.5" transform="translate(8.000000, 8.000000) rotate(-270.000000) translate(-8.000000, -8.000000)" x="0" y="7" width="16" height="2" rx="1" />
+                            </g>
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->
+                </div>
+                <!--end::Close-->
+            </div>
+            <!--end::Modal header-->
+            <!--begin::Modal body-->
+            <div class="modal-body scroll-y mx-5 mx-xl-15 my-7" id="kt_modal_addon_body">
+                <!--begin::Balance preview-->
+                <div class="d-flex text-center mb-9">
+                    <div class="w-50 border border-dashed border-gray-300 rounded mx-2 p-4">
+                        <div class="fs-6 fw-bold mb-2 text-muted">Current Booking Amount</div>
+                        <div class="fs-2 fw-bolder" kt-modal-adjust-balance="current_balance">@Model.BookingTotal</div>
+                    </div>
+                    <div class="w-50 border border-dashed border-gray-300 rounded mx-2 p-4">
+                        <div class="fs-6 fw-bold mb-2 text-muted">
+                            New Booking Amount
+                            <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip" title="Enter an amount to preview the new balance."></i>
+                        </div>
+                        <div class="fs-2 fw-bolder" kt-modal-adjust-balance="new_balance">--</div>
+                    </div>
+                </div>
+                <!--end::Balance preview-->
+                <!--begin::Form-->
+                <form id="kt_modal_addon_form" class="form" action="#">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="BookingId" />
+                    <!--begin::Input group-->
+                    <div class="form-group mb-7">
+                        <!--begin::Label-->
+                        <label class="required fs-6 fw-bold form-label mb-2">Addon Name<span class="text-danger">*</span></label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input type="text" class="form-control form-control-solid" asp-for="Name" />
+                        <!--end::Input-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="form-group mb-7">
+                        <!--begin::Label-->
+                        <label class="required fs-6 fw-bold form-label mb-2">Adjustment type<span class="text-danger">*</span></label>
+                        <!--end::Label-->
+                        <!--begin::Dropdown-->
+                        <select class="form-select form-select-solid fw-bolder" name="adjustment" aria-label="Select an option" data-control="select2" data-dropdown-parent="#kt_modal_adjust_balance" data-placeholder="Select an option" data-hide-search="true">
+                            <option></option>
+                            <option value="1">Add</option>
+                            <option value="2">Deduction</option>
+                        </select>
+                        <!--end::Dropdown-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="form-group mb-7">
+                        <!--begin::Label-->
+                        <label class="required fs-6 fw-bold form-label mb-2">₹ Amount<span class="text-danger">*</span></label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <input id="kt_modal_inputmask" type="number" class="form-control form-control-solid" asp-for="Amount" />
+                        <!--end::Input-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="form-group mb-7">
+                        <!--begin::Label-->
+                        <label class="required fs-6 fw-bold form-label mb-2">Adjustment Note<span class="text-danger">*</span></label>
+                        <!--end::Label-->
+                        <!--begin::Input-->
+                        <textarea class="form-control form-control-solid rounded-3 mb-5" id="description"></textarea>
+                        <!--end::Input-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Disclaimer-->
+                    @*<div class="fs-7 text-muted mb-15">Please be aware that all manual balance changes will be audited by the financial team every fortnight. Please maintain your invoices and receipts until then. Thank you.</div>*@
+                    <!--end::Disclaimer-->
+                    <!--begin::Actions-->
+                    <div class="text-center">
+                        <button type="reset" id="kt_modal_addon_cancel" class="btn btn-light me-3">Discard</button>
+                        <button type="submit" id="kt_modal_addon_submit" class="btn btn-primary">
+                            <span class="indicator-label">Submit</span>
+                        </button>
+                    </div>
+                    <!--end::Actions-->
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Modal body-->
+        </div>
+        <!--end::Modal content-->
+    </div>
+    <!--end::Modal dialog-->
+</div>
+<!--end::Modal - New Card-->

@@ -1,0 +1,266 @@
+﻿@using StudioBooking.Infrastructure;
+@model StudioBooking.Areas.Admin.Models.AccountViewModel
+<!--begin::Toolbar-->
+<div class="toolbar mb-3" id="kt_toolbar">
+    <!--begin::Container-->
+    <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+        <!--begin::Page title-->
+        <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+            <!--begin::Title-->
+            <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">Update Profile</h1>
+            <!--end::Title-->
+            <!--begin::Separator-->
+            <span class="h-20px border-gray-200 border-start mx-4"></span>
+            <!--end::Separator-->
+            <!--begin::Breadcrumb-->
+            <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">
+                    <a href="/User/" class="text-muted text-hover-primary">Dashboard</a>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-200 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-muted">Account</li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item">
+                    <span class="bullet bg-gray-200 w-5px h-2px"></span>
+                </li>
+                <!--end::Item-->
+                <!--begin::Item-->
+                <li class="breadcrumb-item text-dark">My Profile</li>
+                <!--end::Item-->
+            </ul>
+            <!--end::Breadcrumb-->
+        </div>
+        <!--end::Page title-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Toolbar-->
+<div class="post d-flex flex-column-fluid" id="kt_post">
+    <!--begin::Container-->
+    <div id="kt_content_container" class="container">
+        <!--begin::Basic info-->
+        <div class="card mb-5 mb-xl-10">
+            <!--begin::Card header-->
+            <div class="card-header border-0 cursor-pointer">
+                <!--begin::Card title-->
+                <div class="card-title m-0">
+                    <h3 class="fw-bolder m-0">Profile Details</h3>
+                </div>
+                <!--end::Card title-->
+                <div class="card-toolbar">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary font-weight-bolder" id="kt_form_submit">
+                            <i class="ki ki-check icon-sm"></i>
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!--end::Card header-->
+            <!--begin::Card body-->
+            <div class="card-body border-top p-9">
+                <!--begin::Form-->
+                <form asp-action="SaveProfile" asp-area="User" asp-controller="Account" method="post" class="form" enctype="multipart/form-data" id="kt_form">
+                    @Html.HiddenFor(t => t.User.UserId)
+                    @Html.HiddenFor(t => t.Customer.Id)
+                    @Html.HiddenFor(t => t.Customer.Name)
+                    @Html.HiddenFor(t => t.User.ProfileImageUrl)
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label fw-bold fs-6">Avatar</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            <!--begin::Image input-->
+                            <div class="image-input image-input-outline" data-kt-image-input="true" style="background-image: url(/lib/Assets/media/avatars/blank.png)">
+                                <!--begin::Preview existing avatar-->
+                                <div class="image-input-wrapper w-125px h-125px" style="background-image: url('@(string.IsNullOrEmpty(Model.User.ProfileImageUrl) ? Defaults.UploadImage : (AppConfig.ProfileImageUrl + Model.User.ProfileImageUrl))')"></div>
+                                <!--end::Preview existing avatar-->
+                                <!--begin::Label-->
+                                <label class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="change" data-bs-toggle="tooltip" title="Change avatar">
+                                    <i class="fa fa-pen icon-sm fs-7"></i>
+                                    <!--begin::Inputs-->
+                                    <input type="file" asp-for="User.ImageName" class="custom-file-input" accept=".png, .jpg, .jpeg" />
+                                    <input type="hidden" name="avatar_remove" />
+                                    <!--end::Inputs-->
+                                </label>
+                                <!--end::Label-->
+                                <!--begin::Cancel-->
+                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="cancel" data-bs-toggle="tooltip" title="Cancel avatar">
+                                    <i class="fa fa-times icon-xs fs-2"></i>
+                                </span>
+                                <!--end::Cancel-->
+                                <!--begin::Remove-->
+                                <span class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" data-kt-image-input-action="remove" data-bs-toggle="tooltip" title="Remove avatar">
+                                    <i class="fa fa-times icon-xs fs-2"></i>
+                                </span>
+                                <!--end::Remove-->
+                            </div>
+                            <!--end::Image input-->
+                            <!--begin::Hint-->
+                            <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                            <!--end::Hint-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Full Name</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            <!--begin::Row-->
+                            <div class="row">
+                                <!--begin::Col-->
+                                <div class="col-lg-6 fv-row">
+                                    <input asp-for="User.FirstName" class="form-control form-control-lg form-control-solid mb-3 mb-lg-0" required="true" />
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-lg-6 fv-row">
+                                    <input asp-for="User.LastName" class="form-control form-control-lg form-control-solid" required="true" />
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Row-->
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Email</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            <input asp-for="User.Email" class="form-control form-control-lg form-control-solid" placeholder="Email" required="true" />
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Mobile</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            <input asp-for="User.Mobile" class="form-control form-control-lg form-control-solid" required="true" placeholder="Mobile" required="true" />
+                            <span asp-validation-for="User.Mobile" class="text-danger"></span>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 col-form-label required fw-bold fs-6">Address Line 1</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            <input asp-for="Customer.AddressLine1" class="form-control form-control-lg form-control-solid" required="true" placeholder="Address Line 1" required="true" />
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label asp-for="Customer.AddressLine2" class="col-lg-4 col-form-label required fw-bold fs-6">Address Line 2</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            <input asp-for="Customer.AddressLine2" class="form-control form-control-lg form-control-solid" placeholder="Address Line 2" required="true" />
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label asp-for="Customer.Landmark" class="col-lg-4 col-form-label required fw-bold fs-6">Landmark</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            <input asp-for="Customer.Landmark" class="form-control form-control-lg form-control-solid" placeholder="Landmark" required="true" />
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label asp-for="Customer.City" class="col-lg-4 col-form-label required fw-bold fs-6">City</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            <input asp-for="Customer.City" class="form-control form-control-lg form-control-solid" placeholder="City" required="true" />
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label asp-for="Customer.State" class="col-lg-4 col-form-label required fw-bold fs-6">State</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            <input asp-for="Customer.State" class="form-control form-control-lg form-control-solid" placeholder="State" required="true" />
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+                    <!--begin::Input group-->
+                    <div class="row mb-6">
+                        <!--begin::Label-->
+                        <label asp-for="Customer.PinCode" class="col-lg-4 col-form-label required fw-bold fs-6">Pincode</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8 fv-row">
+                            <input asp-for="Customer.PinCode" class="form-control form-control-lg form-control-solid" placeholder="Pincode" required="true" />
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <!--end::Input group-->
+
+                </form>
+                <!--end::Form-->
+            </div>
+            <!--end::Card body-->
+        </div>
+    </div>
+</div>
+@section Scripts
+    {
+    <script src="~/js/user/profile.js" type="text/javascript" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var errorMessage = @Html.Raw(Json.Serialize(Model.ErrorMessage));
+            var result = @Json.Serialize(Model.Result);
+            baseController.actionResult("Save", result, errorMessage, "/User/Account/Profile");
+            KTProfile.init();
+        });
+
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+
+        function submitForm() {
+            $("#kt_form").submit();
+        }
+    </script>
+}

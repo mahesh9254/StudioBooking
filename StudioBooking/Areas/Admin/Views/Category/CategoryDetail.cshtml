@@ -1,0 +1,308 @@
+﻿@using StudioBooking.Infrastructure;
+@model StudioBooking.Areas.Admin.Models.CategoryDetailViewModel
+@section Style{
+    <style>
+        .hide {
+            display: none;
+        }
+    </style>
+}
+<!--begin::Subheader-->
+<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <!--begin::Info-->
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <!--begin::Page Heading-->
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <!--begin::Page Title-->
+                <h5 class="text-dark font-weight-bold my-1 mr-5">
+                    @Model.Category.Name Detail
+                </h5>
+                <!--end::Page Title-->
+                <!--begin::Breadcrumb-->
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="/Admin/" class="text-muted">Home</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="/Admin/Category" class="text-muted">Category List</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="Admin/Category/CategoryDetail/@Model.Category.Id" class="text-muted"> @Model.Category.Name Detail</a>
+                    </li>
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+            <!--end::Page Heading-->
+        </div>
+        <!--end::Info-->
+        <!--begin::Toolbar-->
+        <div class="d-flex align-items-center">
+            <!--begin::Actions-->
+            <a href="/Admin/Category" class="btn btn-light-primary font-weight-bolder mr-2">
+                <i class="ki ki-long-arrow-back icon-sm"></i>
+                Back
+            </a>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary font-weight-bolder" onclick="submitForm()">
+                    <i class="ki ki-check icon-sm"></i>
+                    Save
+                </button>
+            </div>
+            <!--end::Actions-->
+        </div>
+        <!--end::Toolbar-->
+    </div>
+</div>
+<!--end::Subheader-->
+<!--begin::Entry-->
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+        <!--begin::Form-->
+        <form asp-action="SaveCategoryDetail" asp-area="Admin" asp-controller="Category" method="post" class="form" enctype="multipart/form-data" id="kt_form">
+            @Html.HiddenFor(t => t.Category.Id)
+            @Html.HiddenFor(t => t.Category.Name)
+             @Html.HiddenFor(t => t.Category.StartTime)
+            @Html.HiddenFor(t => t.Category.EndTime)
+            <div class="row">
+                <div class="col-lg-6">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b example example-compact">
+                        <div class="card-header">
+                            <h3 class="card-title">About Live Room</h3>
+                        </div>
+                        <div class="card-body">
+                            @Html.HiddenFor(t => t.CategoryLiveRoom.Id)
+                            @Html.HiddenFor(t => t.CategoryLiveRoom.CategoryId)
+                            @Html.HiddenFor(t => t.CategoryLiveRoom.Type)
+                            <div class="mb-15">
+                                <div class="form-group row">
+                                    <label asp-for="CategoryLiveRoom.Title" class="col-3">Title</label>
+                                    <div class="col-9">
+                                        <input asp-for="CategoryLiveRoom.Title" class="form-control form-control-solid" placeholder="Title" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="CategoryLiveRoom.Description" class="col-3">Description</label>
+                                    <div class="col-9">
+                                        <textarea asp-for="CategoryLiveRoom.Description" class="summernote"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <!--begin::List Widget 3-->
+                                <div class="card card-custom card-stretch gutter-b">
+                                    <!--begin::Header-->
+                                    <div class="card-header border-0">
+                                        <h3 class="card-title font-weight-bolder text-dark">Gears</h3>
+                                        <div class="card-toolbar">
+                                            <div class="dropdown dropdown-inline">
+                                                <a href="javascript:;" class="btn btn-light-primary btn-sm font-weight-bolder" onclick="openGearPopup(0,@Model.CategoryLiveRoom.Id,'@Model.CategoryLiveRoom.Type.ToString()')" aria-expanded="false">Add New</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::Header-->
+                                    <!--begin::Body-->
+                                    <div class="card-body pt-2 body-category-@Model.CategoryLiveRoom.Type.ToString()">
+                                        @foreach (var gear in Model.CategoryLiveRoom.CategoryGears)
+                                        {
+                                            <partial name="_GearPartial.cshtml" model="gear" />
+                                        }
+                                    </div>
+                                    <!--end::Body-->
+                                </div>
+                                <!--end::List Widget 3-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <div class="col-lg-6">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b example example-compact">
+                        <div class="card-header">
+                            <h3 class="card-title">About Control Room</h3>
+                        </div>
+                        <div class="card-body">
+                            @Html.HiddenFor(t => t.CategoryControlRoom.Id)
+                            @Html.HiddenFor(t => t.CategoryControlRoom.CategoryId)
+                            @Html.HiddenFor(t => t.CategoryControlRoom.Type)
+                            <div class="mb-15">
+                                <div class="form-group row">
+                                    <label asp-for="CategoryControlRoom.Title" class="col-3">Title</label>
+                                    <div class="col-9">
+                                        <input asp-for="CategoryControlRoom.Title" class="form-control form-control-solid" placeholder="Title" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label asp-for="CategoryControlRoom.Description" class="col-3">Description</label>
+                                    <div class="col-9">
+                                        <textarea asp-for="CategoryControlRoom.Description" class="summernote"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <!--begin::List Widget 3-->
+                                <div class="card card-custom card-stretch gutter-b">
+                                    <!--begin::Header-->
+                                    <div class="card-header border-0">
+                                        <h3 class="card-title font-weight-bolder text-dark">Gears</h3>
+                                        <div class="card-toolbar">
+                                            <div class="dropdown dropdown-inline">
+                                                <a href="javascript:;" class="btn btn-light-primary btn-sm font-weight-bolder" onclick="openGearPopup(0,@Model.CategoryControlRoom.Id,'@Model.CategoryControlRoom.Type.ToString()')" aria-expanded="false">Add New</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--end::Header-->
+                                    <!--begin::Body-->
+                                    <div class="card-body pt-2 body-category-@Model.CategoryControlRoom.Type.ToString()">
+                                        @foreach (var gear in Model.CategoryControlRoom.CategoryGears)
+                                        {
+                                            <partial name="_GearPartial.cshtml" model="gear" />
+                                        }
+                                    </div>
+                                    <!--end::Body-->
+                                </div>
+                                <!--end::List Widget 3-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+        </form>
+        <!--end::Form-->
+    </div>
+    <!--end::Container-->
+</div>
+<!--end::Entry-->
+<div class="modal fade" id="mdlAddGear" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="mdlAddGear" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Gear</h5>
+            </div>
+            <div class="modal-body" id="mdlAddGearBody">
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="hdfType" value="" />
+                <button type="button" class="btn btn-primary font-weight-bolder" onclick="saveGear()">
+                    <i class="ki ki-check icon-sm"></i>
+                    Save
+                </button>
+                <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+    {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        var sourceUpdated = false;
+        $(document).ready(function () {
+            var errorMessage = @Html.Raw(Json.Serialize(Model.ErrorMessage));
+            var result = @Json.Serialize(Model.Result);
+            baseController.actionResult("Save", result, errorMessage, "/Admin/Category/CategoryDetail/@Model.Category.Id");
+            $(".summernote").summernote({
+                height: 200,
+                tabsize: 2
+            });
+        });
+        function submitForm() {
+            $("#kt_form").submit();
+        }
+
+        function openGearPopup(id, detailId, type) {
+            $("#hdfType").val(type);
+            $('#mdlAddGearBody').empty();
+            var url = "/Admin/Category/CreateGear?id=" + id + "&detailId=" + detailId;
+            $.get(url)
+                .done(function (res) {
+                    $('#mdlAddGearBody').append(res);
+                    $("#mdlAddGear").modal('show');
+                })
+                .fail(function (err) {
+                    toastr.error(err);
+                    console.log(err);
+                });
+        }
+
+        function saveGear() {           
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/Category/AddCategoryGear',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: $("#areaForm").serialize(),
+                success: function (result) {                    
+                    let type = $("#hdfType").val();
+                    $(".body-category-" + type).append(result);
+                    $('#kt_form').data('validator', null);
+                    $.validator.unobtrusive.parse($('#kt_form'));
+                    $("#mdlAddGear").modal('hide');
+                    $('#mdlAddGearBody').empty();
+                },
+                error: function () {
+                    alert('Failed to receive the Data');
+                    console.log('Failed ');
+                }
+            });
+        }
+
+        function deleteGear(id,e) {
+            var parent = $(e).closest('.d-flex');
+            if (id == 0)
+                $(parent).remove();
+            else {
+                bootbox.confirm({
+                    title: "Delete Gear Info!",
+                    message: "Are you sure you want to delete?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> No'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Yes'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.get("/Admin/Category/DeleteCategoryGear/" + id)
+                                .done(function (data) {
+                                    if (data.result) {
+                                        $(parent).remove();
+                                        $('#kt_form').data('validator', null);
+                                        $.validator.unobtrusive.parse($('#kt_form'));
+                                        toastr.success(rex.file_delete_success_msg);
+                                    }
+                                    else {
+                                        toastr.error("Error: " + data.errorMsg);
+                                    }
+                                })
+                                .fail(function (error) {
+                                    toastr.error(error);
+                                });
+                        }
+                    }
+                });
+            }
+        }
+
+        $(document).on("change", "#Type", function () {
+            let value = $(this).attr("value");
+            if (value == "0") {
+                $(".iconInput").addClass("hide");
+                $(".imageInput").addClass("hide");
+            }
+            if (value == "1") {
+                $(".iconInput").removeClass("hide");
+                $(".imageInput").addClass("hide");
+            }
+            if (value == "2") {
+                $(".imageInput").removeClass("hide");
+                $(".iconInput").addClass("hide");
+            }
+        });
+    </script>
+}
