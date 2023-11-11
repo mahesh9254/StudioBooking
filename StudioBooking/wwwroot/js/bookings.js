@@ -291,7 +291,7 @@ var KTBookingModal = function () {
                 $("#Booking_BookingEndDate").datepicker({
                     enableTime: false,
                     format: "dd/mm/yyyy",
-                    startDate: '+1d'
+                    startDate: '+1d'                    
                 });
                 $("#ddlCategory").select2();
                 $("#Booking_CustomerId").select2();
@@ -347,6 +347,13 @@ var KTBookingModal = function () {
                     }
                 }
                 ));
+                $(e.querySelector('#Booking_BookingDate')).on("change", (function () {
+                    if (this.value) {
+                        $("#Booking_BookingEndDate").val(this.value) 
+                        $("#Booking_BookingEndDate").datepicker('setStartDate', this.value);
+                    }
+                    else $("#Booking_BookingEndDate").val(null)
+                }));
                 $(e.querySelector('#StartTime')).on("change", (function () {
                     if (this.value) $("#Booking_StartTime").val(this.value)
                     else $("#Booking_StartTime").val(null)
@@ -638,6 +645,7 @@ function getBookingRequest() {
         ServicePriceId: $("#Booking_ServicePriceId").val(),
         CustomerId: $("#Booking_CustomerId").val(),
         BookingDate: $("#Booking_BookingDate").val(),
+        BookingEndDate: $("#Booking_BookingEndDate").val(),
         StartTime: $("#Booking_StartTime").val(),
         EndTime: $("#Booking_EndTime").val(),
     }

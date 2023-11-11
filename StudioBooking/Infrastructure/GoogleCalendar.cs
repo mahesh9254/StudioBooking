@@ -141,7 +141,7 @@ namespace StudioBooking.Infrastructure
                         var timeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
                         var startTime = DateTime.SpecifyKind(eventDetail.Date.ToDateTime(eventDetail.StartTime), DateTimeKind.Unspecified);
                         var startTimeUTC = TimeZoneInfo.ConvertTime(startTime, timeZone, TimeZoneInfo.Utc);
-                        var endTime = DateTime.SpecifyKind(eventDetail.Date.ToDateTime(eventDetail.EndTime), DateTimeKind.Unspecified);
+                        var endTime = DateTime.SpecifyKind(eventDetail.EndDate.ToDateTime(eventDetail.EndTime), DateTimeKind.Unspecified);
                         var endTimeUTC = TimeZoneInfo.ConvertTime(endTime, timeZone, TimeZoneInfo.Utc);                      
                         var calenderEvent = new Event
                         {
@@ -227,7 +227,7 @@ namespace StudioBooking.Infrastructure
                             var timeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
                             var startTime = DateTime.SpecifyKind(eventDetail.Date.ToDateTime(eventDetail.StartTime), DateTimeKind.Unspecified);
                             var startTimeUTC = TimeZoneInfo.ConvertTime(startTime, timeZone, TimeZoneInfo.Utc);
-                            var endTime = DateTime.SpecifyKind(eventDetail.Date.ToDateTime(eventDetail.EndTime), DateTimeKind.Unspecified);
+                            var endTime = DateTime.SpecifyKind(eventDetail.EndDate.ToDateTime(eventDetail.EndTime), DateTimeKind.Unspecified);
                             var endTimeUTC = TimeZoneInfo.ConvertTime(endTime, timeZone, TimeZoneInfo.Utc);
                             selectedEvent.Summary = eventDetail.Title;
                             selectedEvent.Description = eventDetail.Description;

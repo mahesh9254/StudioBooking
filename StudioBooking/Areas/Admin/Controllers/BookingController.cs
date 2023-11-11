@@ -613,6 +613,7 @@ namespace StudioBooking.Areas.Admin.Controllers
             return new Booking
             {
                 BookingDate = DateTime.ParseExact(booking.BookingDate, Defaults.DefaultDateFormat, CultureInfo.InvariantCulture),
+                BookingEndDate = DateTime.ParseExact(booking.BookingEndDate, Defaults.DefaultDateFormat, CultureInfo.InvariantCulture),
                 ServicePriceId = servicePrice.Id,
                 RatePerHour = (decimal)servicePrice.Price,
                 StartTime = booking.StartTime,

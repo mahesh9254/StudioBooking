@@ -11,6 +11,7 @@ namespace StudioBooking.Data.Models
         [ForeignKey("Customer")]
         public long? CustomerId { get; set; }
         public DateTime BookingDate { get; set; }
+        public DateTime BookingEndDate { get; set; }
         [MaxLength(50)]
         public string StartTime { get; set; }
         [MaxLength(50)]

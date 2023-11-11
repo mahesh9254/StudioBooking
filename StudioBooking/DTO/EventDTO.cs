@@ -11,6 +11,7 @@ namespace StudioBooking.DTO
         public string Studio { get; set; }
         public string CalendarName { get; set; }
         public DateOnly Date { get; set; }
+        public DateOnly EndDate { get; set; }
         public TimeOnly StartTime { get; set; }
         public TimeOnly EndTime { get; set; }
         public string? Email { get; set; }
@@ -24,6 +25,7 @@ namespace StudioBooking.DTO
             var calenderEvent = new EventDTO
             {
                 Date = DateOnly.FromDateTime(booking.BookingDate),
+                EndDate = DateOnly.FromDateTime(booking.BookingEndDate),
                 StartTime = TimeOnly.FromDateTime(Convert.ToDateTime(booking.StartTime)),
                 EndTime = TimeOnly.FromDateTime(Convert.ToDateTime(booking.EndTime)),
                 Title = customer.Name,
@@ -45,6 +47,7 @@ namespace StudioBooking.DTO
                 Date = DateOnly.FromDateTime(booking.BookingDate),
                 StartTime = TimeOnly.FromDateTime(Convert.ToDateTime(booking.StartTime)),
                 EndTime = TimeOnly.FromDateTime(Convert.ToDateTime(booking.EndTime)),
+                EndDate = DateOnly.FromDateTime(booking.BookingEndDate),
                 Title = customer.Name,
                 Description = booking.Id.ToString(Defaults.BookingPrefix) + " - " + serviceDetail.ServiceName + " - " + serviceDetail.CategoryName,
                 Email = customer.User.Email,
