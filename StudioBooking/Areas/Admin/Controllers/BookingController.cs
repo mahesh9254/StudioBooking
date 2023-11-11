@@ -609,9 +609,12 @@ namespace StudioBooking.Areas.Admin.Controllers
         private async Task<Booking> SetBooking(BookingDTO booking)
         {
             var servicePrice = await ServicePriceDTO.GetServicePrice(_context, booking.ServicePriceId);
-            var endTime = DateTime.Parse(booking.EndTime);
-            var startTime = DateTime.Parse(booking.StartTime);
-            var totalHours = (endTime - startTime).TotalHours;
+            var endTime = TimeOnly.Parse(booking.EndTime);
+            var startTime = TimeOnly.Parse(booking.StartTime);
+            var startDate = DateOnly.Parse(booking.BookingDate);
+            var endDate = DateOnly.Parse(booking.BookingEndDate);
+            var  totalHours = (endDate.ToDateTime(endTime) - startDate.ToDateTime(startTime)).TotalHours;
+           
             var customerAddress = await _context.CustomerAddresses.FirstOrDefaultAsync(a => a.IsDefault && a.CustomerId == booking.CustomerId);
             return new Booking
             {

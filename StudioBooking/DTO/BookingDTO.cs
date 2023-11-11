@@ -36,7 +36,11 @@ namespace StudioBooking.DTO
             {
                 if (string.IsNullOrEmpty(StartTime) || string.IsNullOrEmpty(EndTime))
                     return 0;
-                return (DateTime.Parse(EndTime) - DateTime.Parse(StartTime)).TotalHours;
+                var endTime = TimeOnly.Parse(EndTime);
+                var startTime = TimeOnly.Parse(StartTime);
+                var startDate = DateOnly.Parse(BookingDate);
+                var endDate = DateOnly.Parse(BookingEndDate);
+                return (endDate.ToDateTime(endTime) - startDate.ToDateTime(startTime)).TotalHours;                
             }
         }
         public double RefundAmount { get; set; }

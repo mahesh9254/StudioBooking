@@ -43,12 +43,22 @@ var BookingDataTable = {
             columns: [
                 {
                     field: "booking.bookingDate",
-                    title: "Date",
+                    title: "Start Date",
                     type: 'date',
                     format: 'dd/MM/yyyy',
                     autoHide: !1,
                     template: function (t) {
                         return t.booking.bookingDate;
+                    }
+                },
+                {
+                    field: "booking.bookingEndDate",
+                    title: "End Date",
+                    type: 'date',
+                    format: 'dd/MM/yyyy',
+                    autoHide: !1,
+                    template: function (t) {
+                        return t.booking.bookingEndDate;
                     }
                 },
                 {
@@ -88,10 +98,18 @@ var BookingDataTable = {
                 },
                 {
                     field: "booking.startTime",
-                    title: "Time",
+                    title: "Start Time",
                     autoHide: !1,
                     template: function (t) {
-                        return t.booking.startTime + ' - ' + t.booking.endTime;
+                        return t.booking.startTime;
+                    }
+                },
+                {
+                    field: "booking.endTime",
+                    title: "End Time",
+                    autoHide: !1,
+                    template: function (t) {
+                        return  t.booking.endTime;
                     }
                 },
                 {
@@ -354,16 +372,40 @@ var KTBookingModal = function () {
                     }
                     else $("#Booking_BookingEndDate").val(null)
                 }));
+
+                $(e.querySelector('#Booking_BookingEndDate')).on("change", (function () {
+                    if (this.value) {
+                        let sDate = $("#Booking_BookingDate").val();
+                        let eDate = this.value;  
+                        if (sDate < eDate) {
+                            setEndTimeSlots('12:00 AM', '11:00 PM', 0);
+                            setStartTimeSlots('8:00 AM', '11:00 PM', 0);
+                        }
+                        else {
+                            setTimeSlots('8:00 AM', '11:00 PM', 1);
+                        }
+                    }
+                    
+                }));
                 $(e.querySelector('#StartTime')).on("change", (function () {
                     if (this.value) $("#Booking_StartTime").val(this.value)
                     else $("#Booking_StartTime").val(null)
                 }));
                 $(e.querySelector('#EndTime')).on("change", (function () {
                     if (this.value) {
+                        let sDate = $("#Booking_BookingDate").val();
+                        let eDate = $("#Booking_BookingEndDate").val();
                         let sTime = parseTime($("#Booking_StartTime").val());
                         let eTime = parseTime(this.value);
-                        if (sTime < eTime) $("#Booking_EndTime").val(this.value)
-                        else { $("#Booking_EndTime").val(null); $("#EndTime").val(null) }
+                        if (sDate == eDate) {
+                            if (sTime < eTime) $("#Booking_EndTime").val(this.value)
+                            else { $("#Booking_EndTime").val(null); $("#EndTime").val(null) }
+                        }
+                        else {
+                            $("#Booking_EndTime").val(this.value)
+                        }
+                       
+                        
                     }
                     else { $("#Booking_EndTime").val(null); $("#EndTime").val(null) }
                 }));
@@ -490,7 +532,59 @@ function addFormValidation() {
     }
     ));
 }
-
+function setStartTimeSlots(startTime, endTime, minhrs) {
+    let sTime = parseTime(convertTime12to24(startTime));
+    let eTime = parseTime(convertTime12to24(endTime));
+    let timeSlots = calculate_time_slot(sTime, eTime, 60);
+    let firstTimeSlot = "";
+    var starttimedata = [];
+    var endtimedata = [];
+    $.each(timeSlots, function (i, e) {
+        if (i === 0)
+            firstTimeSlot = e.id;
+        let disableStartTime = parseTime(convertTime12to24(endTime)) - parseTime(e.id) < (minhrs * 60);
+        let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
+        starttimedata.push({
+            id: e.id,
+            text: convertFrom24To12(e.id),
+            disabled: disableStartTime
+        });
+        endtimedata.push({
+            id: e.id,
+            text: convertFrom24To12(e.id),
+            disabled: disableEndTime
+        });
+    });
+    if ($('#StartTime').hasClass("select2-hidden-accessible")) $("#StartTime").select2('destroy').empty().select2({ data: starttimedata }).val(convertTime12to24($("#Booking_StartTime").val())).trigger('change');
+    else $("#StartTime").empty().select2({ data: starttimedata }).val(convertTime12to24($("#Booking_StartTime").val())).trigger('change');
+    
+}
+function setEndTimeSlots(startTime, endTime, minhrs) {
+    let sTime = parseTime(convertTime12to24(startTime));
+    let eTime = parseTime(convertTime12to24(endTime));
+    let timeSlots = calculate_time_slot(sTime, eTime, 60);
+    let firstTimeSlot = "";
+    var starttimedata = [];
+    var endtimedata = [];
+    $.each(timeSlots, function (i, e) {
+        if (i === 0)
+            firstTimeSlot = e.id;
+        let disableStartTime = parseTime(convertTime12to24(endTime)) - parseTime(e.id) < (minhrs * 60);
+        let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
+        starttimedata.push({
+            id: e.id,
+            text: convertFrom24To12(e.id),
+            disabled: disableStartTime
+        });
+        endtimedata.push({
+            id: e.id,
+            text: convertFrom24To12(e.id),
+            disabled: disableEndTime
+        });
+    });     
+    if ($('#EndTime').hasClass("select2-hidden-accessible")) $("#EndTime").select2('destroy').empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val())).trigger('change');
+    else $("#EndTime").empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val())).trigger('change');
+}
 function setTimeSlots(startTime, endTime, minhrs) {
     let sTime = parseTime(convertTime12to24(startTime));
     let eTime = parseTime(convertTime12to24(endTime));
