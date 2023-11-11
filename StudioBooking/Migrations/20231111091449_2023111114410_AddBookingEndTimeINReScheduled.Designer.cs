@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudioBooking.Data;
 
@@ -11,9 +12,10 @@ using StudioBooking.Data;
 namespace StudioBooking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231111091449_2023111114410_AddBookingEndTimeINReScheduled")]
+    partial class _2023111114410_AddBookingEndTimeINReScheduled
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1018,9 +1020,6 @@ namespace StudioBooking.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("RequestDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("RequestEndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("RequestEndTime")

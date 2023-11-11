@@ -13,7 +13,9 @@ namespace StudioBooking.Data.Models
         public string? StartTime { get; set; }
         public string? EndTime { get; set; }
         public DateTime? BookingDate { get; set; }
+        public DateTime? BookingEndDate { get; set; }
         public DateTime? RequestDate { get; set; }
+        public DateTime? RequestEndDate { get; set; }
         public DateTime? RequestStartTime { get; set; }
         public DateTime? RequestEndTime { get; set; }
         public int RequestStatus { get; set; }
