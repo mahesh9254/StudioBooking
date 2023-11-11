@@ -71,6 +71,7 @@ namespace StudioBooking.Areas.User.Controllers
                     BookingId = booking.Id.ToString(Defaults.BookingPrefix),
                     BookingStatus = (BookingStatus)booking.BookingStatus,
                     BookingDate = booking.BookingDate.ToString(Defaults.DefaultDateFormat),
+                    BookingEndDate = booking.BookingEndDate.ToString(Defaults.DefaultDateFormat),
                     StartTime = booking.StartTime,
                     EndTime = booking.EndTime,
                     Total = totalPaid,
@@ -144,6 +145,7 @@ namespace StudioBooking.Areas.User.Controllers
                         Id = booking.Id,
                         AdvancePaid = totalPaid,
                         BookingDate = booking.BookingDate.ToString(Defaults.DefaultDateFormat),
+                        BookingEndDate = booking.BookingEndDate.ToString(Defaults.DefaultDateFormat),
                         RatePerHour = booking.RatePerHour,
                         StartTime = TimeOnly.FromDateTime(startTime).ToString(),
                         EndTime = TimeOnly.FromDateTime(endTime).ToString(),
@@ -158,6 +160,7 @@ namespace StudioBooking.Areas.User.Controllers
                     Id = booking.Id,
                     AdvancePaid = totalPaid,
                     BookingDate = booking.BookingDate.ToString(Defaults.DefaultDateFormat),
+                    BookingEndDate = booking.BookingEndDate.ToString(Defaults.DefaultDateFormat),
                     RatePerHour = booking.RatePerHour,
                     StartTime = booking.StartTime,
                     EndTime = booking.EndTime,
@@ -401,6 +404,7 @@ namespace StudioBooking.Areas.User.Controllers
                     var calenderEvent = new EventDTO
                     {
                         Date = DateOnly.FromDateTime(bookingDetail.BookingDate),
+                        EndDate = DateOnly.FromDateTime(bookingDetail.BookingEndDate),
                         StartTime = TimeOnly.FromDateTime(Convert.ToDateTime(bookingDetail.StartTime)),
                         EndTime = TimeOnly.FromDateTime(Convert.ToDateTime(bookingDetail.EndTime)),
                         Title = customer.Name,

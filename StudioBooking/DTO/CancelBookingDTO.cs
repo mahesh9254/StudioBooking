@@ -13,6 +13,7 @@ namespace StudioBooking.DTO
         public string? CustomerName { get; set; }
         public string? CategoryName { get; set; }
         public string? BookingDate { get; set; }
+        public string? BookingEndDate { get; set; }
         public string? StartTime { get; set; }
         public string? EndTime { get; set; }
         public decimal RatePerHour { get; set; }

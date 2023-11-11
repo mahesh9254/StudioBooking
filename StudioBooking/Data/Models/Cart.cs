@@ -10,6 +10,7 @@ namespace StudioBooking.Data.Models
         public int ServicePriceId { get; set; }
         //public long TransactionId { get; set; }
         public string? BookingDate { get; set; }
+        public string? BookingEndDate { get; set; }
         public string? StartTime { get; set; }
         public string? EndTime { get; set; }
         public bool? IsCheckedOut { get; set; }

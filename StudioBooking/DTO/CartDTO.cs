@@ -12,6 +12,7 @@ namespace StudioBooking.DTO
         public int ServicePriceId { get; set; }
         public long TransactionId { get; set; }
         public string? BookingDate { get; set; }
+        public string? BookingEndDate { get; set; }
         public string? StartTime { get; set; }
         public string? EndTime { get; set; }
         public bool? IsCheckedOut { get; set; }
@@ -23,6 +24,7 @@ namespace StudioBooking.DTO
             return new Cart
             {
                 BookingDate = cart.BookingDate,
+                BookingEndDate = cart.BookingDate,
                 ServicePriceId = cart.ServicePriceId,
                 StartTime = TimeOnly.Parse(cart.StartTime).ToString(),
                 EndTime = TimeOnly.Parse(cart.EndTime).ToString(),

@@ -254,6 +254,7 @@ namespace StudioBooking.Areas.Admin.Controllers
                     BookingStatus = (BookingStatus)booking.BookingStatus,
                     PaymentStatus = (PaymentStatus)booking.PaymentStatus,
                     BookingDate = booking.BookingDate.ToString(Defaults.DefaultDateFormat),
+                    BookingEndDate = booking.BookingEndDate.ToString(Defaults.DefaultDateFormat),
                     StartTime = booking.StartTime,
                     EndTime = booking.EndTime,
                     RefundAmount = (booking.Total - totalPaid) == 0 ? booking.Total / 2 : 0,
@@ -381,6 +382,7 @@ namespace StudioBooking.Areas.Admin.Controllers
                     var calenderEvent = new EventDTO
                     {
                         Date = DateOnly.FromDateTime(newBooking.BookingDate),
+                        EndDate = DateOnly.FromDateTime(newBooking.BookingEndDate),
                         StartTime = TimeOnly.FromDateTime(Convert.ToDateTime(newBooking.StartTime)),
                         EndTime = TimeOnly.FromDateTime(Convert.ToDateTime(newBooking.EndTime)),
                         Title = customer.Name,
@@ -462,6 +464,7 @@ namespace StudioBooking.Areas.Admin.Controllers
                     var calenderEvent = new EventDTO
                     {
                         Date = DateOnly.FromDateTime(booking.BookingDate),
+                        EndDate = DateOnly.FromDateTime(booking.BookingEndDate),
                         StartTime = TimeOnly.FromDateTime(Convert.ToDateTime(booking.StartTime)),
                         EndTime = TimeOnly.FromDateTime(Convert.ToDateTime(booking.EndTime)),
                         Title = serviceDetail.ServiceName + " - " + serviceDetail.CategoryName,

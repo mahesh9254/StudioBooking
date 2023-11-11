@@ -155,6 +155,7 @@ namespace StudioBooking.Controllers
                     var calenderEvent = new EventDTO
                     {
                         Date = DateOnly.FromDateTime(bookingDetail.BookingDate),
+                        EndDate = DateOnly.FromDateTime(bookingDetail.BookingEndDate),
                         StartTime = TimeOnly.FromDateTime(Convert.ToDateTime(bookingDetail.StartTime)),
                         EndTime = TimeOnly.FromDateTime(Convert.ToDateTime(bookingDetail.EndTime)),
                         Title = customer.Name,
@@ -373,6 +374,7 @@ namespace StudioBooking.Controllers
                             var calenderEvent = new EventDTO
                             {
                                 Date = DateOnly.FromDateTime(booking.BookingDate),
+                                EndDate = DateOnly.FromDateTime(booking.BookingEndDate),
                                 StartTime = TimeOnly.FromDateTime(Convert.ToDateTime(booking.StartTime)),
                                 EndTime = TimeOnly.FromDateTime(Convert.ToDateTime(booking.EndTime)),
                                 Title = customer.Name,
@@ -432,6 +434,7 @@ namespace StudioBooking.Controllers
             var booking = new Booking
             {
                 BookingDate = Defaults.ConvertDateTime(cart.BookingDate, Defaults.DefaultDateFormat),// DateTime.Parse(cart.BookingDate),
+                BookingEndDate = Defaults.ConvertDateTime(cart.BookingEndDate, Defaults.DefaultDateFormat),
                 ServicePriceId = servicePrice.Id,
                 RatePerHour = (decimal)servicePrice.Price,
                 StartTime = cart.StartTime,
