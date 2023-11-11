@@ -15,11 +15,12 @@ $("#Cart_BookingDate").change(function (e) {
         e.preventDefault();
         return false;
     }
+    $("#Cart_BookingEndDate").val(this.value);
     KTbooking.validate();
     $(".endTime").children('button').removeClass('selected');
     $(".startTime").children('button').removeClass('selected');
-    $(".dv-end-time").hide();
-    $(".dv-start-time").show();
+   // $(".dv-end-time").hide();
+   // $(".dv-start-time").show();
     $.get("/Service/GetBookedTimeSlots/" + $('input[name="bookingstudio"]:checked').attr("categoryId") + "?date=" + $("#Cart_BookingDate").val()).done((res) => {
         let start_time = $('input[name="bookingstudio"]:checked').attr('start-time');
         let end_time = $('input[name="bookingstudio"]:checked').attr('end-time');
@@ -45,6 +46,27 @@ $("#Cart_BookingDate").change(function (e) {
     });
 })
 
+$("#Cart_BookingEndDate").change(function (e) { 
+    $.get("/Service/GetBookedEndTimeSlots/" + $('input[name="bookingstudio"]:checked').attr("categoryId") + "?date=" + $("#Cart_BookingEndDate").val()).done((res) => {               
+        let start_time = $('input[name="bookingstudio"]:checked').attr('start-time');
+        let end_time = $('input[name="bookingstudio"]:checked').attr('end-time');
+        let minInterval = $('input[name="bookingstudio"]:checked').attr('min-hours');
+        setTimeSlots(start_time, end_time, minInterval);       
+        let endTimeSlots = $(".endTime").children('button');       
+        endTimeSlots.removeClass('booked');
+        
+        endTimeSlots.not(".disabled").removeClass('btn-light-dark').addClass("btn-light-success")
+        $.each(res, function (i, e) {
+            let time = parseTime(e);//parseTime(convertTime12to24(e));          
+            endTimeSlots.filter(function () {
+                return parseTime(convertTime12to24(this.innerText)) == time;
+            }).removeClass('btn-light-success').addClass('booked btn-light-dark');;
+        });
+    }).fail((err) => {
+        console.log(err);
+    });
+})
+
 $('input[name="bookingstudio"]').change(function () {
     //var start_time = $(this).attr('start-time');
     //var end_time = $(this).attr('end-time');
@@ -53,8 +75,8 @@ $('input[name="bookingstudio"]').change(function () {
     $("#dvServiceName").empty().text($(this).attr('service-name'));
     $("#dvStudioName").empty().text($(this).attr('category'));
     $("#dvStudioTitle").empty().text($(this).attr('title'));
-    $(".dv-end-time").hide();
-    $(".dv-start-time").hide();
+    //$(".dv-end-time").hide();
+   // $(".dv-start-time").hide();
     $("#Cart_BookingDate").val(null);
     //setTimeSlots(start_time, end_time, minInterval);
 });
@@ -131,7 +153,7 @@ $(document).on('click', '.startTime > button', function (e) {
     $(this).toggleClass('selected');
     $("#Cart_StartTime").val($(this).text());
     KTbooking.validate();
-    $(".dv-end-time").show();
+   // $(".dv-end-time").show();
     disableTimeSlots($(this).text());
 });
 
@@ -200,7 +222,14 @@ var KTbooking = function () {
                     "Cart.BookingDate": {
                         validators: {
                             notEmpty: {
-                                message: "Booking Date is required"
+                                message: "Booking Start Date is required"
+                            }
+                        }
+                    },
+                    "Cart.BookingEndDate": {
+                        validators: {
+                            notEmpty: {
+                                message: "Booking End Date is required"
                             }
                         }
                     }

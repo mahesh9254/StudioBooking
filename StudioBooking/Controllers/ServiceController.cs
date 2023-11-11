@@ -55,11 +55,30 @@ namespace StudioBooking.Controllers
             var timeslotes = new List<string>();
             foreach (var bookings in categoryBookings.Where(b=> b.BookingStatus != Enums.BookingStatus.OnHold && b.BookingStatus != Enums.BookingStatus.Cancelled && b.BookingStatus!= Enums.BookingStatus.Failed && (type == 1 || b.CustomerId != customer.Id)))
             {
-                for (DateTime appointment = DateTime.Parse(bookings.StartTime); appointment < DateTime.Parse(bookings.EndTime); appointment = appointment.AddHours(1))
-                {                    
-                    timeslotes.Add(appointment.ToString("HH:mm"));
-                }
+                //for (DateTime appointment = DateTime.Parse(bookings.StartTime); appointment < DateTime.Parse(bookings.EndTime); appointment = appointment.AddHours(1))
+                // {
+                DateTime appointment = DateTime.Parse(bookings.StartTime);                
+                timeslotes.Add(appointment.ToString("HH:mm"));
+                //}
             }            
+            return Ok(timeslotes);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetBookedEndTimeSlots(int id, string date, string userId, int type = 1)
+        {
+            userId = string.IsNullOrEmpty(userId) ? GetUserId() : userId;
+            var customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId == userId);
+            var categoryBookings = await BookingDTO.GetBookingsByCategoryId(_context, id, Defaults.ConvertDateTime(date, Defaults.DefaultDateFormat));
+
+            var timeslotes = new List<string>();
+            foreach (var bookings in categoryBookings.Where(b => b.BookingStatus != Enums.BookingStatus.OnHold && b.BookingStatus != Enums.BookingStatus.Cancelled && b.BookingStatus != Enums.BookingStatus.Failed && (type == 1 || b.CustomerId != customer.Id)))
+            {
+                //for (DateTime appointment = DateTime.Parse(bookings.StartTime); appointment < DateTime.Parse(bookings.EndTime); appointment = appointment.AddHours(1))
+                //{
+                DateTime appointment = DateTime.Parse(bookings.EndTime);
+                timeslotes.Add(appointment.ToString("HH:mm"));
+                //}
+            }
             return Ok(timeslotes);
         }
 
