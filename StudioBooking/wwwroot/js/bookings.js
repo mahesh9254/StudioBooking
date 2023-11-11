@@ -546,7 +546,7 @@ function addFormValidation() {
                             if (t.isConfirmed) {
                                 $.post("/Admin/Booking/" + (parseInt($("#Booking_Id").val()) > 0 ? 'ScheduleChangeRequest' : 'AddBooking') + "", getBookingRequest()).done(function (res) {
                                     if (res.result) {
-                                        $(".kt-datatable").KTDatatable().reload();
+                                        $("#kt_datatable").KTDatatable().reload();
                                         $("#kt_modal_booking").modal('hide');
                                         toastr.success("Booking " + (parseInt($("#Booking_Id").val()) > 0 ? 'updated' : 'created') + " successfully.");
                                     }

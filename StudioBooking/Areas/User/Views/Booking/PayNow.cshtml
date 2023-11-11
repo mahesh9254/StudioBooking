@@ -148,7 +148,7 @@
                                         <td>
                                             @Model.ServicePrice.ServiceName - ₹@Decimal.Round(Model.Booking.RatePerHour,MidpointRounding.ToZero)<span class="quantity">x@(totalHours)/hr(s)</span>
                                             <br>
-                                            <sub>@Model.Booking.BookingDate : @Model.Booking.StartTime - @Model.Booking.EndTime</sub>
+                                            <sub>@Model.Booking.BookingDate : @Model.Booking.StartTime to @Model.Booking.BookingEndDate : @Model.Booking.EndTime</sub>
                                         </td>
                                         <td class="order-subtotal-amount">₹@(Decimal.Round(((decimal)totalHours * Model.Booking.RatePerHour), MidpointRounding.ToZero))</td>
                                     </tr>
