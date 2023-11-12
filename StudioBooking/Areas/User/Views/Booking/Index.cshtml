@@ -135,11 +135,13 @@
                                 <thead>
                                     <!--begin::Table row-->
                                     <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                                        <th class="min-w-125px">Date</th>
+                                        <th class="min-w-125px">Start Date</th>
+                                        <th class="min-w-125px">End Date</th>
                                         <th class="min-w-125px">Booking ID</th>
                                         <th class="min-w-150px">Service</th>
                                         <th class="min-w-100px">Studio</th>
-                                        <th class="min-w-150px">Time Slot</th>
+                                        <th class="min-w-150px">Start Time</th>
+                                        <th class="min-w-150px">End Time</th>
                                         <th>Hours</th>
                                         <th class="min-w-100px">Amount</th>
                                         <th class="min-w-100px">Paid</th>
@@ -153,11 +155,12 @@
                                 <!--end::Table head-->
                                 <!--begin::Table body-->
                                 <tbody class="text-gray-600 fw-bold">
-                                    @foreach (var booking in Model.Where(s => Defaults.ConvertDateTime(s.Booking.BookingDate, Defaults.DefaultDateFormat) >= DateTime.UtcNow))
+                                    @foreach (var booking in Model.Where(s => DateTime.ParseExact(s.Booking.BookingDate, "dd/MM/yyyy", null) >= DateTime.UtcNow))
                                     {
                                         <!--begin::Table row-->
                                         <tr>
                                             <td>@booking.Booking.BookingDate</td>
+                                            <td>@booking.Booking.BookingEndDate</td>
                                             <td class="align-items-center" id="@booking.Booking.Id">
                                                 @{
                                                     var startTime = TimeOnly.FromDateTime(Convert.ToDateTime(booking.Booking.StartTime));
@@ -171,7 +174,8 @@
                                             </td>
                                             <td>@booking.ServicePrice.ServiceName</td>
                                             <td>@booking.ServicePrice.CategoryName</td>
-                                            <td>@booking.Booking.StartTime - @booking.Booking.EndTime</td>
+                                            <td>@booking.Booking.StartTime</td>
+                                            <td>@booking.Booking.EndTime</td>
                                             <td>@booking.Booking.TotalHours</td>
                                             <td>₹@booking.Booking.Total</td>
                                             <td>₹@(booking.Booking.PaymentStatus == Enums.PaymentStatus.FullPayment ? booking.Booking.Total : booking.Booking.AdvancePaid > 0 ? booking.Booking.AdvancePaid < 0 ? booking.Booking.Total : booking.Booking.AdvancePaid : booking.Booking.AdvancePaid)</td>
@@ -196,7 +200,7 @@
                                             <!--begin::Action=-->
                                             <td class="text-end">
                                                 @{
-                                                    var time = DateOnly.FromDateTime(Defaults.ConvertDateTime(booking.Booking.BookingDate, Defaults.DefaultDateFormat));
+                                                    var time = DateOnly.FromDateTime(DateTime.ParseExact(booking.Booking.BookingDate, "dd/MM/yyyy", null));
                                                     var bookingDate = DateTime.SpecifyKind(time.ToDateTime(TimeOnly.FromDateTime(Convert.ToDateTime(booking.Booking.StartTime))), DateTimeKind.Unspecified);
                                                 }
                                                 @if (bookingDate >= Defaults.GetDateTime() && booking.Booking.BookingStatus != Enums.BookingStatus.WaitingForCancellation && booking.Booking.BookingStatus != Enums.BookingStatus.Cancelled && booking.Booking.BookingStatus != Enums.BookingStatus.ReScheduled)
@@ -294,7 +298,7 @@
                                 <!--end::Table head-->
                                 <!--begin::Table body-->
                                 <tbody class="text-gray-600 fw-bold">
-                                    @foreach (var booking in Model.Where(s => Defaults.ConvertDateTime(s.Booking.BookingDate, Defaults.DefaultDateFormat) < DateTime.UtcNow))
+                                    @foreach (var booking in Model.Where(s => DateTime.ParseExact(s.Booking.BookingDate, "dd/MM/yyyy", null) < DateTime.UtcNow))
                                     {
                                         <!--begin::Table row-->
                                         <tr>

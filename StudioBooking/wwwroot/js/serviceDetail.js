@@ -181,7 +181,13 @@ $(document).on('click', '.endTime > button', function (e) {
     }
     KTbooking.validate();
 });
+function diff_hours(edate, sdate) {
 
+    var diff = (edate.getTime() - sdate.getTime()) / 1000;
+    diff /= (60 * 60);
+    return Math.abs(Math.round(diff));
+
+}
 "use strict";
 var KTbooking = function () {
     var t = "spinner spinner-right spinner-white pr-15";
@@ -245,6 +251,30 @@ var KTbooking = function () {
                     startStep: 1,
                     clickableSteps: !1
                 })).on("change", (function (t) {
+                    const [eday, emonth, eyear] = $("#Cart_BookingEndDate").val().split('/');
+                    const [ehours] = String(convertTime12to24($("#Cart_EndTime").val())).split(':');
+                    
+                    const edate = new Date(
+                        +eyear,
+                        +emonth-1,
+                        +eday,
+                        +ehours,
+                        +"00",
+                        +"00",
+                    );
+                    const [sday, smonth, syear] = $("#Cart_BookingDate").val().split('/');
+                    const [shours] = String(convertTime12to24($("#Cart_StartTime").val())).split(':');
+                    
+                    const sdate = new Date(
+                        +syear,
+                        +smonth-1,
+                        +sday,
+                        +shours,
+                        +"00",                       
+                        +"00",
+                    );
+                    
+                    
                     if (t.getStep() === 1) {
                         t.goTo(t.getNewStep() - 1);
                     }
@@ -252,9 +282,9 @@ var KTbooking = function () {
                         var i = e[0];
                         return i && i.validate().then((function (i) {
                             "Valid" == i ? (t.goTo(t.getNewStep()),
-                                $("#dvBookingDate").empty().text($("#Cart_BookingDate").val()),
-                                $("#dvBookingTime").empty().text($("#Cart_StartTime").val() + " To " + $("#Cart_EndTime").val()),
-                                $("#dvBookingHrs").empty().text(Math.floor((parseTime(convertTime12to24($("#Cart_EndTime").val())) - parseTime(convertTime12to24($("#Cart_StartTime").val()))) / 60) + "hrs"),
+                                $("#dvBookingDate").empty().text($("#Cart_BookingDate").val() + " " + $("#Cart_StartTime").val()),
+                                $("#dvBookingEndDate").empty().text($("#Cart_BookingEndDate").val() + " " + $("#Cart_EndTime").val()),                              
+                                $("#dvBookingHrs").empty().text(diff_hours(edate , sdate) + " " + "hrs"),
                                 KTUtil.scrollTop()) : Swal.fire({
                                     text: "Sorry, looks like there are some errors detected, please try again.",
                                     icon: "error",

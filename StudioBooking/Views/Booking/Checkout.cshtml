@@ -157,7 +157,7 @@
                                             <td>
                                                 @Model.ServicePrice.ServiceName - ₹@Model.ServicePrice.Price<span class="quantity">x@(totalHours)/hr(s)</span>
                                                 <br>
-                                                <sub>@Model.Cart.BookingDate : @Model.Cart.StartTime - @Model.Cart.EndTime</sub>
+                                                <sub>@Model.Cart.BookingDate : @Model.Cart.StartTime to @Model.Cart.BookingEndDate : @Model.Cart.EndTime</sub>
                                             </td>
                                         }
                                         <td>₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
