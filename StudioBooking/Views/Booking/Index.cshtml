@@ -239,19 +239,33 @@
                                             </div>
                                             <div class="form-group row dv-start-time">
                                                 <label class="col-form-label col-lg-3 col-sm-12">Start Time:</label>
-                                                <div class="col-lg-9 col-md-9 col-sm-12 startTime"></div>
-                                                <input asp-for="Cart.StartTime" required class="hide" />
+                                                <div class="col-lg-9 col-md-9 col-sm-12 startTime">
+                                                @* <input asp-for="Cart.StartTime" required class="hide" /> *@
+                                                <select name="StartTime" id="StartTime" aria-label="Select a StartTime" style="width:100%" data-control="select2" data-placeholder="Select a StartTime..." class="form-select form-select-solid" data-hide-search="true">
+                                                    <option value=""></option>
+                                                </select>
+                                                    <input type="hidden" asp-for="Cart.StartTime" />
+                                                
+                                                </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-form-label col-lg-3 col-sm-12">Booking End Date:</label>
+                                                 <label class="col-form-label col-lg-3 col-sm-12">Booking End Date:</label>
                                                 <div class="col-lg-9 col-md-9 col-sm-12">
                                                     <input asp-for="Cart.BookingEndDate" class="form-control booking-date" readonly="readonly" required placeholder="Select date">
-                                                </div>
+
+                                                   
+                                                </div> 
+                                                
                                             </div>
                                             <div class="form-group row dv-end-time">
                                                 <label class="col-form-label col-lg-3 col-sm-12">End Time:</label>
-                                                <div class="col-lg-9 col-md-9 col-sm-12 endTime"></div>
-                                                <input asp-for="Cart.EndTime" required class="hide" />
+                                                <div class="col-lg-9 col-md-9 col-sm-12 endTime">
+                                               @*  <input asp-for="Cart.EndTime" required class="hide" /> *@
+                                                <select name="EndTime" id="EndTime" aria-label="Select a End Time" style="width:100%" data-control="select2" data-placeholder="Select a EndTime..." class="form-select form-select-solid" data-hide-search="true">
+                                                    <option></option>
+                                                </select>
+                                                <input type="hidden" asp-for="Cart.EndTime" />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
