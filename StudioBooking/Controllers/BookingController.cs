@@ -72,7 +72,7 @@ namespace StudioBooking.Controllers
                 Customer = customer,
                 CustomerAddresses = await CustomerAddressDTO.GetAddressByCustomerId(_context, customer.Id),
                 Wallets = customer.Id > 0 ? await WalletDTO.GetCustomerWallets(_context, customer.Id) : new List<WalletDTO>(),
-            };
+            };            
             return View(bookingViewModel);
         }
 

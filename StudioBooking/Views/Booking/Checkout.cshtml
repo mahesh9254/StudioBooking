@@ -3,13 +3,15 @@
 @model StudioBooking.ViewModels.BookingViewModel
 @{
     Layout = "/Views/Shared/_Layout-eTrade.cshtml";
-    DateTime endTime, startTime = DateTime.MinValue;
+    // DateTime endTime, startTime = DateTime.MinValue;
     double totalHours = 0;
     if (Model.ServicePrice.ServiceType == Enums.ServiceType.Calculated)
     {
-        endTime = DateTime.Parse(Model.Cart.EndTime);
-        startTime = DateTime.Parse(Model.Cart.StartTime);
-        totalHours = (endTime - startTime).TotalHours;
+        var endTime = TimeOnly.Parse(Model.Cart.EndTime);
+        var startTime = TimeOnly.Parse(Model.Cart.StartTime);
+        var startDate = DateOnly.Parse(Model.Cart.BookingDate);
+        var endDate = DateOnly.Parse(Model.Cart.BookingEndDate);
+        totalHours = (endDate.ToDateTime(endTime) - startDate.ToDateTime(startTime)).TotalHours;
     }
     else
     {

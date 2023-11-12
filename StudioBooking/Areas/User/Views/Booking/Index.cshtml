@@ -280,11 +280,13 @@
                                 <thead>
                                     <!--begin::Table row-->
                                     <tr class="text-start text-muted fw-bolder fs-7 text-uppercase gs-0">
-                                        <th class="min-w-125px">Date</th>
+                                        <th class="min-w-125px">Start Date</th>
+                                        <th class="min-w-125px">End Date</th>
                                         <th class="min-w-125px">Booking ID</th>
                                         <th class="min-w-150px">Service</th>
                                         <th class="min-w-100px">Studio</th>
-                                        <th class="min-w-150px">Time Slot</th>
+                                        <th class="min-w-150px">Start Time</th>
+                                        <th class="min-w-150px">End Time</th>
                                         <th>Hours</th>
                                         <th class="min-w-100px">Amount</th>
                                         <th class="min-w-100px">Paid</th>
@@ -303,6 +305,7 @@
                                         <!--begin::Table row-->
                                         <tr>
                                             <td>@booking.Booking.BookingDate</td>
+                                            <td>@booking.Booking.BookingEndDate</td>
                                             <td class="align-items-center" id="@booking.Booking.Id">
                                                 @{
                                                     var startTime = TimeOnly.FromDateTime(Convert.ToDateTime(booking.Booking.StartTime));
@@ -316,7 +319,8 @@
                                             </td>
                                             <td>@booking.ServicePrice.ServiceName</td>
                                             <td>@booking.ServicePrice.CategoryName</td>
-                                            <td>@booking.Booking.StartTime - @booking.Booking.EndTime</td>
+                                            <td>@booking.Booking.StartTime</td>
+                                            <td>@booking.Booking.EndTime</td>
                                             <td>@booking.Booking.TotalHours</td>
                                             <td>₹@booking.Booking.Total</td>
                                             <td>₹@(booking.Booking.PaymentStatus == Enums.PaymentStatus.FullPayment ? booking.Booking.Total : booking.Booking.AdvancePaid > 0 ? booking.Booking.AdvancePaid < 0 ? booking.Booking.Total : booking.Booking.AdvancePaid : booking.Booking.AdvancePaid)</td>

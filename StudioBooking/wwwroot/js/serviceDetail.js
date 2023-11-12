@@ -48,23 +48,20 @@ $("#Cart_BookingEndDate").change(function (e) {
         let start_time = $('input[name="bookingstudio"]:checked').attr('start-time');
         let end_time = $('input[name="bookingstudio"]:checked').attr('end-time');
         let minInterval = $('input[name="bookingstudio"]:checked').attr('min-hours');
-        setEndTimeSlots(start_time, end_time, minInterval);       
-        let endTimeSlots = $(".endTime").children('button');       
-        endTimeSlots.removeClass('booked');
-        
-        endTimeSlots.not(".disabled").removeClass('btn-light-dark').addClass("btn-light-success")
-        $.each(res, function (i, e) {
-            let time = parseTime(e);//parseTime(convertTime12to24(e));          
-            endTimeSlots.filter(function () {
-                return parseTime(convertTime12to24(this.innerText)) == time;
-            }).removeClass('btn-light-success').addClass('booked btn-light-dark');;
-        });
+        let sDate = $("#Cart_BookingDate").val();
+        let eDate = $("#Cart_BookingEndDate").val();
+        if (sDate == eDate) {
+            setEndTimeSlots(start_time, end_time, minInterval, res);
+        }
+        else {
+            setEndTimeSlots(start_time, end_time, 0, res);
+        }
     }).fail((err) => {
         console.log(err);
     });
 })
 
-$("#Cart_StartTime").change(function (e) {
+$("#StartTime").change(function (e) {
     if (this.value) {
         let sDate = $("#Cart_BookingDate").val();
         let eDate = $("#Cart_BookingEndDate").val();
@@ -80,7 +77,7 @@ $("#Cart_StartTime").change(function (e) {
     }
     else { $("#Cart_StartTime").val(null); $("#StartTime").val(null); }
 })
-$("#Cart_EndTime").change(function (e) {
+$("#EndTime").change(function (e) {
     if (this.value) {
         let sDate = $("#Cart_BookingDate").val();
         let eDate = $("#Cart_BookingEndDate").val();
