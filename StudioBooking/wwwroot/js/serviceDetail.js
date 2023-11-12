@@ -21,12 +21,12 @@ $("#Cart_BookingDate").change(function (e) {
     $(".startTime").children('button').removeClass('selected');
    // $(".dv-end-time").hide();
    // $(".dv-start-time").show();
-    $.get("/Service/GetBookedTimeSlots/" + $('input[name="bookingstudio"]:checked').attr("categoryId") + "?date=" + $("#Cart_BookingDate").val()).done((res) => {
+    $.get("/Service/GetBookedStartEndTimeSlots/" + $('input[name="bookingstudio"]:checked').attr("categoryId") + "?date=" + $("#Cart_BookingDate").val() + "&endDate=" + $("#Cart_BookingEndDate").val()).done((res) => {
         let start_time = $('input[name="bookingstudio"]:checked').attr('start-time');
         let end_time = $('input[name="bookingstudio"]:checked').attr('end-time');
         let minInterval = $('input[name="bookingstudio"]:checked').attr('min-hours');
-        setStartTimeSlots(start_time, end_time, minInterval, res);
-        setEndTimeSlots(start_time, end_time, minInterval);
+        setStartTimeSlots(start_time, end_time, minInterval, res.start);
+        setEndTimeSlots(start_time, end_time, minInterval, res.end);
         
         
         $.each(res, function (i, e) {
@@ -165,7 +165,7 @@ function setStartTimeSlots(startTime, endTime, minhrs, res) {
     else $("#StartTime").empty().select2({ data: starttimedata }).val(convertTime12to24($("#Cart_StartTime").val())).trigger('change');    
 }
 
-function setEndTimeSlots(startTime, endTime, minhrs) {
+function setEndTimeSlots(startTime, endTime, minhrs, eres) {
    
     let sTime = parseTime(convertTime12to24(startTime));
     let eTime = parseTime(convertTime12to24(endTime));
@@ -175,7 +175,13 @@ function setEndTimeSlots(startTime, endTime, minhrs) {
     $.each(timeSlots, function (i, e) {
         if (i === 0)
             firstTimeSlot = e.id;        
-        let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);        
+        let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);   
+
+        $.each(eres, function (ri, re) {
+            if (parseTime(re) == parseTime(e.id)) {
+                disableEndTime = true;
+            }
+        });
         endtimedata.push({            id: e.id,
             text: convertFrom24To12(e.id),
             disabled: disableEndTime

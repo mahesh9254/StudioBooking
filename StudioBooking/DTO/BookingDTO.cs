@@ -76,6 +76,10 @@ namespace StudioBooking.DTO
         {
             return await context.Bookings.Include(b => b.ServicePrice).Where(b => b.BookingDate == date && !b.IsDelete && b.IsActive && b.ServicePrice.CategoryId == categoryId).Select(s => GetBooking(s)).ToListAsync();
         }
+        public static async Task<List<BookingDTO>> GetEndBookingsByCategoryId(ApplicationDbContext context, long categoryId, DateTime? date)
+        {
+            return await context.Bookings.Include(b => b.ServicePrice).Where(b => b.BookingEndDate == date && !b.IsDelete && b.IsActive && b.ServicePrice.CategoryId == categoryId).Select(s => GetBooking(s)).ToListAsync();
+        }
 
         public static async Task<BookingDTO> GetBookingById(ApplicationDbContext context, long id)
         {
