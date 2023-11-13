@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudioBooking.Data;
 
@@ -11,9 +12,10 @@ using StudioBooking.Data;
 namespace StudioBooking.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231113122037_2023111317420_ModifyCoupon")]
+    partial class _2023111317420_ModifyCoupon
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -207,7 +209,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("BookingId");
 
-                    b.ToTable("Addons", (string)null);
+                    b.ToTable("Addons");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.ApplicationUser", b =>
@@ -387,7 +389,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("ServicePriceId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.Cart", b =>
@@ -444,7 +446,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.Category", b =>
@@ -498,7 +500,7 @@ namespace StudioBooking.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.CategoryDetail", b =>
@@ -547,7 +549,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("CategoryDetails", (string)null);
+                    b.ToTable("CategoryDetails");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.CategoryGear", b =>
@@ -601,7 +603,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("CategoryDetailId");
 
-                    b.ToTable("CategoryGears", (string)null);
+                    b.ToTable("CategoryGears");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.Client", b =>
@@ -652,7 +654,7 @@ namespace StudioBooking.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.Coupon", b =>
@@ -667,13 +669,6 @@ namespace StudioBooking.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,4)");
 
@@ -684,23 +679,13 @@ namespace StudioBooking.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Coupons", (string)null);
+                    b.ToTable("Coupons");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.Customer", b =>
@@ -745,7 +730,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.CustomerAddress", b =>
@@ -823,7 +808,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("CustomerAddresses", (string)null);
+                    b.ToTable("CustomerAddresses");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.PaymentGatewayResponse", b =>
@@ -947,7 +932,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("TransactionId");
 
-                    b.ToTable("PaymentGatewayResponses", (string)null);
+                    b.ToTable("PaymentGatewayResponses");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.PaymentReceipt", b =>
@@ -1004,7 +989,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("TransactionId");
 
-                    b.ToTable("PaymentReceipts", (string)null);
+                    b.ToTable("PaymentReceipts");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.ScheduleRequest", b =>
@@ -1090,7 +1075,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("BookingId");
 
-                    b.ToTable("ScheduleRequests", (string)null);
+                    b.ToTable("ScheduleRequests");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.Service", b =>
@@ -1134,7 +1119,7 @@ namespace StudioBooking.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Services", (string)null);
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.ServiceGallery", b =>
@@ -1188,7 +1173,7 @@ namespace StudioBooking.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceGallery", (string)null);
+                    b.ToTable("ServiceGallery");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.ServicePrice", b =>
@@ -1254,7 +1239,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("ServicePrices", (string)null);
+                    b.ToTable("ServicePrices");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.Team", b =>
@@ -1303,7 +1288,7 @@ namespace StudioBooking.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.Testimonial", b =>
@@ -1356,7 +1341,7 @@ namespace StudioBooking.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Testimonials", (string)null);
+                    b.ToTable("Testimonials");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.Transaction", b =>
@@ -1417,7 +1402,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Transactions", (string)null);
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.Wallet", b =>
@@ -1467,7 +1452,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Wallets", (string)null);
+                    b.ToTable("Wallets");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.WalletTransaction", b =>
@@ -1525,7 +1510,7 @@ namespace StudioBooking.Migrations
 
                     b.HasIndex("WalletId");
 
-                    b.ToTable("WalletTransactions", (string)null);
+                    b.ToTable("WalletTransactions");
                 });
 
             modelBuilder.Entity("StudioBooking.Data.Models.WebsiteSetting", b =>
@@ -1630,7 +1615,7 @@ namespace StudioBooking.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WebsiteSettings", (string)null);
+                    b.ToTable("WebsiteSettings");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
