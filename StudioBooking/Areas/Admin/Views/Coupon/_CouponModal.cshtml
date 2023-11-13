@@ -1,88 +1,53 @@
-﻿@model StudioBooking.Areas.Admin.Models.CreateBookingViewModel
+﻿@model StudioBooking.Areas.Admin.Models.CouponViewModel
 <!--begin::Form-->
-<form id="kt_modal_booking_form" class="form" action="#">
+<form id="kt_modal_coupon_form" class="form" action="#">
     <div class="row">        
         <div class="col-xl-12">
-            <input type="hidden" asp-for="Booking.Id" />
+            <input type="hidden" asp-for="Id" />
             <!--begin::Input group-->
             <div class="form-group row fv-row">
-                <label asp-for="Booking.CustomerId" class="col-3">
-                    Customer
+                <label asp-for="Name" class="col-3">
+                    Name
                 </label>
                 <div class="col-9">
-                    <select asp-for="Booking.CustomerId" asp-items="Model.Customers" class="form-control form-control-solid" required="true">
-                        <option selected="selected" value="">---Select Customer---</option>
-                    </select>
+                    <input type="text" class="form-control form-control-solid" asp-for="Name" />
                 </div>
             </div>
             <!--end::Input group-->
             <!--begin::Input group-->
             <div class="form-group row fv-row">
                 <label class="col-3">
-                    Studio
+                    Code
                 </label>
                 <div class="col-9">
-                    <select id="ddlCategory" asp-items="Model.Categories" class="form-control form-control-solid">
-                        <option selected="selected" value="">---Select Studio---</option>
-                    </select>
+                    <input type="text" class="form-control form-control-solid" asp-for="Code" />
                 </div>
             </div>
             <!--end::Input group-->
             <!--begin::Input group-->
             <div class="form-group row fv-row">
-                <label asp-for="Booking.ServicePriceId" class="col-3">
-                    Service
+                <label asp-for="DiscountType" class="col-3">
+                    DiscountType
                 </label>
                 <div class="col-9">
-                    <select asp-for="Booking.ServicePriceId" asp-items="Model.ServicePrices" class="form-control form-control-solid">
-                        <option selected="selected" value="">---Select Service---</option>
-                    </select>
-                </div>
-            </div>
-            <!--end::Input group-->
-            <!--begin::Input group-->
-            <div class="form-group row fv-row">
-                <label asp-for="Booking.BookingDate" class="col-3">
-                    Booking Start Date
-                </label>
-                <div class="col-9">
-                    <input asp-for="Booking.BookingDate" class="form-control form-control-solid booking-date" placeholder="Pick Start date" />
-                </div>
-            </div>
-            <!--end::Input group-->
-            <!--begin::Input group-->
-            <div class="form-group row fv-row dv-start-time">
-                <label class="required col-3">StartTime</label>
-                <div class="col-9">
-                    <select name="StartTime" id="StartTime" aria-label="Select a StartTime" style="width:100%" data-control="select2" data-placeholder="Select a StartTime..." class="form-select form-select-solid" data-hide-search="true" >
-                        <option value=""></option>
-                    </select>
-                    <input type="hidden" asp-for="ServiceStartTime" />
-                    <input type="hidden" asp-for="Booking.StartTime" required />
-                </div>
-            </div>
-             <!--end::Input group-->
-            <!--begin::Input group-->
-            <div class="form-group row fv-row">
-                <label asp-for="Booking.BookingEndDate" class="col-3">
-                    Booking End Date
-                </label>
-                <div class="col-9">
-                    <input asp-for="Booking.BookingEndDate" class="form-control form-control-solid booking-date" placeholder="Pick End date" />
-                </div>
-            </div>
-            <!--end::Input group-->
-            <!--begin::Input group-->
-            <div class="form-group row fv-row dv-end-time">
-                <label class="required col-3">EndTime</label>
-                <div class="col-9">
-                    <select name="EndTime" id="EndTime" aria-label="Select a End Time" style="width:100%" data-control="select2" data-placeholder="Select a EndTime..." class="form-select form-select-solid" data-hide-search="true">
+                    <select class="form-select form-select-solid fw-bolder" name="adjustment" aria-label="Select an option" data-control="select2" data-dropdown-parent="#kt_modal_adjust_balance" data-placeholder="Select an option" data-hide-search="true">
                         <option></option>
+                        <option value="1">Amount</option>
+                        <option value="2">Percentage</option>
                     </select>
-                    <input type="hidden" asp-for="ServiceEndTime" />
-                    <input type="hidden" asp-for="Booking.EndTime" required />
                 </div>
             </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="form-group row fv-row">
+                <label asp-for="Discount" class="col-3">
+                    Discount
+                </label>
+                <div class="col-9">
+                    <input id="kt_modal_inputmask" type="number" class="form-control form-control-solid" asp-for="Discount" />
+                </div>
+            </div>
+           
             <!--begin::Actions-->
             <div class="text-center pt-15">
                 <button type="reset" class="btn btn-light me-3" data-kt-booking-modal-action="cancel">Discard</button>

@@ -37,7 +37,7 @@
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <!--begin::Page Title-->
                 <h5 class="text-dark font-weight-bold my-1 mr-5">
-                    Bookings
+                    Coupons
                 </h5>
                 <!--end::Page Title-->
                 <!--begin::Breadcrumb-->
@@ -46,7 +46,7 @@
                         <a href="/Admin/" class="text-muted">Home</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="/Admin/Booking/" class="text-muted">Bookings</a>
+                        <a href="/Admin/Coupon/" class="text-muted">Coupons</a>
                     </li>
                 </ul>
                 <!--end::Breadcrumb-->
@@ -66,7 +66,7 @@
             <div class="card-header flex-wrap border-0 pt-6 pb-0">
                 <div class="card-title">
                     <h3 class="card-label">
-                        Bookings
+                        coupons
                         @*<span class="d-block text-muted pt-2 font-size-sm">Sorting &amp; pagination remote datasource</span>*@
                     </h3>
                 </div>
@@ -80,7 +80,7 @@
                 </div>
                 <div class="card-toolbar">
                     <!--begin::Button-->
-                    <a href="javascript:;" onclick="openBookingModal()" class="btn btn-primary font-weight-bolder">
+                    <a href="javascript:;" onclick="opencouponModal()" class="btn btn-primary font-weight-bolder">
                         <span class="svg-icon svg-icon-md">
                             <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Design/Flatten.svg-->
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -105,8 +105,8 @@
         <!--end::Card-->
     </div>
     <!--end::Container-->
-    <!--begin::Modal - Add booking-->
-    <div class="modal fade" id="kt_modal_booking" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <!--begin::Modal - Add coupon-->
+    <div class="modal fade" id="kt_modal_coupon" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <!--begin::Modal dialog-->
         <div class="modal-dialog modal-dialog-centered mw-650px">
             <!--begin::Modal content-->
@@ -114,10 +114,10 @@
                 <!--begin::Modal header-->
                 <div class="modal-header">
                     <!--begin::Modal title-->
-                    <h2 class="fw-bolder booking-header">New Booking</h2>
+                    <h2 class="fw-bolder coupon-header">New coupon</h2>
                     <!--end::Modal title-->
                     <!--begin::Close-->
-                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-booking-modal-action="close">
+                    <div class="btn btn-icon btn-sm btn-active-icon-primary" data-kt-coupon-modal-action="close">
                         <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
                         <span class="svg-icon svg-icon-1">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -133,7 +133,7 @@
                 </div>
                 <!--end::Modal header-->
                 <!--begin::Modal body-->
-                <div class="modal-body scroll-y mx-5 mx-xl-15 my-7" id="mdlBookingBody">
+                <div class="modal-body scroll-y mx-5 mx-xl-15 my-7" id="mdlCouponBody">
                 </div>
                 <!--end::Modal body-->
             </div>
@@ -141,7 +141,7 @@
         </div>
         <!--end::Modal dialog-->
     </div>
-    <!--end::Modal - Add booking-->
+    <!--end::Modal - Add coupon-->
     <!--begin::Modal - Add Payment-->
     <div class="modal fade" id="kt_modal_paymentReceipt" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <!--begin::Modal dialog-->
@@ -181,8 +181,8 @@
     <!--end::Modal - Add Payment-->
 </div>
 <!--end::Entry-->
-<!--begin::Modal - Cancel booking-->
-<div class="modal fade" id="kt_modal_cancel_booking" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+<!--begin::Modal - Cancel coupon-->
+<div class="modal fade" id="kt_modal_cancel_coupon" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     <!--begin::Modal dialog-->
     <div class="modal-dialog modal-dialog-centered modal-lg mw-650px">
         <!--begin::Modal content-->
@@ -190,10 +190,10 @@
             <!--begin::Modal header-->
             <div class="modal-header">
                 <!--begin::Modal title-->
-                <h2 class="fw-bolder">Cancel Booking</h2>
+                <h2 class="fw-bolder">Cancel coupon</h2>
                 <!--end::Modal title-->
                 <!--begin::Close-->
-                <div class="btn btn-icon btn-sm btn-active-icon-primary" onclick="$('#kt_modal_cancel_booking').modal('hide');">
+                <div class="btn btn-icon btn-sm btn-active-icon-primary" onclick="$('#kt_modal_cancel_coupon').modal('hide');">
                     <!--begin::Svg Icon | path: icons/duotone/Navigation/Close.svg-->
                     <span class="svg-icon svg-icon-1">
                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -209,7 +209,7 @@
             </div>
             <!--end::Modal header-->
             <!--begin::Modal body-->
-            <div class="modal-body scroll-y mx-5 mx-xl-15" style="padding-top:0" id="mdlCancelBookingBody">
+            <div class="modal-body scroll-y mx-5 mx-xl-15" style="padding-top:0" id="mdlCancelcouponBody">
             </div>
             <!--end::Modal body-->
         </div>
@@ -217,15 +217,13 @@
     </div>
     <!--end::Modal dialog-->
 </div>
-<!--end::Modal - Cancel booking-->
-<div id="AddOnModal">
-</div>
+<!--end::Modal - Cancel coupon-->
 @section scripts{
-    <script src="~/js/bookings.js" asp-append-version="true"></script>
-    <script src="~/js/addon.js" asp-append-version="true"></script>
+    <script src="~/js/coupon.js" asp-append-version="true"></script>
+  
     <script type="text/javascript">
         $(document).ready(function () {
-            BookingDataTable.init();
+            couponDataTable.init();
         });
     </script>
 }
