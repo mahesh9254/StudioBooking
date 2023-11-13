@@ -34,6 +34,7 @@ namespace StudioBooking.Data
         public DbSet<PaymentReceipt> PaymentReceipts { get; set; }
         public DbSet<Addon> Addons { get; set; }
         public DbSet<CustomerAddress> CustomerAddresses { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -66,7 +67,7 @@ namespace StudioBooking.Data
             builder.Entity<IdentityUserToken<string>>(entity =>
             {
                 entity.ToTable("UserTokens");
-            });
+            });            
             builder.Entity<Booking>()
                 .Property(p => p.RatePerHour)
                 .HasColumnType("decimal(18,4)");
@@ -75,6 +76,9 @@ namespace StudioBooking.Data
                 .HasColumnType("decimal(18,4)");
             builder.Entity<Transaction>()
                 .Property(p => p.Amount)
+                .HasColumnType("decimal(18,4)");
+            builder.Entity<Coupon>()
+                .Property(p => p.Discount)
                 .HasColumnType("decimal(18,4)");
             builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
         }
