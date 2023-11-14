@@ -28,10 +28,10 @@
             </div>*@
             <div class="col-12 d-flex justify-content-center">
                 <a href="/" class="mb-xs-40 mb-lg-50 logo">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=" class="lazy" data-src="@(AppConfig.WebsiteSettingsImageUrl + layoutViewModel.WebsiteSetting.FooterLogo)" alt="logo" style="max-height:55px">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=" class="lazy" data-src="@(AppConfig.WebsiteSettingsImageUrl + layoutViewModel?.WebsiteSetting?.FooterLogo)" alt="logo" style="max-height:55px">
                     <span class="logo-text">
-                        <span>@layoutViewModel.WebsiteSetting.Name.Replace(layoutViewModel.WebsiteSetting.Name.Split(" ").LastOrDefault(),"")</span>
-                        <span style="text-align:center;font-size:small">@layoutViewModel.WebsiteSetting.Name.Split(" ").LastOrDefault()</span>
+                        <span>@layoutViewModel?.WebsiteSetting?.Name?.Replace(layoutViewModel?.WebsiteSetting?.Name?.Split(" ")?.LastOrDefault(),"")</span>
+                        <span style="text-align:center;font-size:small">@layoutViewModel?.WebsiteSetting?.Name?.Split(" ")?.LastOrDefault()</span>
                     </span>
                 </a>
             </div>

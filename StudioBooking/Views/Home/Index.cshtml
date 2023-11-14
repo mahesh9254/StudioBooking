@@ -30,9 +30,9 @@
                     <div class="col-12 text-center">
                         <p class="tt-slide_description" style="font-size:larger!important">· Rehearsal · Recording · Mixing </p>
                         @{
-                            var taglineText1 = layoutViewModel.WebsiteSetting.TagLine.Replace(layoutViewModel.WebsiteSetting.TagLine.Split(" ").LastOrDefault(), "");
+                            var taglineText1 = layoutViewModel?.WebsiteSetting?.TagLine?.Replace(layoutViewModel?.WebsiteSetting?.TagLine?.Split(" ")?.LastOrDefault(), "");
                         }
-                        <p class="tt-slide_header"><span class="font-gradient">@taglineText1</span><br>@layoutViewModel.WebsiteSetting.TagLine.Split(" ").LastOrDefault()</p>
+                        <p class="tt-slide_header"><span class="font-gradient">@taglineText1</span><br>@layoutViewModel?.WebsiteSetting?.TagLine?.Split(" ")?.LastOrDefault()</p>
                         <a href="javascript:;" class="button">Book Now</a>
                     </div>
                 </div>

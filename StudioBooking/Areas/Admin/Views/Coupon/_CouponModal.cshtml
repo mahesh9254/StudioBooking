@@ -42,10 +42,10 @@
             <!--begin::Input group-->
             <div class="form-group row fv-row">
                 <label asp-for="Discount" class="col-3">
-                    Discount
+                    Discount(%)
                 </label>
                 <div class="col-9">
-                    <input id="Discount" type="number" class="form-control form-control-solid" asp-for="Discount" />
+                    <input id="Discount" type="number" min="0"  max="100" class="form-control form-control-solid" asp-for="Discount" />
                 </div>
             </div>
            
