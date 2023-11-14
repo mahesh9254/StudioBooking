@@ -122,5 +122,23 @@ namespace StudioBooking.Areas.Admin.Controllers
             return Ok(new { data = couponDTO, result = true });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UpdateCouponStatus(long id, int status)
+        {
+            try
+            {
+                var booking = await _context.Coupons.FirstOrDefaultAsync(b => b.Id == id && !b.IsDelete) ?? throw new Exception("Invalid booking id");
+                booking.IsActive = status == 1 ? true : false;
+                booking.ModifiedDate = Defaults.GetDateTime();
+                booking.ModifiedBy = GetUserId();                
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { result = false, error = ex.Message });
+            }
+            return Ok(new { result = true });
+        }
+
     }
 }

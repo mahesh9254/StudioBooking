@@ -305,11 +305,11 @@ function updateCouponStatus(id, status) {
             }
         }).then((function (t) {
             if (t.isConfirmed) {
-                $.get("/Admin/Booking/UpdateBookingStatus?id=" + id + "&status=" + status)
+                $.get("/Admin/Coupon/UpdateCoupon?id=" + id + "&status=" + status)
                     .done(function (data) {
                         if (data.result) {
                             $(".kt-datatable").KTDatatable().reload();
-                            toastr.success("Booking " + (status === 1 ? 'Approve' : 'On-Hold') + " successfully.");
+                            toastr.success("Coupon " + (status === 1 ? 'Activate' : 'Deactivate') + " successfully.");
                         }
                         else {
                             toastr.error("Error: " + data.errorMsg);
