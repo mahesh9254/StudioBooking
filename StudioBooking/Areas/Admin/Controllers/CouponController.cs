@@ -127,10 +127,18 @@ namespace StudioBooking.Areas.Admin.Controllers
         {
             try
             {
-                var booking = await _context.Coupons.FirstOrDefaultAsync(b => b.Id == id && !b.IsDelete) ?? throw new Exception("Invalid booking id");
-                booking.IsActive = status == 1 ? true : false;
-                booking.ModifiedDate = Defaults.GetDateTime();
-                booking.ModifiedBy = GetUserId();                
+                if(status == 1)
+                {
+                    var couponAll = await _context.Coupons.ToListAsync();
+                    foreach (var item in couponAll)
+                    {
+                        item.IsActive = false;
+                    }
+                }
+                var coupon = await _context.Coupons.FirstOrDefaultAsync(b => b.Id == id && !b.IsDelete) ?? throw new Exception("Invalid booking id");
+                coupon.IsActive = status == 1 ? true : false;
+                coupon.ModifiedDate = Defaults.GetDateTime();
+                coupon.ModifiedBy = GetUserId();                
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)

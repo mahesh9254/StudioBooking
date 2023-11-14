@@ -293,7 +293,7 @@ function updateCouponStatus(id, status) {
         }
     }),
         Swal.fire({
-            text: "Are you sure you want to " + (status === 1 ? 'Approve' : 'On-Hold') + " booking?",
+            text: "Are you sure you want to " + (status === 1 ? 'Activate' : 'Deactivate') + " coupon?",
             icon: "warning",
             showCancelButton: !0,
             buttonsStyling: !1,
@@ -305,10 +305,10 @@ function updateCouponStatus(id, status) {
             }
         }).then((function (t) {
             if (t.isConfirmed) {
-                $.get("/Admin/Coupon/UpdateCoupon?id=" + id + "&status=" + status)
+                $.get("/Admin/Coupon/UpdateCouponStatus?id=" + id + "&status=" + status)
                     .done(function (data) {
                         if (data.result) {
-                            $(".kt-datatable").KTDatatable().reload();
+                            $("#kt_datatable").KTDatatable().reload();
                             toastr.success("Coupon " + (status === 1 ? 'Activate' : 'Deactivate') + " successfully.");
                         }
                         else {
