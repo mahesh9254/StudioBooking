@@ -32,13 +32,13 @@ function addFormValidation() {
                     }
                 }
             },
-            "DiscountType": {
-                validators: {
-                    notEmpty: {
-                        message: "Discount Type is required"
-                    }
-                }
-            },
+            //"DiscountType": {
+            //    validators: {
+            //        notEmpty: {
+            //            message: "Discount Type is required"
+            //        }
+            //    }
+            //},
             "Discount": {
                 validators: {
                     notEmpty: {
@@ -125,7 +125,16 @@ var KTCouponModal = function () {
             (() => {
                 let e = r.querySelector("#kt_modal_coupon_form");
                 let n = new bootstrap.Modal(r);               
-               
+                r.querySelector('[data-kt-coupon-modal-action="close"]').addEventListener("click", (t => {
+                    t.preventDefault();
+                    $("#kt_modal_coupon").modal('hide');
+                }
+                ));
+                r.querySelector('[data-kt-coupon-modal-action="cancel"]').addEventListener("click", (t => {
+                    t.preventDefault();
+                    $("#kt_modal_coupon").modal('hide');
+                }
+                ));
             }
             )()
         }
@@ -177,50 +186,78 @@ var CouponDataTable = {
             columns: [
                 
                 {
-                    field: "Id",
+                    field: "id",
                     title: "ID",
                     sortable: "desc",
                     selector: !1,
                     autoHide: !1,
                     textAlign: "center",
                     template: function (t) {
-                        return t.Id;
+                        return t.id;
                     }
                 },
                 {
-                    field: "Name",
+                    field: "name",
                     title: "Name",
                     autoHide: !1,
                     template: function (t) {
-                        return t.Name;
+                        return t.name;
                     }
                 },
                 {
-                    field: "Code",
+                    field: "code",
                     title: "Coupon Code",
                     autoHide: !1,
                     template: function (t) {
-                        return t.Code;
+                        return t.code;
                     }
-                },
+                },               
+                //{
+                //    field: "discountType",
+                //    title: "Discount Type",
+                //    autoHide: !1,
+                //    textAlign: "center",
+                //    template: function (t) {
+                //        var e = {
+                //            "1": {
+                //                title: "Amount",
+                //                class: "info"
+                //            },
+                //            "2": {
+                //                title: "Percentage",
+                //                class: "info"
+                //            }
+                //        };
+                //        return '<span class="label label-' + e[t.discountType].class + ' label-pill label-inline">' + e[t.discountType].title + '</span>';
+                //    }
+                //},
                 {
-                    field: "DiscountType",
-                    title: "Discount Type",
-                    autoHide: !1,
-                    template: function (t) {
-                        return t.DiscountType;
-                    }
-                },
-                {
-                    field: "Discount",
+                    field: "discount",
                     title: "Discount",
                     autoHide: !1,
                     template: function (t) {
-                        return t.Discount;
+                        return t.discount;
                     }
                 },
-                
-                
+                {
+                    field: "isActive",
+                    title: "Status",
+                    autoHide: !1,
+                    textAlign: "center",
+                    template: function (t) {
+                        var e = {                            
+                            "true": {
+                                title: "Activate",
+                                class: "success"
+                            },                           
+                            "false": {
+                                title: "Deactivate",
+                                class: "danger"
+                            }                            
+                        };
+                        return '<span class="label label-' + e[t.isActive].class + ' label-pill label-inline">' + e[t.isActive].title + '</span>';
+                    }
+                },                
                 {
                     field: "Actions",
                     title: "",
@@ -232,12 +269,12 @@ var CouponDataTable = {
                         html += '<a href="javascript:;" class="btn btn-light-primary btn-icon btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                         html += '<i class="ki ki-bold-more-ver"></i></a>';
                         html += '<div class="dropdown-menu dropdown-menu-sm">'; 
-                        html += '<a href="javascript:;" class="dropdown-item" title="Edit Details" onClick="editBooking(' + t.id + ')"><i class="flaticon2-edit"></i><span style="margin: 3px;">Edit</span></a>';
-                        if (t.IsActive) {
-                            html += '<a href="/Booking/PaymentReciept/' + t.id + '" target="_blank" class="dropdown-item" title="View Reciept"><i class="flaticon2-file"></i><span style="margin: 3px;">Deactviate</span></a>';
-                        }
-                        if (!t.IsActive) {
-                            html += '<a href="/Booking/PaymentReciept/' + t.id + '" target="_blank" class="dropdown-item" title="View Reciept"><i class="flaticon2-file"></i><span style="margin: 3px;">Activate</span></a>';
+                        html += '<a href="javascript:;" class="dropdown-item" title="Edit Details" onClick="editCoupon(' + t.id + ')"><i class="flaticon2-edit"></i><span style="margin: 3px;">Edit</span></a>';
+                        if (t.isActive) {
+                            html += '<a href="javascript:;" class="dropdown-item" title="Deactivate"" onClick="updateCouponStatus(' + t.id + ',' + 0 + ')"><i class="flaticon2-check-mark"></i><span style="margin: 3px;">Deactivate</span></a>';
+                                  }
+                        if (!t.isActive) {
+                            html += '<a href="javascript:;" class="dropdown-item" title="Activate"" onClick="updateCouponStatus(' + t.id + ',' + 1 + ')"><i class="flaticon2-check-mark"></i><span style="margin: 3px;">Activate</span></a>';
                         }
                         //html += '<a href="javascript:;" id="btnDelete" class="dropdown-item" data-target="' + t.booking.id + '" controller="Admin/Booking" title="Delete"><i class="flaticon2-trash"></i><span style="margin: 3px;">Delete</span></a>';
                         html += '</div></div>';
@@ -245,47 +282,72 @@ var CouponDataTable = {
                     }
                 }]
         });
-    },
-    ApproveBooking: function (id, bookingid) {
-        bootbox.confirm({
-            title: "Confirm",
-            message: "Approve booking and send payment link for booking id: " + bookingid + " ?",
-            buttons: {
-                cancel: {
-                    label: '<i class="fa fa-times"></i> No'
-                },
-                confirm: {
-                    label: '<i class="fa fa-check"></i> Yes'
-                }
-            },
-            callback: function (result) {
-                if (result) {
-                    $.get("/Admin/Booking/ApproveBooking?id=" + id)
-                        .done(function (data) {
-                            if (data.result) {
-                                $(".kt-datatable").KTDatatable().reload();
-                                toastr.success("Booking approved successfully.");
-                            }
-                            else {
-                                toastr.error("Error: " + data.errorMsg);
-                            }
-                        })
-                        .fail(function (error) {
-                            toastr.error(defaultErrorMessage + error);
-                        });
-                }
-            }
-        });
-    }
+    }   
 };
 
-function getCouponRequest() {
+function updateCouponStatus(id, status) {
+    $.ajaxSetup({
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    }),
+        Swal.fire({
+            text: "Are you sure you want to " + (status === 1 ? 'Approve' : 'On-Hold') + " booking?",
+            icon: "warning",
+            showCancelButton: !0,
+            buttonsStyling: !1,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            customClass: {
+                confirmButton: "btn fw-bold btn-success",
+                cancelButton: "btn fw-bold btn-dander"
+            }
+        }).then((function (t) {
+            if (t.isConfirmed) {
+                $.get("/Admin/Booking/UpdateBookingStatus?id=" + id + "&status=" + status)
+                    .done(function (data) {
+                        if (data.result) {
+                            $(".kt-datatable").KTDatatable().reload();
+                            toastr.success("Booking " + (status === 1 ? 'Approve' : 'On-Hold') + " successfully.");
+                        }
+                        else {
+                            toastr.error("Error: " + data.errorMsg);
+                        }
+                    })
+                    .fail(function (error) {
+                        toastr.error(defaultErrorMessage + error);
+                    });
+            }
+        }));
+
+}
+function getCouponRequest() {      
+       
     let request = {
         Id: $("#Id").val(),
         Name: $("#Name").val(),
         Code: $("#Code").val(),
-        DiscountType: $("#DiscountType").val(),
+       // DiscountType: document.querySelector('[name="DiscountType"]').value,
         Discount: $("#Discount").val()        
     }
     return JSON.stringify(request);
+}
+function editCoupon(id) {
+    $('#mdlCouponBody').empty();
+    $.get("/Admin/Coupon/CreateCouponModal/" + id)
+        .done(function (res) {
+            $('#mdlCouponBody').append(res);
+            $("#kt_modal_coupon").modal('show');
+            addFormValidation();
+            KTCouponModal.init();
+            $(".coupon-header").text("Edit Coupon");
+            $("#Id").attr('disabled', 'disabled');
+            $("#Name").attr('disabled', 'disabled');
+            $("#Code").attr('disabled', 'disabled'); 
+        })
+        .fail(function (err) {
+            toastr.error(err);
+            console.log(err);
+        });
 }

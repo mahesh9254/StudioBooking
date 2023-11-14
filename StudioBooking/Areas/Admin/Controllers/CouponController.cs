@@ -32,8 +32,7 @@ namespace StudioBooking.Areas.Admin.Controllers
                 Id = c.Id,
                 Name = c.Name,
                 Code = c.Code,
-                Discount = c.Discount,
-                DiscountType = c.DiscountType,
+                Discount = c.Discount,                
                 IsActive = c.IsActive,
                 
             }).ToListAsync();
@@ -54,12 +53,11 @@ namespace StudioBooking.Areas.Admin.Controllers
                 
                 var coupon = await _context.Coupons.FirstOrDefaultAsync(s => s.Id == id);
                 var model = new CouponViewModel();
-                if (coupon == null) 
+                if (coupon != null) 
                 {
                     model.Id = coupon.Id;
                     model.Name = coupon.Name;
-                    model.Code = coupon.Code;
-                    model.DiscountType = coupon.DiscountType;
+                    model.Code = coupon.Code;                    
                     model.Discount = coupon.Discount;
                     model.IsActive = coupon.IsActive;
 
@@ -78,8 +76,7 @@ namespace StudioBooking.Areas.Admin.Controllers
                 {
                     Id = couponDTO.Id,
                     Name = couponDTO.Name,
-                    Code = couponDTO.Code,
-                    DiscountType = couponDTO.DiscountType,
+                    Code = couponDTO.Code,                    
                     Discount = couponDTO.Discount,
                     IsActive = true,
                     IsDelete = false,
@@ -110,15 +107,10 @@ namespace StudioBooking.Areas.Admin.Controllers
             try
             {
                 var coupon = await _context.Coupons.FirstOrDefaultAsync(b => b.Id == couponDTO.Id) ?? throw new Exception("Invalid coupon id");
+                coupon.Discount = couponDTO.Discount;
+                coupon.ModifiedBy = GetUserId();
+                coupon.ModifiedDate = DateTime.Now;               
                 
-
-                var request = new Coupon
-                {                   
-                    DiscountType = couponDTO.DiscountType,
-                    Discount = couponDTO.Discount,                                      
-                    ModifiedBy = GetUserId(),
-                    ModifiedDate = DateTime.Now
-                };                 
                 await _context.SaveChangesAsync();
                
             }

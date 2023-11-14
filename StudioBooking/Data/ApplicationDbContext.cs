@@ -76,10 +76,7 @@ namespace StudioBooking.Data
                 .HasColumnType("decimal(18,4)");
             builder.Entity<Transaction>()
                 .Property(p => p.Amount)
-                .HasColumnType("decimal(18,4)");
-            builder.Entity<Coupon>()
-                .Property(p => p.Discount)
-                .HasColumnType("decimal(18,4)");
+                .HasColumnType("decimal(18,4)");            
             builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
         }
     }

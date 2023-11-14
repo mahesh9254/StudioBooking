@@ -25,18 +25,19 @@
             </div>
             <!--end::Input group-->
             <!--begin::Input group-->
-            <div class="form-group row fv-row">
+            @* <div class="form-group row fv-row">
                 <label asp-for="DiscountType" class="col-3">
                     DiscountType
                 </label>
                 <div class="col-9">
-                    <select class="form-select form-select-solid fw-bolder" name="adjustment" aria-label="Select an option" data-control="select2" data-dropdown-parent="#kt_modal_adjust_balance" data-placeholder="Select an option" data-hide-search="true">
+                    <select class="form-select form-select-solid fw-bolder" name="DiscountType" aria-label="Select an option" data-control="select2" data-dropdown-parent="#kt_modal_adjust_balance" data-placeholder="Select an option" data-hide-search="true">
                         <option></option>
                         <option value="1">Amount</option>
                         <option value="2">Percentage</option>
                     </select>
+
                 </div>
-            </div>
+            </div> *@
             <!--end::Input group-->
             <!--begin::Input group-->
             <div class="form-group row fv-row">
@@ -44,14 +45,14 @@
                     Discount
                 </label>
                 <div class="col-9">
-                    <input id="kt_modal_inputmask" type="number" class="form-control form-control-solid" asp-for="Discount" />
+                    <input id="Discount" type="number" class="form-control form-control-solid" asp-for="Discount" />
                 </div>
             </div>
            
             <!--begin::Actions-->
             <div class="text-center pt-15">
-                <button type="reset" class="btn btn-light me-3" data-kt-booking-modal-action="cancel">Discard</button>
-                <button type="submit" class="btn btn-primary" data-kt-booking-modal-action="submit">
+                <button type="reset" class="btn btn-light me-3" data-kt-coupon-modal-action="cancel">Discard</button>
+                <button type="submit" class="btn btn-primary" data-kt-coupon-modal-action="submit">
                     <span class="indicator-label">Submit</span>
                 </button>
             </div>
