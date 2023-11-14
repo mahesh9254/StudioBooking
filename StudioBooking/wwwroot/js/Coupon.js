@@ -81,11 +81,11 @@ function addFormValidation() {
                             }
                         }).then((function (t) {
                             if (t.isConfirmed) {
-                                $.post("/Admin/Booking/" + (parseInt($("#Booking_Id").val()) > 0 ? 'ScheduleChangeRequest' : 'AddBooking') + "", getBookingRequest()).done(function (res) {
+                                $.post("/Admin/Coupon/" + (parseInt($("#Id").val()) > 0 ? 'EditCoupon' : 'AddCoupon') + "", getCouponRequest()).done(function (res) {
                                     if (res.result) {
                                         $("#kt_datatable").KTDatatable().reload();
-                                        $("#kt_modal_booking").modal('hide');
-                                        toastr.success("Booking " + (parseInt($("#Booking_Id").val()) > 0 ? 'updated' : 'created') + " successfully.");
+                                        $("#kt_modal_coupon").modal('hide');
+                                        toastr.success("Coupon " + (parseInt($("#Id").val()) > 0 ? 'updated' : 'created') + " successfully.");
                                     }
                                     else {
                                         Swal.fire({
@@ -278,3 +278,14 @@ var CouponDataTable = {
         });
     }
 };
+
+function getCouponRequest() {
+    let request = {
+        Id: $("#Id").val(),
+        Name: $("#Name").val(),
+        Code: $("#Code").val(),
+        DiscountType: $("#DiscountType").val(),
+        Discount: $("#Discount").val()        
+    }
+    return JSON.stringify(request);
+}

@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using StudioBooking.Areas.Admin.Models;
 using StudioBooking.Data;
 using StudioBooking.Data.Models;
+using StudioBooking.DTO;
+using StudioBooking.Infrastructure;
+using static StudioBooking.Infrastructure.Enums;
 
 namespace StudioBooking.Areas.Admin.Controllers
 {
@@ -20,6 +23,22 @@ namespace StudioBooking.Areas.Admin.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetCoupons()
+        {
+            var coupons = await _context.Coupons.Where(c =>  !c.IsDelete ).Select(c => new CouponViewModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Code = c.Code,
+                Discount = c.Discount,
+                DiscountType = c.DiscountType,
+                IsActive = c.IsActive,
+                
+            }).ToListAsync();
+
+            return Ok(new { data = coupons });
         }
         [HttpGet]
         public async Task<IActionResult> CreateCouponModal(long? id)
@@ -49,5 +68,67 @@ namespace StudioBooking.Areas.Admin.Controllers
                 return PartialView("_CouponModal", model);
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCoupon([FromBody] CouponDTO couponDTO)
+        {
+            try
+            {
+                var coupon = new Coupon
+                {
+                    Id = couponDTO.Id,
+                    Name = couponDTO.Name,
+                    Code = couponDTO.Code,
+                    DiscountType = couponDTO.DiscountType,
+                    Discount = couponDTO.Discount,
+                    IsActive = true,
+                    IsDelete = false,
+                    CreatedBy = GetUserId(),
+                    CreatedDate = Defaults.GetDateTime(),
+                    ModifiedBy = GetUserId(),
+                    ModifiedDate = Defaults.GetDateTime()
+                };
+
+                var couponAll = await _context.Coupons.ToListAsync();
+                foreach (var item in couponAll)
+                {
+                    item.IsActive = false;
+                }
+                await _context.Coupons.AddAsync(coupon);                
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { result = false, error = ex.Message });
+            }
+            return Ok(new { result = true });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditCoupon([FromBody] CouponDTO couponDTO)
+        {
+            try
+            {
+                var coupon = await _context.Coupons.FirstOrDefaultAsync(b => b.Id == couponDTO.Id) ?? throw new Exception("Invalid coupon id");
+                
+
+                var request = new Coupon
+                {                   
+                    DiscountType = couponDTO.DiscountType,
+                    Discount = couponDTO.Discount,                                      
+                    ModifiedBy = GetUserId(),
+                    ModifiedDate = DateTime.Now
+                };                 
+                await _context.SaveChangesAsync();
+               
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("EditCoupon => " + ex.Message, ex);
+                return Ok(new { data = couponDTO, result = false, error = ex.Message });
+            }
+            return Ok(new { data = couponDTO, result = true });
+        }
+
     }
 }
