@@ -199,6 +199,7 @@ namespace StudioBooking.Areas.Admin.Controllers
 
                 var pendingAmount = booking.Total - booking.Transactions.Where(t => t.Status == (int)TransactionStatus.Success).Sum(b => b.Amount);
                 booking.BookingDate = request.RequestDate ?? DateTime.MinValue;
+                booking.BookingEndDate = request.RequestEndDate ?? DateTime.MinValue;
                 booking.StartTime = TimeOnly.FromDateTime(request.RequestStartTime ?? DateTime.MinValue).ToString();
                 booking.EndTime = TimeOnly.FromDateTime(request.RequestEndTime ?? DateTime.MinValue).ToString();
                 booking.Total = newTotalHours * (double)booking.RatePerHour;
