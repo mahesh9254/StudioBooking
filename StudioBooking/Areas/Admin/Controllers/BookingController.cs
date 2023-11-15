@@ -624,8 +624,8 @@ namespace StudioBooking.Areas.Admin.Controllers
             var customerAddress = await _context.CustomerAddresses.FirstOrDefaultAsync(a => a.IsDefault && a.CustomerId == booking.CustomerId);
             return new Booking
             {
-                BookingDate = DateTime.ParseExact(booking.BookingDate, Defaults.DefaultDateFormat, CultureInfo.InvariantCulture),
-                BookingEndDate = DateTime.ParseExact(booking.BookingEndDate, Defaults.DefaultDateFormat, CultureInfo.InvariantCulture),
+                BookingDate = DateTime.ParseExact(booking.BookingDate, Defaults.DefaultDateFormat, null),
+                BookingEndDate = DateTime.ParseExact(booking.BookingEndDate, Defaults.DefaultDateFormat, null),
                 ServicePriceId = servicePrice.Id,
                 RatePerHour = (decimal)servicePrice.Price,
                 StartTime = booking.StartTime,
