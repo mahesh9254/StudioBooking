@@ -16,6 +16,7 @@ function opencouponModal() {
 }
 
 function addFormValidation() {
+
     var i = FormValidation.formValidation($("#kt_modal_coupon_form")[0], {
         fields: {
             "Name": {
@@ -31,19 +32,17 @@ function addFormValidation() {
                         message: "Coupon code is required"
                     }
                 }
-            },
-            //"DiscountType": {
-            //    validators: {
-            //        notEmpty: {
-            //            message: "Discount Type is required"
-            //        }
-            //    }
-            //},
+            },            
             "Discount": {
                 validators: {
+                    integer: {
+                        message: 'Please enter the valid number',
+                        min: 1,
+                        max: 100
+                    },
                     notEmpty: {
                         message: "Discount is required"
-                    }
+                    }                    
                 }
             }           
         },
@@ -351,3 +350,4 @@ function editCoupon(id) {
             console.log(err);
         });
 }
+
