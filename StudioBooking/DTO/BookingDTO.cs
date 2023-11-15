@@ -13,6 +13,7 @@ namespace StudioBooking.DTO
         public int ServicePriceId { get; set; }
         public string? ServiceName { get; set; }
         public long? CustomerId { get; set; }
+
         public string? BookingDate { get; set; }
         public string? BookingEndDate { get; set; }
         public string? StartTime { get; set; }

@@ -64,6 +64,8 @@ namespace StudioBooking.Areas.Admin.Controllers
             else
             {
                 var booking = await BookingDTO.GetBookingById(_context, id ?? 0);
+                //booking.BookingDate = DateTime.ParseExact(booking.BookingDate, "dd/MM/yyyy", null).ToString();
+                //booking.BookingEndDate = DateTime.ParseExact(booking.BookingEndDate, "dd/MM/yyyy", null).ToString();
                 var servicePrice = await _context.ServicePrices.Include(s => s.Category).FirstOrDefaultAsync(s => s.Id == booking.ServicePriceId);
                 var model = new CreateBookingViewModel
                 {

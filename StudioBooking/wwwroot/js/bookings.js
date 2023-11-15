@@ -45,7 +45,7 @@ var BookingDataTable = {
                     field: "booking.bookingDate",
                     title: "Start Date",
                     type: 'date',
-                    format: 'dd/MM/yyyy',
+                    format: 'dd-MM-yyyy',
                     autoHide: !1,
                     template: function (t) {
                         return t.booking.bookingDate;
@@ -55,7 +55,7 @@ var BookingDataTable = {
                     field: "booking.bookingEndDate",
                     title: "End Date",
                     type: 'date',
-                    format: 'dd/MM/yyyy',
+                    format: 'dd-MM-yyyy',
                     autoHide: !1,
                     template: function (t) {
                         return t.booking.bookingEndDate;
@@ -303,12 +303,12 @@ var KTBookingModal = function () {
                 let serviceData = [];
                 $("#Booking_BookingDate").datepicker({
                     enableTime: false,
-                    format: "dd/mm/yyyy",
+                    format: "dd-mm-yyyy",
                     startDate: '+1d'
                 });
                 $("#Booking_BookingEndDate").datepicker({
                     enableTime: false,
-                    format: "dd/mm/yyyy",
+                    format: "dd-mm-yyyy",
                     startDate: '+1d'                    
                 });
                 $("#ddlCategory").select2();
