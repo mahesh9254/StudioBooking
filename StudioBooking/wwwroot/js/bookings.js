@@ -431,7 +431,7 @@ var KTBookingModal = function () {
                         //                    id: e.id,
                         //                    text: e.serviceName
                         //                });
-                        //            });  
+                        //            });
                         //            if (serviceData) {
                         //                serviceData.forEach(function (e) {
                         //                    if (servicePriceId == e.id) selectedValue = e;
@@ -440,18 +440,60 @@ var KTBookingModal = function () {
 
                         //                setEndTimeSlots(selectedValue.startTime, selectedValue.endTime, 1);
                         //            }
-                        //        }                                
+                        //        }
                         //    }).fail((err) => {
                         //        console.log(err);
                         //    });
-                            
+
                         //}
+
+                        let sDate = $("#Booking_BookingDate").val();
+                        let eDate = $("#Booking_BookingEndDate").val();
+                        if (sDate < eDate) {
+
+                            let servicePriceId = parseInt($("#Booking_ServicePriceId").val());
+                            var selectedValue = {};
+                            var tymValue = this.value;
+                            $.get("/Admin/ServicePrice/GetServices/" + $("#ddlCategory").val()).done((res) => {
+                                if (res.data.length) {
+                                    serviceData = res.data;
+                                    let services = [];
+                                    $.each(res.data, function (i, e) {
+                                        services.push({
+                                            id: e.id,
+                                            text: e.serviceName
+                                        });
+                                    });
+                                    if (serviceData) {
+                                        serviceData.forEach(function (e) {
+                                            if (servicePriceId == e.id) selectedValue = e;
+                                        });
+                                        $("#Booking_StartTime").val(null); $("#StartTime").val(null);
+
+
+                                    }
+                                }
+                            }).fail((err) => {
+                                console.log(err);
+                            });
+
+                            $.get("/Service/GetBookedStartEndTimeSlots" + "?id=" + $("#ddlCategory").val() + "&date=" + this.value).done((res) => {
+                                
+                                setEndTimeSlotsBooking(selectedValue.startTime, selectedValue.endTime, 1, res);
+
+                            }).fail((err) => {
+                                console.log(err);
+                            });
+                            
+                        }
+                       
                     }
                     
                 }));
                 $(e.querySelector('#StartTime')).on("change", (function () {
                     //if (this.value) $("#Booking_StartTime").val(this.value)
                     //else $("#Booking_StartTime").val(null)
+                    if (this.value) {
                     let servicePriceId = parseInt($("#Booking_ServicePriceId").val());
                     var selectedValue = {};
                     var tymValue = this.value;
@@ -468,18 +510,21 @@ var KTBookingModal = function () {
                                 if (serviceData) {
                                     serviceData.forEach(function (e) {
                                         if (servicePriceId == e.id) selectedValue = e;
-                                    });
-                                    $("#Booking_StartTime").val(null); $("#StartTime").val(null);
-
-                                    setEndTimeSlots(selectedValue.startTime, selectedValue.endTime, tymValue);
+                                    }); 
                                 }
                             }
                         }).fail((err) => {
                             console.log(err);
                         });
+                        $.get("/Service/GetBookedStartEndTimeSlots" + "?id=" + $("#ddlCategory").val() + "&date=" + $("#Booking_BookingEndDate").val()).done((res) => {
 
+                            setEndTimeSlotsBookingwithTym(selectedValue.startTime, selectedValue.endTime, 1, res, tymValue);
+
+                        }).fail((err) => {
+                            console.log(err);
+                        });
                     
-                    if (this.value) {
+                    
                         let sDate = $("#Booking_BookingDate").val();
                         let eDate = $("#Booking_BookingEndDate").val();
                         let sTime = parseTime(this.value); 
@@ -501,7 +546,7 @@ var KTBookingModal = function () {
                         let sTime = parseTime($("#Booking_StartTime").val());
                         let eTime = parseTime(this.value);
                         if (sDate == eDate) {
-                            if (sTime < eTime) $("#Booking_EndTime").val(this.value)
+                            if (sTime < eTime) { $("#Booking_EndTime").val(this.value) }
                             else { $("#Booking_EndTime").val(null); $("#EndTime").val(null); }
                         }
                         else {
@@ -681,7 +726,7 @@ function setEndTimeSlots(startTime, endTime, minhrs) {
             firstTimeSlot = e.id;
        // let disableStartTime = parseTime(convertTime12to24(endTime)) - parseTime(e.id) < (minhrs * 60);
         //let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
-        let disableEndTime = parseTime(e.id) < parseTime(minhrs);
+        let disableEndTime = parseTime(e.id) <= parseTime(minhrs);
         //starttimedata.push({
         //    id: e.id,
         //    text: convertFrom24To12(e.id),
@@ -818,9 +863,19 @@ function editBooking(id) {
             $("#Booking_CustomerId").attr('disabled', 'disabled');
             $("#ddlCategory").attr('disabled', 'disabled');
             $("#Booking_ServicePriceId").attr('disabled', 'disabled');
-            setTimeSlots($("#ServiceStartTime").val(), $("#ServiceEndTime").val(), 1);
-            $("#StartTime").val($("#Booking_StartTime").val()).trigger('change');
-            $("#EndTime").val($("#Booking_EndTime").val()).trigger('change')
+            // setTimeSlots($("#ServiceStartTime").val(), $("#ServiceEndTime").val(), 1);
+            
+
+            $.get("/Service/GetBookedStartEndTimeSlots" + "?id=" + $("#ddlCategory").val() + "&date=" + $("#Booking_BookingDate").val()).done((res) => {
+
+                setStartTimeSlotsBookingEdit($("#ServiceStartTime").val(), $("#ServiceEndTime").val(), $("#Booking_StartTime").val(), $("#Booking_EndTime").val(), res);
+                setEndTimeSlotsBookingEdit($("#ServiceStartTime").val(), $("#ServiceEndTime").val(), $("#Booking_StartTime").val() ,$("#Booking_EndTime").val(), res);
+
+            }).fail((err) => {
+                console.log(err);
+            });
+           // $("#StartTime").val($("#Booking_StartTime").val()).trigger('change');
+           // $("#EndTime").val($("#Booking_EndTime").val()).trigger('change')
         })
         .fail(function (err) {
             toastr.error(err);
@@ -1200,8 +1255,8 @@ function setStartTimeSlotsBooking(startTime, endTime, minhrs, res) {
         });
 
     });
-    if ($('#StartTime').hasClass("select2-hidden-accessible")) $("#StartTime").select2('destroy').empty().select2({ data: starttimedata }).val(convertTime12to24($("#Booking_StartTime").val()));
-    else $("#StartTime").empty().select2({ data: starttimedata }).val(convertTime12to24($("#Booking_StartTime").val()));
+    if ($('#StartTime').hasClass("select2-hidden-accessible")) $("#StartTime").select2('destroy').empty().select2({ data: starttimedata }).val(convertTime12to24($("#Booking_StartTime").val())).trigger('change');
+    else $("#StartTime").empty().select2({ data: starttimedata }).val(convertTime12to24($("#Booking_StartTime").val())).trigger('change');
 }
 
 function setEndTimeSlotsBooking(startTime, endTime, minhrs, eres) {
@@ -1233,6 +1288,107 @@ function setEndTimeSlotsBooking(startTime, endTime, minhrs, eres) {
             disabled: disableEndTime
         });
     });
-    if ($('#EndTime').hasClass("select2-hidden-accessible")) $("#EndTime").select2('destroy').empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val()));
-    else $("#EndTime").empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val()));
+    if ($('#EndTime').hasClass("select2-hidden-accessible")) $("#EndTime").select2('destroy').empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val())).trigger('change');
+    else $("#EndTime").empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val())).trigger('change');
+}
+
+
+function setStartTimeSlotsBookingEdit(startTime, endTime, bookingstart, bookingend, res) {
+    let sTime = parseTime(convertTime12to24(startTime));
+    let eTime = parseTime(convertTime12to24(endTime));
+    let timeSlots = calculate_time_slot(sTime, eTime, 60);
+    var starttimedata = [];
+    $.each(timeSlots, function (i, e) {
+
+        let disableStartTime = false;
+
+
+        //let disableStartTime = ((parseTime(convertTime12to24(endTime)) - parseTime(e.id)) < (minhrs * 60));
+
+        $.each(res, function (ri, re) {
+            //if (parseTime(re) == parseTime(e.id)) {
+            //    disableStartTime = true;
+            //}
+            if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end)) {
+                disableStartTime = true;
+            }
+        });
+        if (parseTime(e.id) >= parseTime(bookingstart) && parseTime(e.id) <= parseTime(bookingend)) {
+            disableStartTime = false;
+        }
+        starttimedata.push({
+            id: e.id,
+            text: convertFrom24To12(e.id),
+            disabled: disableStartTime
+        });
+
+    });
+    if ($('#StartTime').hasClass("select2-hidden-accessible")) $("#StartTime").select2('destroy').empty().select2({ data: starttimedata }).val(convertTime12to24($("#Booking_StartTime").val())).trigger('change');
+    else $("#StartTime").empty().select2({ data: starttimedata }).val(convertTime12to24($("#Booking_StartTime").val())).trigger('change');
+}
+
+function setEndTimeSlotsBookingEdit(startTime, endTime, bookingstart, bookingend, eres) {
+
+    let sTime = parseTime(convertTime12to24(startTime));
+    let eTime = parseTime(convertTime12to24(endTime));
+    let timeSlots = calculate_time_slot(sTime, eTime, 60);
+    let firstTimeSlot = "";
+    var endtimedata = [];
+    $.each(timeSlots, function (i, e) {
+        //if (i === 0)
+        //    firstTimeSlot = e.id;
+        let disableEndTime = false;
+
+
+        // let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
+
+        $.each(eres, function (ri, re) {
+            if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end)) {
+                disableEndTime = true;
+            }
+            //if (parseTime(re) == parseTime(e.id)) {
+            //    disableEndTime = true;
+            //}
+        });
+        if (parseTime(e.id) >= parseTime(bookingstart) && parseTime(e.id) <= parseTime(bookingend)) {
+            disableEndTime = false;
+        }
+        endtimedata.push({
+            id: e.id,
+            text: convertFrom24To12(e.id),
+            disabled: disableEndTime
+        });
+    });
+    if ($('#EndTime').hasClass("select2-hidden-accessible")) $("#EndTime").select2('destroy').empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val())).trigger('change');
+    else $("#EndTime").empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val())).trigger('change');
+}
+
+function setEndTimeSlotsBookingwithTym(startTime, endTime, minhrs, eres, tym) {
+
+    let sTime = parseTime(convertTime12to24(startTime));
+    let eTime = parseTime(convertTime12to24(endTime));
+    let timeSlots = calculate_time_slot(sTime, eTime, 60);
+    let firstTimeSlot = "";
+    var endtimedata = [];
+    $.each(timeSlots, function (i, e) {
+        //if (i === 0)
+        //    firstTimeSlot = e.id;
+        let disableEndTime = false;
+
+         disableEndTime = parseTime(e.id) <= parseTime(tym);
+        // let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
+
+        $.each(eres, function (ri, re) {
+            if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end) && parseTime(re.start) != parseTime(tym) && parseTime(re.end) != parseTime($("#Booking_EndTime").val())) {
+                disableEndTime = true;
+            }            
+        });
+        endtimedata.push({
+            id: e.id,
+            text: convertFrom24To12(e.id),
+            disabled: disableEndTime
+        });
+    });
+    if ($('#EndTime').hasClass("select2-hidden-accessible")) $("#EndTime").select2('destroy').empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val())).trigger('change');
+    else $("#EndTime").empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val())).trigger('change');
 }
