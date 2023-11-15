@@ -78,22 +78,16 @@ namespace StudioBooking.Controllers
             return Ok(timeslotes);
         }
         [HttpGet]
-        public async Task<IActionResult> GetBookedStartEndTimeSlots(int id, string date, string endDate, string userId, int type = 1)
+        public async Task<IActionResult> GetBookedStartEndTimeSlots(int id, string date, string userId, int type = 1)
         {
             userId = string.IsNullOrEmpty(userId) ? GetUserId() : userId;
-            var customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId == userId);
-            var categoryEndBookings = await BookingDTO.GetEndBookingsByCategoryId(_context, id, Defaults.ConvertDateTime(endDate, Defaults.DefaultDateFormat));
-            var categoryStartBookings = await BookingDTO.GetEndBookingsByCategoryId(_context, id, Defaults.ConvertDateTime(date, Defaults.DefaultDateFormat));
-            var timeslotes = new { start = new List<string>(), end = new List<string>() };
-            foreach (var bookings in categoryEndBookings.Where(b => b.BookingStatus != Enums.BookingStatus.OnHold && b.BookingStatus != Enums.BookingStatus.Cancelled && b.BookingStatus != Enums.BookingStatus.Failed && (type == 1 || b.CustomerId != customer.Id)))
+            var customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId == userId);            
+            var categoryBookings = await BookingDTO.GetEndBookingsByCategoryId(_context, id, DateTime.Parse(date));
+            var timeslotes = new List<object>(); 
+            
+            foreach (var bookings in categoryBookings.Where(b => b.BookingStatus != Enums.BookingStatus.OnHold && b.BookingStatus != Enums.BookingStatus.Cancelled && b.BookingStatus != Enums.BookingStatus.Failed && (type == 1 || b.CustomerId != customer.Id)))
             {                
-                DateTime appointment = DateTime.Parse(bookings.EndTime);
-                timeslotes.end.Add(appointment.ToString("HH:mm"));                
-            }
-            foreach (var bookings in categoryStartBookings.Where(b => b.BookingStatus != Enums.BookingStatus.OnHold && b.BookingStatus != Enums.BookingStatus.Cancelled && b.BookingStatus != Enums.BookingStatus.Failed && (type == 1 || b.CustomerId != customer.Id)))
-            {
-                DateTime appointment = DateTime.Parse(bookings.StartTime);
-                timeslotes.start.Add(appointment.ToString("HH:mm"));
+                timeslotes.Add(new { start = DateTime.Parse(bookings.StartTime).ToString("HH:mm"), end = DateTime.Parse(bookings.EndTime).ToString("HH:mm") });
             }
             return Ok(timeslotes);
         }
