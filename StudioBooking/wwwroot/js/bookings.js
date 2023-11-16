@@ -358,7 +358,14 @@ var KTBookingModal = function () {
                         serviceData.forEach(function (e) {
                             if (servicePriceId == e.id) selectedValue = e;
                         });
-                        setTimeSlots(selectedValue.startTime, selectedValue.endTime, 1);
+                        $.get("/Service/GetBookedStartEndTimeSlots" + "?id=" + $("#ddlCategory").val() + "&date=" + $("#Booking_BookingDate").val()).done((res) => {
+
+                            setStartTimeSlotsBooking(selectedValue.startTime, selectedValue.endTime, 1, res);
+                            setEndTimeSlotsBooking(selectedValue.startTime, selectedValue.endTime, 1, res);
+
+                        }).fail((err) => {
+                            console.log(err);
+                        });
                     } else {
                         $("#StartTime").empty().select2().trigger('change');
                         $("#EndTime").empty().select2().trigger('change')
