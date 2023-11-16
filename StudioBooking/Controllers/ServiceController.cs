@@ -87,7 +87,7 @@ namespace StudioBooking.Controllers
             
             foreach (var bookings in categoryBookings.Where(b => b.BookingStatus != Enums.BookingStatus.OnHold && b.BookingStatus != Enums.BookingStatus.Cancelled && b.BookingStatus != Enums.BookingStatus.Failed && (type == 1 || b.CustomerId != customer.Id)))
             {                
-                timeslotes.Add(new { start = DateTime.Parse(bookings.StartTime).ToString("HH:mm"), end = DateTime.Parse(bookings.EndTime).ToString("HH:mm") });
+                timeslotes.Add(new { start = DateTime.Parse(bookings.StartTime).ToString("HH:mm"), end = DateTime.Parse(bookings.EndTime).ToString("HH:mm"), startDate = bookings.BookingDate, endDate = bookings.BookingEndDate });
             }
             return Ok(timeslotes);
         }
