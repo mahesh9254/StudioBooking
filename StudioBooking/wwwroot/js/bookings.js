@@ -460,7 +460,7 @@ var KTBookingModal = function () {
 
                         let sDate = new Date($("#Booking_BookingDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
                         let eDate = new Date($("#Booking_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
-                        if (sDate < eDate) {
+                        if (Date.parse(sDate) < Date.parse(eDate)) {
 
                             let servicePriceId = parseInt($("#Booking_ServicePriceId").val());
                             var selectedValue = {};
@@ -540,7 +540,7 @@ var KTBookingModal = function () {
                         let eDate = new Date($("#Booking_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
                         let sTime = parseTime(this.value); 
                         let eTime = parseTime($("#Booking_EndTime").val());
-                        if (sDate == eDate && eTime) {
+                        if (Date.parse(sDate) == Date.parse(eDate) && eTime) {
                             if (sTime < eTime) $("#Booking_StartTime").val(this.value)
                             else { $("#Booking_StartTime").val(null); $("#StartTime").val(null) }
                         }
@@ -556,7 +556,7 @@ var KTBookingModal = function () {
                         let eDate = new Date($("#Booking_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
                         let sTime = parseTime($("#Booking_StartTime").val());
                         let eTime = parseTime(this.value);
-                        if (sDate == eDate) {
+                        if (Date.parse(sDate) == Date.parse(eDate)) {
                             if (sTime < eTime) { $("#Booking_EndTime").val(this.value) }
                             else { $("#Booking_EndTime").val(null); $("#EndTime").val(null); }
                         }
@@ -1254,15 +1254,30 @@ function setStartTimeSlotsBooking(startTime, endTime, minhrs, res) {
             //if (parseTime(re) == parseTime(e.id)) {
             //    disableStartTime = true;
             //}
+          
             let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let end = new Date(re.endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let sDate = new Date($("#Booking_BookingDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let eDate = new Date($("#Booking_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             if (start < sDate && end > eDate) {
                 disableStartTime = true;
-            } if ((re.startDate == sDate) || (re.endDate == eDate)) { 
-            if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end)) {
+            }
+            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) != Date.parse(eDate)) { 
+
+            if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= eTime) {
                 disableStartTime = true;
+                }
+            }
+            if (Date.parse(start) != Date.parse(sDate) && Date.parse(end) == Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= sTime && parseTime(e.id) <= parseTime(re.end)) {
+                    disableStartTime = true;
+                }
+            }
+            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) == Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end)) {
+                    disableStartTime = true;
                 }
             }
         });
@@ -1300,7 +1315,21 @@ function setEndTimeSlotsBooking(startTime, endTime, minhrs, eres) {
             let eDate = new Date($("#Booking_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             if (start < sDate && end > eDate) {
                 disableEndTime = true;
-            } if ((re.startDate == sDate) || (re.endDate == eDate)) {
+            }
+            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) != Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= eTime) {
+                    disableEndTime = true;
+                }
+            }
+            if (Date.parse(start) != Date.parse(sDate) && Date.parse(end) == Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= sTime && parseTime(e.id) <= parseTime(re.end)) {
+                    disableEndTime = true;
+                }
+            }
+            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) == Date.parse(eDate)) {
+
                 if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end)) {
                     disableEndTime = true;
                 }

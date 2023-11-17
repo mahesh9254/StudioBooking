@@ -16,7 +16,7 @@ $("#Cart_BookingDate").change(function (e) {
         return false;
     }
     $("#Cart_BookingEndDate").val(this.value);
-    KTbooking.validate();
+    //KTbooking.validate();
     $(".endTime").children('button').removeClass('selected');
     $(".startTime").children('button').removeClass('selected');
    // $(".dv-end-time").hide();
@@ -25,7 +25,7 @@ $("#Cart_BookingDate").change(function (e) {
         let start_time = $('input[name="bookingstudio"]:checked').attr('start-time');
         let end_time = $('input[name="bookingstudio"]:checked').attr('end-time');
         let minInterval = $('input[name="bookingstudio"]:checked').attr('min-hours');
-        setStartTimeSlots(start_time, end_time, minInterval, res.start);
+        setStartTimeSlots("8:00 AM", "11:00 PM", minInterval, res.start);
         setEndTimeSlots(start_time, end_time, minInterval, res.end);
         
         
