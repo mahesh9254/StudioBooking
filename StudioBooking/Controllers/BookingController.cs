@@ -433,8 +433,8 @@ namespace StudioBooking.Controllers
             var totalHours = (endTime - startTime).TotalHours;
             var booking = new Booking
             {
-                BookingDate = Defaults.ConvertDateTime(cart.BookingDate, Defaults.DefaultDateFormat),// DateTime.Parse(cart.BookingDate),
-                BookingEndDate = Defaults.ConvertDateTime(cart.BookingEndDate, Defaults.DefaultDateFormat),
+                BookingDate = DateTime.Parse(cart.BookingDate),// DateTime.Parse(cart.BookingDate),
+                BookingEndDate = DateTime.Parse(cart.BookingEndDate),
                 ServicePriceId = servicePrice.Id,
                 RatePerHour = (decimal)servicePrice.Price,
                 StartTime = cart.StartTime,

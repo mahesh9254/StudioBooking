@@ -253,6 +253,7 @@ function setEndTimeSlots(startTime, endTime, minhrs, eres) {
     let sTime = parseTime(convertTime12to24(startTime));
     let eTime = parseTime(convertTime12to24(endTime));
     let timeSlots = calculate_time_slot(sTime, eTime, 60);
+    //let iTime = parseTime($("#Cart_StartTime").val());
     let firstTimeSlot = "";
     var endtimedata = [];
     $.each(timeSlots, function (i, e) {
@@ -260,14 +261,17 @@ function setEndTimeSlots(startTime, endTime, minhrs, eres) {
         //    firstTimeSlot = e.id;
         let disableEndTime = false;
 
-
+        let sDate = new Date($("#Cart_BookingDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+        let eDate = new Date($("#Cart_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+        //if (sDate == eDate && parseTime(e.id) > iTime) {
+        //    disableEndTime = (parseTime(e.id) - iTime) < (minhrs * 60);
+        //}
         // let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
 
         $.each(eres, function (ri, re) {
             let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let end = new Date(re.endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
-            let sDate = new Date($("#Cart_BookingDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
-            let eDate = new Date($("#Cart_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            
             if (start < sDate && end > eDate) {
                 disableEndTime = true;
             }
