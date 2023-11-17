@@ -400,6 +400,7 @@ var KTBookingModal = function () {
                                     if (servicePriceId == e.id) selectedValue = e;
                                 });
                                 $("#Booking_StartTime").val(null); $("#StartTime").val(null);
+                                $("#Booking_EndTime").val(null); $("#EndTime").val(null);
 
                                 
                             }
@@ -478,8 +479,8 @@ var KTBookingModal = function () {
                                         serviceData.forEach(function (e) {
                                             if (servicePriceId == e.id) selectedValue = e;
                                         });
-                                        $("#Booking_StartTime").val(null); $("#StartTime").val(null);
-
+                                        //$("#Booking_StartTime").val(null); $("#StartTime").val(null);
+                                        $("#Booking_EndTime").val(null); $("#EndTime").val(null);
 
                                     }
                                 }
@@ -560,7 +561,7 @@ var KTBookingModal = function () {
                             else { $("#Booking_EndTime").val(null); $("#EndTime").val(null); }
                         }
                         else {
-                            $("#Booking_EndTime").val(this.value);
+                            $("#Booking_EndTime").val(this.value); $("#EndTime").val(this.value);
                         }
                        
                         
@@ -1253,11 +1254,13 @@ function setStartTimeSlotsBooking(startTime, endTime, minhrs, res) {
             //if (parseTime(re) == parseTime(e.id)) {
             //    disableStartTime = true;
             //}
+            let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            let end = new Date(re.endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let sDate = new Date($("#Booking_BookingDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let eDate = new Date($("#Booking_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
-            if (re.startDate > sDate && re.endDate < eDate) {
+            if (start < sDate && end > eDate) {
                 disableStartTime = true;
-            } else { 
+            } if ((re.startDate == sDate) || (re.endDate == eDate)) { 
             if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end)) {
                 disableStartTime = true;
                 }
@@ -1291,19 +1294,18 @@ function setEndTimeSlotsBooking(startTime, endTime, minhrs, eres) {
        // let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
 
         $.each(eres, function (ri, re) {
-
+            let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            let end = new Date(re.endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let sDate = new Date($("#Booking_BookingDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let eDate = new Date($("#Booking_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
-            if (re.startDate > sDate && re.endDate < eDate) {
-                disableStartTime = false;
-            } else {
+            if (start < sDate && end > eDate) {
+                disableEndTime = true;
+            } if ((re.startDate == sDate) || (re.endDate == eDate)) {
                 if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end)) {
                     disableEndTime = true;
                 }
             }
-            //if (parseTime(re) == parseTime(e.id)) {
-            //    disableEndTime = true;
-            //}
+            
         });
         endtimedata.push({
             id: e.id,
