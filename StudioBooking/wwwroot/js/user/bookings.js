@@ -44,7 +44,17 @@ var KTReSchedule = function () {
 
                 $("#RequestDate").flatpickr({
                     enableTime: false,
-                    dateFormat: "d/m/Y",
+                    dateFormat: "d-m-Y",
+                    enable: [
+                        {
+                            from: "today",
+                            to: new Date().fp_incr(180) // 180 days from now
+                        }
+                    ]
+                });
+                $("#RequestEndDate").flatpickr({
+                    enableTime: false,
+                    dateFormat: "d-m-Y",
                     enable: [
                         {
                             from: "today",
@@ -95,31 +105,77 @@ var KTReSchedule = function () {
                 $(e.querySelector('[name="RequestDate"]')).on("change", (function () {
                     if (this.value) {
                         enableSubmit();
-                        $.get("/Service/GetBookedTimeSlots?id=" + $("#CategoryId").val() + "&date=" + this.value + "&type=0").done((res) => {
+                        $.get("/Service/GetBookedStartEndTimeSlots?id=" + $("#CategoryId").val() + "&date=" + this.value + "&type=0").done((res) => {
                             var startTime = $("#hdfStartTime-" + $("#BookingId").val()).val();
                             var endTime = $("#hdfEndTime-" + $("#BookingId").val()).val();
                             var minHours = $("#hdfMinHours-" + $("#BookingId").val()).val();
-                            setTimeSlots(startTime, endTime, parseInt(minHours));
-                            let startTimeSlots = $('#RequestStartTime').find('option');
-                            let endTimeSlots = $('#RequestEndTime').find('option');
-                            startTimeSlots.removeClass('booked');
-                            endTimeSlots.removeClass('booked');
-                            $.each(res, function (i, e) {
-                                let time = parseTime(e);
-                                startTimeSlots.filter(function () {
-                                    return parseTime(this.innerText) == time;
-                                }).addClass('booked').attr("disabled", "disabled");
-                                endTimeSlots.filter(function () {
-                                    return parseTime(this.innerText) == time;
-                                }).addClass('booked').attr("disabled", "disabled");
-                            });
+                            // setTimeSlots(startTime, endTime, parseInt(minHours));
+                            setStartTimeSlots("8:00 AM", "11:00 PM", minHours, res);
+                            setEndTimeSlots(startTime, endTime, minHours, res);
+
+                            $("#RequestStartTime").val(null).trigger('change');;
+                            $("#RequestEndTime").val(null).trigger('change');;
+                            //$("#StartTime").val(null);
+                            //$("#EndTime").val(null);
+                            //let startTimeSlots = $('#RequestStartTime').find('option');
+                            //let endTimeSlots = $('#RequestEndTime').find('option');
+                            //startTimeSlots.removeClass('booked');
+                            //endTimeSlots.removeClass('booked');
+                            //$.each(res, function (i, e) {
+                            //    let time = parseTime(e);
+                            //    startTimeSlots.filter(function () {
+                            //        return parseTime(this.innerText) == time;
+                            //    }).addClass('booked').attr("disabled", "disabled");
+                            //    endTimeSlots.filter(function () {
+                            //        return parseTime(this.innerText) == time;
+                            //    }).addClass('booked').attr("disabled", "disabled");
+                            //});
                             i.revalidateField("RequestDate");
                         }).fail((err) => {
                             console.log(err);
                         });
+
+                       
+                        $("#RequestEndDate").val(this.value)
+                       
                     }
                 }
                 )),
+                    $(e.querySelector('[name="RequestEndDate"]')).on("change", (function () {
+                        if (this.value) {
+                            enableSubmit();
+                            $.get("/Service/GetBookedStartEndTimeSlots?id=" + $("#CategoryId").val() + "&date=" + this.value + "&type=0").done((res) => {
+                                var startTime = $("#hdfStartTime-" + $("#BookingId").val()).val();
+                                var endTime = $("#hdfEndTime-" + $("#BookingId").val()).val();
+                                var minHours = $("#hdfMinHours-" + $("#BookingId").val()).val();
+                                // setTimeSlots(startTime, endTime, parseInt(minHours));
+                                setEndTimeSlots(startTime, endTime, minHours, res);
+                                $("#RequestEndTime").val(null).trigger('change');;
+                                //$("#EndTime").val(null);
+                                //let startTimeSlots = $('#RequestStartTime').find('option');
+                                //let endTimeSlots = $('#RequestEndTime').find('option');
+                                //startTimeSlots.removeClass('booked');
+                                //endTimeSlots.removeClass('booked');
+                                //$.each(res, function (i, e) {
+                                //    let time = parseTime(e);
+                                //    startTimeSlots.filter(function () {
+                                //        return parseTime(this.innerText) == time;
+                                //    }).addClass('booked').attr("disabled", "disabled");
+                                //    endTimeSlots.filter(function () {
+                                //        return parseTime(this.innerText) == time;
+                                //    }).addClass('booked').attr("disabled", "disabled");
+                                //});
+                                i.revalidateField("RequestDate");
+                            }).fail((err) => {
+                                console.log(err);
+                            });
+
+
+                            $("#RequestEndDate").val(this.value)
+
+                        }
+                    }
+                    )),
                     r.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
                         t.preventDefault(),
                             Swal.fire({
@@ -471,7 +527,11 @@ function reSchedule(id, categoryId) {
             var startTime = $("#hdfStartTime-" + id).val();
             var endTime = $("#hdfEndTime-" + id).val();
             var minHours = $("#hdfMinHours-" + id).val();
-            setTimeSlots(startTime, endTime, parseInt(minHours));
+            // setTimeSlots(startTime, endTime, parseInt(minHours));
+           
+
+
+
             $("#spnBookingId").text(res.booking.bookingId);
             $("#BookingId").val(id);
             $("#RequestType").val(1);
@@ -481,7 +541,23 @@ function reSchedule(id, categoryId) {
             $("#RequestStartTime").val(convertTime12to24(res.booking.startTime)).trigger('change');
             $("#RequestEndTime").val(convertTime12to24(res.booking.endTime)).trigger('change');
             $("#BookingDate").val(res.booking.bookingDate);
-            $("#RequestDate").val(res.booking.bookingDate).trigger("change");
+            $("#RequestDate").val(res.booking.bookingDate);//.trigger("change");
+            $("#BookingEndDate").val(res.booking.bookingEndDate);
+            $("#RequestEndDate").val(res.booking.bookingEndDate);//.trigger("change");
+            $.get("/Service/GetBookedStartEndTimeSlots?id=" + $("#CategoryId").val() + "&date=" + $("#RequestDate").val() + "&type=0").done((res) => {
+                var startTime = $("#hdfStartTime-" + $("#BookingId").val()).val();
+                var endTime = $("#hdfEndTime-" + $("#BookingId").val()).val();
+                var minHours = $("#hdfMinHours-" + $("#BookingId").val()).val();
+
+                setStartTimeSlots("8:00 AM", "11:00 PM", minHours, res);
+                setEndTimeSlots(startTime, endTime, minHours, res);
+                let startTimeSlots = $('#RequestStartTime').find('option');
+                let endTimeSlots = $('#RequestEndTime').find('option');
+
+            }).fail((err) => {
+                console.log(err);
+            });
+           
             $("#kt_modal_reschedule").modal("show");
         }
         else {
@@ -526,6 +602,115 @@ function setTimeSlots(startTime, endTime, minhrs) {
     if ($('#RequestStartTime').hasClass("select2-hidden-accessible")) $("#RequestStartTime").select2('destroy').empty().select2({ data: starttimedata }).val(convertTime12to24($("#StartTime").val())).trigger('change');
     else $("#RequestStartTime").empty().select2({ data: starttimedata }).val(convertTime12to24($("#StartTime").val())).trigger('change');
 
+    if ($('#RequestEndTime').hasClass("select2-hidden-accessible")) $("#RequestEndTime").select2('destroy').empty().select2({ data: endtimedata }).val(convertTime12to24($("#EndTime").val())).trigger('change');
+    else $("#RequestEndTime").empty().select2({ data: endtimedata }).val(convertTime12to24($("#EndTime").val())).trigger('change');
+}
+
+
+function setStartTimeSlots(startTime, endTime, minhrs, res) {
+    let sTime = parseTime(convertTime12to24(startTime));
+    let eTime = parseTime(convertTime12to24(endTime));
+    let timeSlots = calculate_time_slot(sTime, eTime, 60);
+    var starttimedata = [];
+    $.each(timeSlots, function (i, e) {
+
+        let disableStartTime = false;
+
+
+        //let disableStartTime = ((parseTime(convertTime12to24(endTime)) - parseTime(e.id)) < (minhrs * 60));
+
+        $.each(res, function (ri, re) {
+            //if (parseTime(re) == parseTime(e.id)) {
+            //    disableStartTime = true;
+            //}
+
+            let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            let end = new Date(re.endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            let sDate = new Date($("#RequestDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            let eDate = new Date($("#RequestEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            if (start < sDate && end > eDate) {
+                disableStartTime = true;
+            }
+            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) != Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= eTime) {
+                    disableStartTime = true;
+                }
+            }
+            if (Date.parse(start) != Date.parse(sDate) && Date.parse(end) == Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= sTime && parseTime(e.id) <= parseTime(re.end)) {
+                    disableStartTime = true;
+                }
+            }
+            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) == Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end)) {
+                    disableStartTime = true;
+                }
+            }
+        });
+
+        starttimedata.push({
+            id: e.id,
+            text: convertFrom24To12(e.id),
+            disabled: disableStartTime
+        });
+
+    });
+    if ($('#RequestStartTime').hasClass("select2-hidden-accessible")) $("#RequestStartTime").select2('destroy').empty().select2({ data: starttimedata }).val(convertTime12to24($("#StartTime").val())).trigger('change');
+    else $("#RequestStartTime").empty().select2({ data: starttimedata }).val(convertTime12to24($("#StartTime").val())).trigger('change');
+}
+
+function setEndTimeSlots(startTime, endTime, minhrs, eres) {
+
+    let sTime = parseTime(convertTime12to24(startTime));
+    let eTime = parseTime(convertTime12to24(endTime));
+    let timeSlots = calculate_time_slot(sTime, eTime, 60);
+    let firstTimeSlot = "";
+    var endtimedata = [];
+    $.each(timeSlots, function (i, e) {
+        //if (i === 0)
+        //    firstTimeSlot = e.id;
+        let disableEndTime = false;
+
+
+        // let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
+
+        $.each(eres, function (ri, re) {
+            let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            let end = new Date(re.endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            let sDate = new Date($("#RequestDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            let eDate = new Date($("#RequestEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            if (start < sDate && end > eDate) {
+                disableEndTime = true;
+            }
+            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) != Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= eTime) {
+                    disableEndTime = true;
+                }
+            }
+            if (Date.parse(start) != Date.parse(sDate) && Date.parse(end) == Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= sTime && parseTime(e.id) <= parseTime(re.end)) {
+                    disableEndTime = true;
+                }
+            }
+            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) == Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end)) {
+                    disableEndTime = true;
+                }
+            }
+
+        });
+        endtimedata.push({
+            id: e.id,
+            text: convertFrom24To12(e.id),
+            disabled: disableEndTime
+        });
+    });
     if ($('#RequestEndTime').hasClass("select2-hidden-accessible")) $("#RequestEndTime").select2('destroy').empty().select2({ data: endtimedata }).val(convertTime12to24($("#EndTime").val())).trigger('change');
     else $("#RequestEndTime").empty().select2({ data: endtimedata }).val(convertTime12to24($("#EndTime").val())).trigger('change');
 }
@@ -678,13 +863,16 @@ function resetReScheduleForm() {
 }
 
 function getReScheduleRequest(type) {
-    var requestDate = $("#RequestDate").val().split('/');
+    //var requestDate = $("#RequestDate").val().split('/');
     var data = {
         bookingId: $("#BookingId").val(),
         requestType: type,
-        requestDate: [requestDate[2], requestDate[1], requestDate[0]].join('-'),
+        //requestDate: [requestDate[2], requestDate[1], requestDate[0]].join('-'),
+        requestDate: $("#RequestDate").val(),
         requestStartTime: $("#RequestStartTime").val(),
-        requestEndTime: $("#RequestEndTime").val()
+        requestEndTime: $("#RequestEndTime").val(),
+        requestEndDate: $("#RequestEndDate").val()
     };
     return JSON.stringify(data);
 }
+

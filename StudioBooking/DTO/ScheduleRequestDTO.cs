@@ -8,7 +8,9 @@ namespace StudioBooking.DTO
         public long? BookingId { get; set; }
         public RequestType RequestType { get; set; }
         public DateTime? BookingDate { get; set; }
+        public DateTime? BookingEndDate { get; set; }
         public DateTime? RequestDate { get; set; }
+        public DateTime? RequestEndDate { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public DateTime? RequestStartTime { get; set; }

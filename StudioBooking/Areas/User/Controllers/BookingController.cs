@@ -445,6 +445,7 @@ namespace StudioBooking.Areas.User.Controllers
                     {
                         BookingId = booking.Id,
                         BookingDate = booking.BookingDate,
+                        BookingEndDate = booking.BookingEndDate,
                         StartTime = booking.StartTime,
                         EndTime = booking.EndTime,
                         RequestStatus = booking.BookingStatus == (int)BookingStatus.WaitingForApproval ? (int)RequestStatus.Completed : (int)RequestStatus.Pending,
@@ -484,6 +485,8 @@ namespace StudioBooking.Areas.User.Controllers
                     {
                         BookingId = booking.Id,
                         BookingDate = booking.BookingDate,
+                        BookingEndDate = booking.BookingEndDate,
+                        RequestEndDate = modal.RequestEndDate,
                         RequestDate = modal.RequestDate,
                         StartTime = booking.StartTime,
                         EndTime = booking.EndTime,
@@ -501,8 +504,12 @@ namespace StudioBooking.Areas.User.Controllers
                     await _context.ScheduleRequests.AddAsync(request);
                     await _context.SaveChangesAsync();
                     modal.Id = request.Id;
-                    var newTotalHours = ((modal.RequestEndTime ?? DateTime.MinValue) - (modal.RequestStartTime ?? DateTime.MinValue)).TotalHours;
-                    var oldTotalHours = (DateTime.Parse(booking.EndTime) - DateTime.Parse(booking.StartTime)).TotalHours;
+                    //var newTotalHours = ((modal.RequestEndTime ?? DateTime.MinValue) - (modal.RequestStartTime ?? DateTime.MinValue)).TotalHours;
+                    //var oldTotalHours = (DateTime.Parse(booking.EndTime) - DateTime.Parse(booking.StartTime)).TotalHours;
+
+                    var newTotalHours = (modal.RequestEndDate?.Add(TimeSpan.Parse(modal.RequestEndTime.ToString())) - modal.RequestDate?.Add(TimeSpan.Parse(modal?.RequestStartTime?.ToString())))?.TotalHours;
+                    var oldTotalHours = (booking.BookingEndDate.Add(TimeSpan.Parse(booking.EndTime)) - booking.BookingDate.Add(TimeSpan.Parse(booking.StartTime))).TotalHours;
+
                     if (newTotalHours <= oldTotalHours)
                     {
                         var pendingAmount = booking.Total - booking.Transactions.Where(t => t.Status == (int)TransactionStatus.Success).Sum(b => b.Amount);
@@ -510,9 +517,10 @@ namespace StudioBooking.Areas.User.Controllers
                         {
                             request.RequestStatus = (int)RequestStatus.Completed;
                             booking.BookingDate = request.RequestDate ?? DateTime.MinValue;
+                            booking.BookingEndDate = request.RequestEndDate ?? DateTime.MinValue;
                             booking.StartTime = TimeOnly.FromDateTime(request.RequestStartTime ?? DateTime.MinValue).ToString();
                             booking.EndTime = TimeOnly.FromDateTime(request.RequestEndTime ?? DateTime.MinValue).ToString();
-                            booking.Total = newTotalHours * (double)booking.RatePerHour;
+                            booking.Total = newTotalHours.Value * (double)booking.RatePerHour;
                             booking.BookingStatus = (int)BookingStatus.ReScheduled;
                             booking.PaymentStatus = pendingAmount > 0 ? (int)PaymentStatus.Advance : (int)PaymentStatus.FullPayment;
                             await _context.SaveChangesAsync();
