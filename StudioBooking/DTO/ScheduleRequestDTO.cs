@@ -9,12 +9,12 @@ namespace StudioBooking.DTO
         public RequestType RequestType { get; set; }
         public DateTime? BookingDate { get; set; }
         public DateTime? BookingEndDate { get; set; }
-        public DateTime? RequestDate { get; set; }
-        public DateTime? RequestEndDate { get; set; }
+        public string RequestDate { get; set; }
+        public string RequestEndDate { get; set; }
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
-        public DateTime? RequestStartTime { get; set; }
-        public DateTime? RequestEndTime { get; set; }
+        public string RequestStartTime { get; set; }
+        public string RequestEndTime { get; set; }
         public RequestStatus RequestStatus { get; set; }
         public PaymentProvider? PaymentProvider { get; set; }
         public bool RedirectToPayment { get; set; }
