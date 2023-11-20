@@ -135,9 +135,9 @@ var KTReSchedule = function () {
                             console.log(err);
                         });
 
-                       
+
                         $("#RequestEndDate").val(this.value)
-                       
+
                     }
                 }
                 )),
@@ -528,9 +528,6 @@ function reSchedule(id, categoryId) {
             var endTime = $("#hdfEndTime-" + id).val();
             var minHours = $("#hdfMinHours-" + id).val();
             // setTimeSlots(startTime, endTime, parseInt(minHours));
-           
-
-
 
             $("#spnBookingId").text(res.booking.bookingId);
             $("#BookingId").val(id);
@@ -557,7 +554,7 @@ function reSchedule(id, categoryId) {
             }).fail((err) => {
                 console.log(err);
             });
-           
+
             $("#kt_modal_reschedule").modal("show");
         }
         else {

@@ -42,6 +42,41 @@ var BookingDataTable = {
             },
             columns: [
                 {
+                    field: "booking.bookingId",
+                    title: "ID",
+                    sortable: "desc",
+                    selector: !1,
+                    autoHide: !1,
+                    textAlign: "center",
+                    template: function (t) {
+                        return t.booking.bookingId;
+                    }
+                },
+                {
+                    field: "customer.name",
+                    title: "Name",
+                    autoHide: !1,
+                    template: function (t) {
+                        return t.customer.name;
+                    }
+                },
+                {
+                    field: "servicePrice.categoryName",
+                    title: "Studio",
+                    autoHide: !1,
+                    template: function (t) {
+                        return t.servicePrice.categoryName;
+                    }
+                },
+                {
+                    field: "servicePrice.serviceName",
+                    title: "Service",
+                    autoHide: !1,
+                    template: function (t) {
+                        return t.servicePrice.serviceName;
+                    }
+                },
+                {
                     field: "booking.bookingDate",
                     title: "Start Date",
                     type: 'date',
@@ -49,6 +84,14 @@ var BookingDataTable = {
                     autoHide: !1,
                     template: function (t) {
                         return t.booking.bookingDate;
+                    }
+                },
+                {
+                    field: "booking.startTime",
+                    title: "Start Time",
+                    autoHide: !1,
+                    template: function (t) {
+                        return t.booking.startTime;
                     }
                 },
                 {
@@ -62,49 +105,6 @@ var BookingDataTable = {
                     }
                 },
                 {
-                    field: "booking.bookingId",
-                    title: "ID",
-                    sortable: "desc",
-                    selector: !1,
-                    autoHide: !1,
-                    textAlign: "center",
-                    template: function (t) {
-                        return t.booking.bookingId;
-                    }
-                },
-                {
-                    field: "servicePrice.serviceName",
-                    title: "Service",
-                    autoHide: !1,
-                    template: function (t) {
-                        return t.servicePrice.serviceName;
-                    }
-                },
-                {
-                    field: "servicePrice.categoryName",
-                    title: "Studio",
-                    autoHide: !1,
-                    template: function (t) {
-                        return t.servicePrice.categoryName;
-                    }
-                },
-                {
-                    field: "customer.name",
-                    title: "Name",
-                    autoHide: !1,
-                    template: function (t) {
-                        return t.customer.name;
-                    }
-                },
-                {
-                    field: "booking.startTime",
-                    title: "Start Time",
-                    autoHide: !1,
-                    template: function (t) {
-                        return t.booking.startTime;
-                    }
-                },
-                {
                     field: "booking.endTime",
                     title: "End Time",
                     autoHide: !1,
@@ -114,7 +114,7 @@ var BookingDataTable = {
                 },
                 {
                     field: "totalhours",
-                    title: "Total Hours",
+                    title: "Hours",
                     autoHide: !1,
                     template: function (t) {
                         return t.booking.totalHours;
@@ -130,7 +130,7 @@ var BookingDataTable = {
                 },
                 {
                     field: "ratePerHour",
-                    title: "RatePerHour",
+                    title: "Rate Per Hour",
                     autoHide: !1,
                     template: function (t) {
                         return t.booking.ratePerHour;

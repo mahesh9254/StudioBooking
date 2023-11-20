@@ -18208,7 +18208,7 @@ table {
 	position: relative
 }
 
-	.v-separator::after {
+	/*.v-separator::after {
 		content: '';
 		position: absolute;
 		bottom: 0;
@@ -18220,24 +18220,24 @@ table {
 		height: 63px;
 		border-radius: 4px;
 		background: linear-gradient(to top, var(--main_color) 0%, var(--main_color_2) 100%)
-	}
+	}*/
 
 @media (max-width: 991px) {
-	.v-separator::after {
+	/*.v-separator::after {
 		height: 46px
-	}
+	}*/
 }
 
 @media (max-width: 480px) {
-	.v-separator::after {
+	/*.v-separator::after {
 		height: 30px
-	}
+	}*/
 }
 
 @media (max-width: 575px) {
-	.v-separator::after {
+	/*.v-separator::after {
 		display: none
-	}
+	}*/
 }
 
 .section-header {
