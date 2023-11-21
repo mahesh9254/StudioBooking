@@ -121,19 +121,19 @@ var BookingDataTable = {
                     }
                 },
                 {
-                    field: "total",
-                    title: "Total",
-                    autoHide: !1,
-                    template: function (t) {
-                        return t.booking.total;
-                    }
-                },
-                {
                     field: "ratePerHour",
                     title: "Rate Per Hour",
                     autoHide: !1,
                     template: function (t) {
                         return t.booking.ratePerHour;
+                    }
+                },
+                {
+                    field: "total",
+                    title: "Total",
+                    autoHide: !1,
+                    template: function (t) {
+                        return t.booking.total;
                     }
                 },
                 {

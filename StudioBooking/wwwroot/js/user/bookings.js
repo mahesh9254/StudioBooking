@@ -873,3 +873,6 @@ function getReScheduleRequest(type) {
     return JSON.stringify(data);
 }
 
+function exportAllBooking() {
+    window.open("/Admin/Booking/ExportAllBooking");
+}
