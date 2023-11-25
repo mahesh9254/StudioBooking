@@ -77,6 +77,16 @@ $("#StartTime").change(function (e) {
         }
     }
     else { $("#Cart_StartTime").val(null); $("#StartTime").val(null); }
+
+
+    $.get("/Service/GetBookedStartEndTimeSlots?id=" + $('input[name="bookingstudio"]:checked').attr("categoryId") + "&date=" + $("#Cart_BookingEndDate").val()).done((res) => {
+        let start_time = $('input[name="bookingstudio"]:checked').attr('start-time');
+        let end_time = $('input[name="bookingstudio"]:checked').attr('end-time');    
+        setEndTimeSlotsValidation(start_time, end_time, 2, res);
+      
+    }).fail((err) => {
+        console.log(err);
+    });
 })
 $("#EndTime").change(function (e) {
     if (this.value) {
@@ -248,6 +258,60 @@ function setStartTimeSlots(startTime, endTime, minhrs, res) {
     else $("#StartTime").empty().select2({ data: starttimedata }).val(convertTime12to24($("#Cart_StartTime").val())).trigger('change');
 }
 
+function setEndTimeSlotsValidation(startTime, endTime, minhrs, eres) {
+
+    let sTime = parseTime(convertTime12to24(startTime));
+    let eTime = parseTime(convertTime12to24(endTime));
+    let timeSlots = calculate_time_slot(sTime, eTime, 60);
+    let staTime = parseTime(convertTime12to24($("#Cart_StartTime").val()));
+    let firstTimeSlot = "";
+    var endtimedata = [];
+    $.each(timeSlots, function (i, e) {
+        
+        let disableEndTime = false;
+
+        let sDate = new Date($("#Cart_BookingDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+        let eDate = new Date($("#Cart_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+        
+         disableEndTime = (parseTime(e.id) - staTime) < (minhrs * 60);
+        $.each(eres, function (ri, re) {
+            let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+            let end = new Date(re.endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+
+            if (start < sDate && end > eDate) {
+                disableEndTime = true;
+            }
+            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) == Date.parse(eDate)) {
+
+                if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end)) {
+                    disableEndTime = true;
+                }
+            }
+            else {
+                if (Date.parse(end) == Date.parse(eDate)) {
+
+                    if (parseTime(e.id) <= parseTime(re.end)) {
+                        disableEndTime = true;
+                    }
+                }
+
+                if (Date.parse(start) == Date.parse(eDate)) {
+
+                    if (parseTime(e.id) >= parseTime(re.start)) {
+                        disableEndTime = true;
+                    }
+                }
+            }
+        });
+        endtimedata.push({
+            id: e.id,
+            text: convertFrom24To12(e.id),
+            disabled: disableEndTime
+        });
+    });
+    if ($('#EndTime').hasClass("select2-hidden-accessible")) $("#EndTime").select2('destroy').empty().select2({ data: endtimedata }).val(convertTime12to24($("#Cart_EndTime").val())).trigger('change');
+    else $("#EndTime").empty().select2({ data: endtimedata }).val(convertTime12to24($("#Cart_EndTime").val())).trigger('change');
+}
 function setEndTimeSlots(startTime, endTime, minhrs, eres) {
 
     let sTime = parseTime(convertTime12to24(startTime));
@@ -445,7 +509,7 @@ var KTbooking = function () {
                     startStep: 1,
                     clickableSteps: !1
                 })).on("change", (function (t) {
-                    const [eday, emonth, eyear] = $("#Cart_BookingEndDate").val().split('/');
+                    const [eday, emonth, eyear] = $("#Cart_BookingEndDate").val().split('-');
                     const [ehours] = String(convertTime12to24($("#Cart_EndTime").val())).split(':');
                     
                     const edate = new Date(
@@ -456,7 +520,7 @@ var KTbooking = function () {
                         +"00",
                         +"00",
                     );
-                    const [sday, smonth, syear] = $("#Cart_BookingDate").val().split('/');
+                    const [sday, smonth, syear] = $("#Cart_BookingDate").val().split('-');
                     const [shours] = String(convertTime12to24($("#Cart_StartTime").val())).split(':');
                     
                     const sdate = new Date(
