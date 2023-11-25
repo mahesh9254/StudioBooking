@@ -144,8 +144,8 @@ namespace StudioBooking.Areas.User.Controllers
                     {
                         Id = booking.Id,
                         AdvancePaid = totalPaid,
-                        BookingDate = booking.BookingDate.ToString(Defaults.DefaultDateFormat),
-                        BookingEndDate = booking.BookingEndDate.ToString(Defaults.DefaultDateFormat),
+                        BookingDate = scheduleRequest.RequestDate.ToString(),
+                        BookingEndDate = scheduleRequest.RequestEndDate.ToString(),
                         RatePerHour = booking.RatePerHour,
                         StartTime = TimeOnly.FromDateTime(startTime).ToString(),
                         EndTime = TimeOnly.FromDateTime(endTime).ToString(),
