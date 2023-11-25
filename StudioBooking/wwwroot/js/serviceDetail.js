@@ -52,7 +52,7 @@ $("#Cart_BookingEndDate").change(function (e) {
         //let sDate = $("#Cart_BookingDate").val();
         //let eDate = $("#Cart_BookingEndDate").val();
         //if (sDate == eDate) {
-            setEndTimeSlots(start_time, end_time, minInterval, res);
+        setEndTimeSlotsValidation(start_time, end_time, 2, res);
         //}
         //else {
         //    setEndTimeSlots(start_time, end_time, 0, res);
@@ -272,8 +272,13 @@ function setEndTimeSlotsValidation(startTime, endTime, minhrs, eres) {
 
         let sDate = new Date($("#Cart_BookingDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
         let eDate = new Date($("#Cart_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
-        
-         disableEndTime = (parseTime(e.id) - staTime) < (minhrs * 60);
+
+        if (Date.parse(sDate) < Date.parse(eDate)) {
+            disableEndTime = (parseTime(e.id) - staTime) >= 0;
+        }
+        else {
+            disableEndTime = (parseTime(e.id) - staTime) < (minhrs * 60);
+        }
         $.each(eres, function (ri, re) {
             let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let end = new Date(re.endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));

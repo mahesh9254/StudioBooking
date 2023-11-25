@@ -757,8 +757,14 @@ function setEndTimeSlotsValidation(startTime, endTime, minhrs, eres) {
         let disableEndTime = false;
 
 
-        disableEndTime = (parseTime(e.id) - staTime) < (minhrs * 60);
+        
 
+        if (Date.parse(sDate) < Date.parse(eDate)) {
+            disableEndTime = (parseTime(e.id) - staTime) >= 0;
+        }
+        else {
+            disableEndTime = (parseTime(e.id) - staTime) < (minhrs * 60);
+        }
         $.each(eres, function (ri, re) {
             let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let end = new Date(re.endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
