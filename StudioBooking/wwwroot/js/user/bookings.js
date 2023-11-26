@@ -4,9 +4,9 @@ var KTBookingList = function (name) {
     var e, o = document.getElementById(name);
     o && (o.querySelectorAll("tbody tr").forEach((e => {
         const t = e.querySelectorAll("td")
-        const date = moment(t[0].innerHTML, "DD/MM/YYYY, LT").format();
-        t[0].setAttribute("data-order", date);
-        t[1].setAttribute("data-order", t[1].id);
+        const date = moment(t[3].innerHTML, "DD/MM/YYYY, LT").format();
+        t[3].setAttribute("data-order", date);
+        t[0].setAttribute("data-order", t[0].id);
     }
     )),
         (e = $(o).DataTable({
@@ -17,19 +17,33 @@ var KTBookingList = function (name) {
             columnDefs: [{
                 orderable: !1,
                 targets: 9
-            }, {
+            },
+            {
                 orderable: !1,
-                targets: 10
-            }, {
+                targets: 8
+            },
+            {
                 orderable: !1,
-                targets: 4
-            }, {
+                targets: 7
+            },
+            {
                 orderable: !1,
                 targets: 5
-            }, {
+            },
+            {
                 orderable: !1,
                 targets: 6
-            }]
+            },
+            {
+                orderable: !1,
+                targets: 10
+            },
+            {
+                orderable: !1,
+                targets: 11
+            }
+
+            ]
         }))
     )
 }
@@ -195,7 +209,7 @@ var KTReSchedule = function () {
                             $("#RequestEndDate").val(null)
                         }
                     }
-                    
+
                     )),
                     r.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
                         t.preventDefault(),
@@ -756,7 +770,7 @@ function setEndTimeSlotsValidation(startTime, endTime, minhrs, eres) {
         let disableEndTime = false;
 
 
-        
+
 
         if (Date.parse(sDate) < Date.parse(eDate)) {
             disableEndTime = (parseTime(e.id) - staTime) >= 0;
@@ -913,7 +927,7 @@ $(document).on('change', '#RequestStartTime', function (e) {
 
     $.get("/Service/GetBookedStartEndTimeSlots?id=" + $("#CategoryId").val() + "&date=" + $("#RequestDate").val() + "&type=0").done((res) => {
         var startTime = $("#hdfStartTime-" + $("#BookingId").val()).val();
-        var endTime = $("#hdfEndTime-" + $("#BookingId").val()).val();        
+        var endTime = $("#hdfEndTime-" + $("#BookingId").val()).val();
         setEndTimeSlotsValidation(startTime, endTime, 2, res);
         let startTimeSlots = $('#RequestStartTime').find('option');
         let endTimeSlots = $('#RequestEndTime').find('option');
