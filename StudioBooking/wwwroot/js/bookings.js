@@ -27,11 +27,11 @@ var BookingDataTable = {
             },
             order: [0],
             columnDefs: [{
-                orderable: !1,
-                targets: 9
+                orderable: !0,
+                targets: 8
             }, {
                 orderable: !1,
-                targets: 10
+                targets: 9
             }],
             noRecords: 'No records found',
             sortable: !0,
@@ -44,36 +44,51 @@ var BookingDataTable = {
                 {
                     field: "booking.bookingId",
                     title: "ID",
-                    sortable: "desc",
+                    sortable: true,
                     selector: !1,
                     autoHide: !1,
                     textAlign: "center",
                     template: function (t) {
                         return t.booking.bookingId;
+                    },
+                    sortCallback: function (data, sort, column) {
+                        return $(data).sort(alphabeticalSort(sort === "asc" ? "booking.bookingId.0" : "booking.bookingId.1"));
                     }
                 },
                 {
                     field: "customer.name",
                     title: "Name",
+                    sortable: true,
                     autoHide: !1,
                     template: function (t) {
                         return t.customer.name;
+                    },
+                    sortCallback: function (data, sort, column) {
+                        return $(data).sort(alphabeticalSort(sort === "asc" ? "customer.name.0" : "customer.name.1"));
                     }
                 },
                 {
                     field: "servicePrice.categoryName",
                     title: "Studio",
+                    sortable: true,
                     autoHide: !1,
                     template: function (t) {
                         return t.servicePrice.categoryName;
+                    },
+                    sortCallback: function (data, sort, column) {
+                        return $(data).sort(alphabeticalSort(sort === "asc" ? "servicePrice.categoryName.0" : "servicePrice.categoryName.1"));
                     }
                 },
                 {
                     field: "servicePrice.serviceName",
                     title: "Service",
+                    sortable: true,
                     autoHide: !1,
                     template: function (t) {
                         return t.servicePrice.serviceName;
+                    },
+                    sortCallback: function (data, sort, column) {
+                        return $(data).sort(alphabeticalSort(sort === "asc" ? "servicePrice.serviceName.0" : "servicePrice.serviceName.1"));
                     }
                 },
                 {
@@ -82,17 +97,56 @@ var BookingDataTable = {
                     type: 'date',
                     format: 'dd-MM-yyyy',
                     autoHide: !1,
+                    textAlign: "center",
                     template: function (t) {
                         return t.booking.bookingDate;
+                    },
+                    sortCallback: function (data, sort, column) {
+                        return $(data).sort(function (a, b) {
+                            var aField = a['booking']['bookingDate'];
+                            var bField = b['booking']['bookingDate'];
+                            var aFieldTime = a['booking']['startTime'];
+                            var bFieldTime = b['booking']['startTime'];
+
+                            var newAField = aField.split('/');
+                            var newBField = bField.split('/');
+                            var aField = newAField[1] + "/" + newAField[0] + "/" + newAField[2] + " " + aFieldTime + ":00";
+                            var bField = newBField[1] + "/" + newBField[0] + "/" + newBField[2] + " " + bFieldTime + ":00";
+                            debugger;
+                            if (sort === 'asc') {
+                                return Date.parse(aField) > Date.parse(bField) ? 1 : Date.parse(aField) < Date.parse(bField) ? -1 : 0;
+                            } else {
+                                return Date.parse(aField) < Date.parse(bField) ? 1 : Date.parse(aField) > Date.parse(bField) ? -1 : 0;
+                            }
+                        });
                     }
                 },
                 {
                     field: "booking.startTime",
                     title: "Start Time",
                     autoHide: !1,
+                    textAlign: "center",
+                    sortable: !1,
                     template: function (t) {
                         return t.booking.startTime;
                     }
+                    //, sortCallback: function (data, sort, column) {
+                    //    return $(data).sort(function (a, b) {
+                    //        var aField = a['booking']['startTime'];
+                    //        var bField = b['booking']['startTime'];
+                    //        if (sort === 'asc') {
+                    //            return parseTime(aField) > parseTime(bField)
+                    //                ? 1 : parseTime(aField) < parseTime(bField)
+                    //                    ? -1
+                    //                    : 0;
+                    //        } else {
+                    //            return parseTime(aField) < parseTime(bField)
+                    //                ? 1 : parseTime(aField) > parseTime(bField)
+                    //                    ? -1
+                    //                    : 0;
+                    //        }
+                    //    });
+                    //}
                 },
                 {
                     field: "booking.bookingEndDate",
@@ -100,38 +154,85 @@ var BookingDataTable = {
                     type: 'date',
                     format: 'dd-MM-yyyy',
                     autoHide: !1,
+                    textAlign: "center",
                     template: function (t) {
                         return t.booking.bookingEndDate;
+                    },
+                    sortCallback: function (data, sort, column) {
+                        return $(data).sort(function (a, b) {
+                            var aField = a['booking']['bookingEndDate'];
+                            var bField = b['booking']['bookingEndDate'];
+                            var aFieldTime = a['booking']['endTime'];
+                            var bFieldTime = b['booking']['endTime'];
+
+                            var newAField = aField.split('/');
+                            var newBField = bField.split('/');
+                            var aField = newAField[1] + "/" + newAField[0] + "/" + newAField[2] + " " + aFieldTime + ":00";
+                            var bField = newBField[1] + "/" + newBField[0] + "/" + newBField[2] + " " + bFieldTime + ":00";
+                            debugger;
+                            if (sort === 'asc') {
+                                return Date.parse(aField) > Date.parse(bField) ? 1 : Date.parse(aField) < Date.parse(bField) ? -1 : 0;
+                            } else {
+                                return Date.parse(aField) < Date.parse(bField) ? 1 : Date.parse(aField) > Date.parse(bField) ? -1 : 0;
+                            }
+                        });
                     }
                 },
                 {
                     field: "booking.endTime",
                     title: "End Time",
                     autoHide: !1,
+                    textAlign: "center",
+                    sortable: !1,
                     template: function (t) {
-                        return  t.booking.endTime;
+                        return t.booking.endTime;
                     }
+                    //, sortCallback: function (data, sort, column) {
+                    //    debugger;
+                    //    //var field = column['field'];
+                    //    return $(data).sort(function (a, b) {
+                    //        var aField = a['booking']['endTime'];
+                    //        var bField = b['booking']['endTime'];
+                    //        if (sort === 'asc') {
+                    //            return parseTime(aField) > parseTime(bField)
+                    //                ? 1 : parseTime(aField) < parseTime(bField)
+                    //                    ? -1
+                    //                    : 0;
+                    //        } else {
+                    //            return parseTime(aField) < parseTime(bField)
+                    //                ? 1 : parseTime(aField) > parseTime(bField)
+                    //                    ? -1
+                    //                    : 0;
+                    //        }
+                    //    });
+                    //}
                 },
                 {
-                    field: "totalhours",
+                    field: "booking.totalhours",
                     title: "Hours",
                     autoHide: !1,
+                    textAlign: "center",
+                    sortable: !1,
                     template: function (t) {
                         return t.booking.totalHours;
                     }
                 },
                 {
-                    field: "ratePerHour",
+                    field: "booking.ratePerHour",
                     title: "Rate Per Hour",
                     autoHide: !1,
+                    textAlign: "center",
+                    sortable: !1,
                     template: function (t) {
                         return t.booking.ratePerHour;
                     }
                 },
                 {
-                    field: "total",
+                    field: "booking.total",
                     title: "Total",
                     autoHide: !1,
+                    textAlign: "center",
+                    sortable: !1,
                     template: function (t) {
                         return t.booking.total;
                     }
@@ -140,7 +241,7 @@ var BookingDataTable = {
                     field: "BookingStatus",
                     title: "Status",
                     autoHide: !1,
-                    textAlign: "center",
+                    sortable: !1,
                     template: function (t) {
                         var e = {
                             "0": {
@@ -186,8 +287,8 @@ var BookingDataTable = {
                 {
                     field: "paymentStatus",
                     title: "Payment",
-                    width: 120,
                     autoHide: !1,
+                    sortable: !1,
                     template: function (t) {
                         var e = {
                             "0": {
@@ -213,12 +314,12 @@ var BookingDataTable = {
                         };
                         return '<span class="label label-' + e[t.booking.paymentStatus].class + ' label-pill label-inline">' + e[t.booking.paymentStatus].title + '</span>';
                     }
-                },               
+                },
                 {
                     field: "Actions",
                     title: "",
                     sortable: !1,
-                    width: 30,                    
+                    width: 50,
                     autoHide: !1,
                     template: function (t) {
                         let html = '<div class="dropdown dropdown-inline dropleft" data-toggle="kt-tooltip" title="Actions" data-placement="left">';
@@ -237,7 +338,7 @@ var BookingDataTable = {
                                 if (t.booking.bookingStatus !== 2 && t.booking.paymentStatus !== 0)
                                     html += '<a href="javascript:;" class="dropdown-item" title="On-Hold"" onClick="updateBookingStatus(' + t.booking.id + ',' + 2 + ')"><i class="flaticon2-hourglass-1"></i><span style="margin: 3px;">On-Hold</span></a>';
                                 html += '<a href="javascript:;" class="dropdown-item" title="Edit Details" onClick="editBooking(' + t.booking.id + ')"><i class="flaticon2-edit"></i><span style="margin: 3px;">Edit</span></a>';
-                                html += '<a href="javascript:;" class="dropdown-item" title="Add Addon" onClick="openAddOnModal(' + t.booking.id + ')"><i class="flaticon2-plus"></i><span style="margin: 3px;">Add Addon</span></a>';                                
+                                html += '<a href="javascript:;" class="dropdown-item" title="Add Addon" onClick="openAddOnModal(' + t.booking.id + ')"><i class="flaticon2-plus"></i><span style="margin: 3px;">Add Addon</span></a>';
                             }
                             if (t.booking.bookingStatus !== 5) {
                                 html += '<a href="javascript:;" class="dropdown-item" title="Cancel Booking" onClick="openCancelModal(' + t.booking.id + ',' + 0 + ')"><i class="flaticon2-delete"></i><span style="margin: 3px;">Cancel</span></a>';
@@ -293,6 +394,19 @@ var BookingDataTable = {
         });
     }
 };
+
+const alphabeticalSort = property => {
+    let propArr = property.split(".")
+
+    return function (a, b) {
+        if (parseInt(propArr[2]) === 1) {
+            return b[propArr[0]][propArr[1]].localeCompare(a[propArr[0]][propArr[1]]);
+        } else {
+            return a[propArr[0]][propArr[1]].localeCompare(b[propArr[0]][propArr[1]]);
+        }
+    };
+};
+
 var KTBookingModal = function () {
     const r = document.getElementById("kt_modal_booking")
     return {
@@ -304,7 +418,7 @@ var KTBookingModal = function () {
                 $("#Booking_BookingDate").datepicker({
                     enableTime: false,
                     format: "dd-mm-yyyy",
-                   // startDate: '+1d'
+                    // startDate: '+1d'
                 });
                 $("#Booking_BookingEndDate").datepicker({
                     enableTime: false,
@@ -359,15 +473,15 @@ var KTBookingModal = function () {
                             if (servicePriceId == e.id) selectedValue = e;
                         });
                         let sDate = $("#Booking_BookingDate").val();
-                        if (sDate) { 
+                        if (sDate) {
                             $.get("/Service/GetBookedStartEndTimeSlots" + "?id=" + $("#ddlCategory").val() + "&date=" + sDate).done((res) => {
 
-                            setStartTimeSlotsBooking(selectedValue.startTime, selectedValue.endTime, 1, res);
-                            setEndTimeSlotsBooking(selectedValue.startTime, selectedValue.endTime, 1, res);
+                                setStartTimeSlotsBooking(selectedValue.startTime, selectedValue.endTime, 1, res);
+                                setEndTimeSlotsBooking(selectedValue.startTime, selectedValue.endTime, 1, res);
 
-                        }).fail((err) => {
-                            console.log(err);
-                        });
+                            }).fail((err) => {
+                                console.log(err);
+                            });
                         }
                     } else {
                         $("#StartTime").empty().select2().trigger('change');
@@ -377,7 +491,7 @@ var KTBookingModal = function () {
                 ));
                 $(e.querySelector('#Booking_BookingDate')).on("change", (function () {
                     if (this.value) {
-                        $("#Booking_BookingEndDate").val(this.value) 
+                        $("#Booking_BookingEndDate").val(this.value)
                         $("#Booking_BookingEndDate").datepicker('setStartDate', this.value);
                     }
                     else $("#Booking_BookingEndDate").val(null)
@@ -402,21 +516,21 @@ var KTBookingModal = function () {
                                 $("#Booking_StartTime").val(null); $("#StartTime").val(null);
                                 $("#Booking_EndTime").val(null); $("#EndTime").val(null);
 
-                                
+
                             }
                         }
                     }).fail((err) => {
                         console.log(err);
                     });
 
-                    $.get("/Service/GetBookedStartEndTimeSlots" + "?id="+$("#ddlCategory").val() + "&date=" + this.value).done((res) => {
-                        
+                    $.get("/Service/GetBookedStartEndTimeSlots" + "?id=" + $("#ddlCategory").val() + "&date=" + this.value).done((res) => {
+
                         setStartTimeSlotsBooking(selectedValue.startTime, selectedValue.endTime, 1, res);
                         setEndTimeSlotsBooking(selectedValue.startTime, selectedValue.endTime, 1, res);
-                   
-                }).fail((err) => {
-                    console.log(err);
-                });
+
+                    }).fail((err) => {
+                        console.log(err);
+                    });
 
                 }));
 
@@ -489,26 +603,26 @@ var KTBookingModal = function () {
                             });
 
                             $.get("/Service/GetBookedStartEndTimeSlots" + "?id=" + $("#ddlCategory").val() + "&date=" + this.value).done((res) => {
-                                
+
                                 setEndTimeSlotsBooking(selectedValue.startTime, selectedValue.endTime, 1, res);
 
                             }).fail((err) => {
                                 console.log(err);
                             });
-                            
+
                         }
-                       
+
                     }
-                    
+
                 }));
                 $(e.querySelector('#StartTime')).on("change", (function () {
                     //if (this.value) $("#Booking_StartTime").val(this.value)
                     //else $("#Booking_StartTime").val(null)
                     if (this.value) {
-                    let servicePriceId = parseInt($("#Booking_ServicePriceId").val());
-                    var selectedValue = {};
-                    var tymValue = this.value;
-                    $.get("/Admin/ServicePrice/GetServices/" + $("#ddlCategory").val()).done((res) => {
+                        let servicePriceId = parseInt($("#Booking_ServicePriceId").val());
+                        var selectedValue = {};
+                        var tymValue = this.value;
+                        $.get("/Admin/ServicePrice/GetServices/" + $("#ddlCategory").val()).done((res) => {
                             if (res.data.length) {
                                 serviceData = res.data;
                                 let services = [];
@@ -521,7 +635,7 @@ var KTBookingModal = function () {
                                 if (serviceData) {
                                     serviceData.forEach(function (e) {
                                         if (servicePriceId == e.id) selectedValue = e;
-                                    }); 
+                                    });
                                 }
                             }
                         }).fail((err) => {
@@ -534,11 +648,11 @@ var KTBookingModal = function () {
                         }).fail((err) => {
                             console.log(err);
                         });
-                    
-                    
+
+
                         let sDate = new Date($("#Booking_BookingDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
                         let eDate = new Date($("#Booking_BookingEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
-                        let sTime = parseTime(this.value); 
+                        let sTime = parseTime(this.value);
                         let eTime = parseTime($("#Booking_EndTime").val());
                         if (Date.parse(sDate) == Date.parse(eDate) && eTime) {
                             if (sTime < eTime) $("#Booking_StartTime").val(this.value)
@@ -563,8 +677,8 @@ var KTBookingModal = function () {
                         else {
                             $("#Booking_EndTime").val(this.value); $("#EndTime").val(this.value);
                         }
-                       
-                        
+
+
                     }
                     else { $("#Booking_EndTime").val(null); $("#EndTime").val(null); }
                 }));
@@ -723,7 +837,7 @@ function setStartTimeSlots(startTime, endTime, minhrs) {
     });
     if ($('#StartTime').hasClass("select2-hidden-accessible")) $("#StartTime").select2('destroy').empty().select2({ data: starttimedata }).val(convertTime12to24($("#Booking_StartTime").val())).trigger('change');
     else $("#StartTime").empty().select2({ data: starttimedata }).val(convertTime12to24($("#Booking_StartTime").val())).trigger('change');
-    
+
 }
 function setEndTimeSlots(startTime, endTime, minhrs) {
     let sTime = parseTime(convertTime12to24(startTime));
@@ -735,7 +849,7 @@ function setEndTimeSlots(startTime, endTime, minhrs) {
     $.each(timeSlots, function (i, e) {
         if (i === 0)
             firstTimeSlot = e.id;
-       // let disableStartTime = parseTime(convertTime12to24(endTime)) - parseTime(e.id) < (minhrs * 60);
+        // let disableStartTime = parseTime(convertTime12to24(endTime)) - parseTime(e.id) < (minhrs * 60);
         //let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
         let disableEndTime = parseTime(e.id) <= parseTime(minhrs);
         //starttimedata.push({
@@ -748,7 +862,7 @@ function setEndTimeSlots(startTime, endTime, minhrs) {
             text: convertFrom24To12(e.id),
             disabled: disableEndTime
         });
-    });     
+    });
     if ($('#EndTime').hasClass("select2-hidden-accessible")) $("#EndTime").select2('destroy').empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val())).trigger('change');
     else $("#EndTime").empty().select2({ data: endtimedata }).val(convertTime12to24($("#Booking_EndTime").val())).trigger('change');
 }
@@ -762,7 +876,7 @@ function setTimeSlots(startTime, endTime, minhrs) {
     $.each(timeSlots, function (i, e) {
         if (i === 0)
             firstTimeSlot = e.id;
-       // let disableStartTime = parseTime(convertTime12to24(endTime)) - parseTime(e.id) < (minhrs * 60);
+        // let disableStartTime = parseTime(convertTime12to24(endTime)) - parseTime(e.id) < (minhrs * 60);
         //let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
         starttimedata.push({
             id: e.id,
@@ -772,7 +886,7 @@ function setTimeSlots(startTime, endTime, minhrs) {
         endtimedata.push({
             id: e.id,
             text: convertFrom24To12(e.id),
-           // disabled: disableEndTime
+            // disabled: disableEndTime
         });
         //$(".startTime").append('<button type="button" class="btn btn-sm font-weight-bold mr-2 mt-2 ' + (disableStartTime ? 'disabled btn-light-dark' : 'btn-rbstudio') + '">' + e.id + '</button>');
         //$(".endTime").append('<button type="button" class="btn btn-sm font-weight-bold mr-2 mt-2 ' + (disableEndTime ? 'disabled btn-light-dark' : 'btn-rbstudio') + '">' + e.id + '</button>');
@@ -875,18 +989,18 @@ function editBooking(id) {
             $("#ddlCategory").attr('disabled', 'disabled');
             $("#Booking_ServicePriceId").attr('disabled', 'disabled');
             // setTimeSlots($("#ServiceStartTime").val(), $("#ServiceEndTime").val(), 1);
-            
+
 
             $.get("/Service/GetBookedStartEndTimeSlots" + "?id=" + $("#ddlCategory").val() + "&date=" + $("#Booking_BookingDate").val()).done((res) => {
 
                 setStartTimeSlotsBookingEdit($("#ServiceStartTime").val(), $("#ServiceEndTime").val(), $("#Booking_StartTime").val(), $("#Booking_EndTime").val(), res);
-                setEndTimeSlotsBookingEdit($("#ServiceStartTime").val(), $("#ServiceEndTime").val(), $("#Booking_StartTime").val() ,$("#Booking_EndTime").val(), res);
+                setEndTimeSlotsBookingEdit($("#ServiceStartTime").val(), $("#ServiceEndTime").val(), $("#Booking_StartTime").val(), $("#Booking_EndTime").val(), res);
 
             }).fail((err) => {
                 console.log(err);
             });
-           // $("#StartTime").val($("#Booking_StartTime").val()).trigger('change');
-           // $("#EndTime").val($("#Booking_EndTime").val()).trigger('change')
+            // $("#StartTime").val($("#Booking_StartTime").val()).trigger('change');
+            // $("#EndTime").val($("#Booking_EndTime").val()).trigger('change')
         })
         .fail(function (err) {
             toastr.error(err);
@@ -1246,7 +1360,7 @@ function setStartTimeSlotsBooking(startTime, endTime, minhrs, res) {
     $.each(timeSlots, function (i, e) {
 
         let disableStartTime = false;
-       
+
 
         //let disableStartTime = ((parseTime(convertTime12to24(endTime)) - parseTime(e.id)) < (minhrs * 60));
 
@@ -1254,7 +1368,7 @@ function setStartTimeSlotsBooking(startTime, endTime, minhrs, res) {
             //if (parseTime(re) == parseTime(e.id)) {
             //    disableStartTime = true;
             //}
-          
+
             let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let end = new Date(re.endDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
             let sDate = new Date($("#Booking_BookingDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
@@ -1262,10 +1376,10 @@ function setStartTimeSlotsBooking(startTime, endTime, minhrs, res) {
             if (start < sDate && end > eDate) {
                 disableStartTime = true;
             }
-            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) != Date.parse(eDate)) { 
+            if (Date.parse(start) == Date.parse(sDate) && Date.parse(end) != Date.parse(eDate)) {
 
-            if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= eTime) {
-                disableStartTime = true;
+                if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= eTime) {
+                    disableStartTime = true;
                 }
             }
             if (Date.parse(start) != Date.parse(sDate) && Date.parse(end) == Date.parse(eDate)) {
@@ -1304,9 +1418,9 @@ function setEndTimeSlotsBooking(startTime, endTime, minhrs, eres) {
         //if (i === 0)
         //    firstTimeSlot = e.id;
         let disableEndTime = false;
-        
 
-       // let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
+
+        // let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
 
         $.each(eres, function (ri, re) {
             let start = new Date(re.startDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
@@ -1334,7 +1448,7 @@ function setEndTimeSlotsBooking(startTime, endTime, minhrs, eres) {
                     disableEndTime = true;
                 }
             }
-            
+
         });
         endtimedata.push({
             id: e.id,
@@ -1429,13 +1543,13 @@ function setEndTimeSlotsBookingwithTym(startTime, endTime, minhrs, eres, tym) {
         //    firstTimeSlot = e.id;
         let disableEndTime = false;
 
-         disableEndTime = parseTime(e.id) <= parseTime(tym);
+        disableEndTime = parseTime(e.id) <= parseTime(tym);
         // let disableEndTime = (parseTime(e.id) - parseTime(firstTimeSlot)) < (minhrs * 60);
 
         $.each(eres, function (ri, re) {
             if (parseTime(e.id) >= parseTime(re.start) && parseTime(e.id) <= parseTime(re.end) && parseTime(re.start) != parseTime(tym) && parseTime(re.end) != parseTime($("#Booking_EndTime").val())) {
                 disableEndTime = true;
-            }            
+            }
         });
         endtimedata.push({
             id: e.id,
