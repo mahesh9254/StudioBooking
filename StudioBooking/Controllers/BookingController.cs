@@ -291,7 +291,12 @@ namespace StudioBooking.Controllers
             return View(transaction);
         }
 
-        [AllowAnonymous]
+		public IActionResult Overlapping(ServiceViewModel model)
+		{
+			return View(model);
+		}
+
+		[AllowAnonymous]
         public async Task<IActionResult> ThankYou(string TXNID, string order_id)
         {
             var transaction = await _context.Transactions.FirstOrDefaultAsync(c => c.Id == Convert.ToInt64(TXNID));

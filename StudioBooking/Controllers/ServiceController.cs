@@ -94,6 +94,10 @@ namespace StudioBooking.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart(ServiceViewModel model)
         {
+
+            var existingBooking = await _context.Bookings.FirstOrDefaultAsync(m => m.BookingDate >= (DateTime.Parse(model.Cart.BookingDate)) && m.BookingEndDate <= DateTime.Parse(model.Cart.BookingEndDate));
+
+            if (existingBooking != null) { return RedirectToAction("Overlapping", "Booking"); }
             var activeUserCarts = await _context.Carts.Include(c => c.Customer).FirstOrDefaultAsync(c => c.IsActive && !(c.IsCheckedOut ?? false) && c.Customer.UserId == GetUserId());
             if (activeUserCarts != null)
             {
