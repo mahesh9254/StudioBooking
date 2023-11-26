@@ -30,6 +30,7 @@ $("#Cart_BookingDate").change(function (e) {
        
         //console.log(new Date(new Date(this.value.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime() + (5 * 24 * 60 * 60 * 1000)));
         $("#Cart_BookingEndDate").datepicker('setEndDate', new Date(new Date(this.value.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime() + (1 * 24 * 60 * 60 * 1000)));
+        $("#Cart_BookingEndDate").datepicker('setStartDate', new Date(new Date(this.value.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime()));
         //$.each(res, function (i, e) {
         //    let time = parseTime(e);//parseTime(convertTime12to24(e));
         //    startTimeSlots.filter(function () {

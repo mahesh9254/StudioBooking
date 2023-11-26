@@ -135,8 +135,8 @@ var KTReSchedule = function () {
                             });
 
                             /*$("#RequestEndTime").datepicker('setEndDate', new Date(new Date(this.value.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime() + (1 * 24 * 60 * 60 * 1000)));*/
-                           // $("#RequestEndDate").set('maxDate', new Date(this.value).fp_incr(-1))
-                           // $("#RequestEndDate").set('maxDate', new Date(new Date(this.value.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime() + (1 * 24 * 60 * 60 * //1000)));
+                            // $("#RequestEndDate").set('maxDate', new Date(this.value).fp_incr(-1))
+                            // $("#RequestEndDate").set('maxDate', new Date(new Date(this.value.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime() + (1 * 24 * 60 * 60 * //1000)));
                             //$("#StartTime").val(null);
                             //$("#EndTime").val(null);
                             //let startTimeSlots = $('#RequestStartTime').find('option');
@@ -164,39 +164,38 @@ var KTReSchedule = function () {
                 }
                 )),
                     $(e.querySelector('[name="RequestEndDate"]')).on("change", (function () {
-                        if (this.value) {
-                            enableSubmit();
-                            $.get("/Service/GetBookedStartEndTimeSlots?id=" + $("#CategoryId").val() + "&date=" + this.value + "&type=0").done((res) => {
-                                var startTime = $("#hdfStartTime-" + $("#BookingId").val()).val();
-                                var endTime = $("#hdfEndTime-" + $("#BookingId").val()).val();
-                                var minHours = $("#hdfMinHours-" + $("#BookingId").val()).val();
-                                // setTimeSlots(startTime, endTime, parseInt(minHours));
-                                setEndTimeSlots(startTime, endTime, minHours, res);
-                                $("#RequestEndTime").val(null).trigger('change');;
-                                //$("#EndTime").val(null);
-                                //let startTimeSlots = $('#RequestStartTime').find('option');
-                                //let endTimeSlots = $('#RequestEndTime').find('option');
-                                //startTimeSlots.removeClass('booked');
-                                //endTimeSlots.removeClass('booked');
-                                //$.each(res, function (i, e) {
-                                //    let time = parseTime(e);
-                                //    startTimeSlots.filter(function () {
-                                //        return parseTime(this.innerText) == time;
-                                //    }).addClass('booked').attr("disabled", "disabled");
-                                //    endTimeSlots.filter(function () {
-                                //        return parseTime(this.innerText) == time;
-                                //    }).addClass('booked').attr("disabled", "disabled");
-                                //});
-                                i.revalidateField("RequestDate");
-                            }).fail((err) => {
-                                console.log(err);
-                            });
+
+                        let sDate = new Date($("#RequestDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+                        let eDate = new Date($("#RequestEndDate").val().replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3"));
+                        if (sDate <= eDate) {
 
 
-                            $("#RequestEndDate").val(this.value)
+                            if (this.value) {
+                                enableSubmit();
+                                $.get("/Service/GetBookedStartEndTimeSlots?id=" + $("#CategoryId").val() + "&date=" + this.value + "&type=0").done((res) => {
+                                    var startTime = $("#hdfStartTime-" + $("#BookingId").val()).val();
+                                    var endTime = $("#hdfEndTime-" + $("#BookingId").val()).val();
+                                    var minHours = $("#hdfMinHours-" + $("#BookingId").val()).val();
 
+                                    setEndTimeSlots(startTime, endTime, minHours, res);
+                                    $("#RequestEndTime").val(null).trigger('change');;
+
+                                    i.revalidateField("RequestDate");
+                                }).fail((err) => {
+                                    console.log(err);
+                                });
+
+
+                                $("#RequestEndDate").val(this.value)
+
+                            }
+                        }
+                        else {
+
+                            $("#RequestEndDate").val(null)
                         }
                     }
+                    
                     )),
                     r.querySelector('[data-kt-users-modal-action="close"]').addEventListener("click", (t => {
                         t.preventDefault(),
@@ -582,7 +581,7 @@ function reSchedule(id, categoryId) {
                 disable: [
                     {
                         from: new Date(new Date(res.booking.bookingDate.replace(/(\d{2})-(\d{2})-(\d{4})/, "$2/$1/$3")).getTime() + (2 * 24 * 60 * 60 * 1000)),
-                        to: new Date().fp_incr(180) // 180 days from now
+                        to: new Date().fp_incr(1180) // 180 days from now
                     }
                 ]
             });
