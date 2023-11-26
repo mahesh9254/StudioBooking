@@ -116,6 +116,10 @@ $('input[name="bookingstudio"]').change(function () {
     //$(".dv-end-time").hide();
    // $(".dv-start-time").hide();
     $("#Cart_BookingDate").val(null);
+    $("#Cart_BookingEndDate").val(null);
+    
+   // setStartTimeSlots("8:00 AM", "11:00 PM", 2, []);
+    //setEndTimeSlots(start_time, end_time, 2, []);
     //setTimeSlots(start_time, end_time, minInterval);
 });
 
