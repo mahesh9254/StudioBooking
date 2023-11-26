@@ -95,9 +95,27 @@ namespace StudioBooking.Controllers
         public async Task<IActionResult> AddToCart(ServiceViewModel model)
         {
 
-            var existingBooking = await _context.Bookings.FirstOrDefaultAsync(m => m.BookingDate >= (DateTime.Parse(model.Cart.BookingDate)) && m.BookingEndDate <= DateTime.Parse(model.Cart.BookingEndDate));
 
-            if (existingBooking != null) { return RedirectToAction("Overlapping", "Booking"); }
+            //var oldTotalHours = (booking.BookingEndDate.Add(TimeSpan.Parse(booking.EndTime)) - booking.BookingDate.Add(TimeSpan.Parse(booking.StartTime))).TotalHours;
+
+
+
+
+            var existingBooking =  _context.Bookings;
+
+            foreach (var m in existingBooking)
+            {
+
+                if( m.BookingDate.Add(TimeSpan.Parse(m.StartTime)) >= (DateTime.Parse(model.Cart.BookingDate).Add(TimeSpan.Parse(model.Cart.StartTime))) && m.BookingEndDate.Add(TimeSpan.Parse(m.EndTime)) <= DateTime.Parse(model.Cart.BookingEndDate).Add(TimeSpan.Parse(model.Cart.EndTime)))
+                {
+                    return RedirectToAction("Overlapping", "Booking");
+                }
+
+            }
+
+
+
+            //if (existingBooking != null) {  }
             var activeUserCarts = await _context.Carts.Include(c => c.Customer).FirstOrDefaultAsync(c => c.IsActive && !(c.IsCheckedOut ?? false) && c.Customer.UserId == GetUserId());
             if (activeUserCarts != null)
             {
