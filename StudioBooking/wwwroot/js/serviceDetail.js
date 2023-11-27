@@ -117,8 +117,8 @@ $('input[name="bookingstudio"]').change(function () {
    // $(".dv-start-time").hide();
     $("#Cart_BookingDate").val(null);
     $("#Cart_BookingEndDate").val(null);
-    $("#StartTime").select2('destroy').empty();
-    $("#EndTime").select2('destroy').empty();
+    $("#StartTime").empty();
+    $("#EndTime").empty();
     $("#Cart_EndTime").val(null);
     $("#Cart_StartTime").val(null);
    // setStartTimeSlots("8:00 AM", "11:00 PM", 2, []);
