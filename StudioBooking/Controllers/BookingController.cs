@@ -65,6 +65,17 @@ namespace StudioBooking.Controllers
                 return RedirectToAction("TwoStepBooking", "Booking");
 
             var customer = await CustomerDTO.GetCustomer(_context, GetUserId());
+            var coupon = await _context.Coupons.FirstOrDefaultAsync(m => m.IsActive == true && m.IsDelete == false);
+            var cuponDTO = new CouponDTO();
+            if (coupon != null)
+            {
+
+                cuponDTO.Name = coupon.Name;
+                cuponDTO.Code = coupon.Code;
+                cuponDTO.Discount = coupon.Discount;
+                
+            }
+
             var bookingViewModel = new BookingViewModel
             {
                 Cart = cart,
@@ -72,6 +83,8 @@ namespace StudioBooking.Controllers
                 Customer = customer,
                 CustomerAddresses = await CustomerAddressDTO.GetAddressByCustomerId(_context, customer.Id),
                 Wallets = customer.Id > 0 ? await WalletDTO.GetCustomerWallets(_context, customer.Id) : new List<WalletDTO>(),
+                Coupon = cuponDTO
+               
             };            
             return View(bookingViewModel);
         }

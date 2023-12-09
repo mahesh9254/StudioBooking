@@ -31,6 +31,7 @@ namespace StudioBooking.DTO
         public PaymentStatus PaymentStatus { get; set; }
         public PaymentProvider PaymentProvider { get; set; }
         public WalletType WalletType { get; set; }
+        public bool IsCouponApply { get; set; }
         public double TotalHours
         {
             get

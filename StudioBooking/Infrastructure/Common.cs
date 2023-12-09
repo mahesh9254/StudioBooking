@@ -170,7 +170,7 @@ namespace StudioBooking.Infrastructure
 
         public static DateTime ConvertDateTime(string datetime, string format)
         {
-            return DateTime.ParseExact(datetime, format, CultureInfo.InvariantCulture);
+            return DateTime.Parse(datetime);
         }
 
         public static bool IsDigitsOnly(string str)

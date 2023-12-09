@@ -23,6 +23,8 @@ namespace StudioBooking.ViewModels
         public List<AddOnDTO> Addons { get; set; }
         public List<WalletDTO> Wallets { get; set; }
         public List<TransactionDTO> Transactions { get; set; }
+        public CouponDTO Coupon { get; set; }
+        
         public BookingViewModel()
         {
             ServicePrice = new ServicePriceDTO();

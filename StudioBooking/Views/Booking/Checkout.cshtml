@@ -51,6 +51,7 @@
             <input asp-for="Cart.Id" type="hidden" />
             <input asp-for="Customer.Id" type="hidden" />
             <input asp-for="Booking.PaymentStatus" type="hidden" />
+            <input asp-for="Booking.IsCouponApply" type="hidden" />
             <div class="row">
                 <div class="col-lg-6">
                     <div class="axil-checkout-billing">
@@ -168,6 +169,19 @@
                                         <td>Subtotal</td>
                                         <td class="order-subtotal-amount">₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
                                     </tr>
+                                    <tr>
+                                        @if (Model.Coupon.Discount > 0)
+                                        {
+                                            <tr class="order-subtotal">
+                                                <td>Coupon : @Model.Coupon.Name - @Model.Coupon.Code : @Model.Coupon.Discount %</td>
+                                                <td>
+                                                <button type="button" id="apply" class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="cuponApply(@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price), @Model.Coupon.Discount)"><span id="coupon">Apply</span></button>
+                                                <button type="button" id="remove"  class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="cuponRemove(@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price))"><span id="coupon">Remove</span></button>
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tr>
                                     @if (Model.Wallets.Any(w=> w.BalanceAmount > 0 || w.BalanceHours > 0))
                                     {
                                         <tr class="order-shipping">
@@ -195,7 +209,7 @@
                                     }
                                     <tr class="order-total">
                                         <td>Total</td>
-                                        <td class="order-total-amount">₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
+                                        <td class="order-total-amount" id="total">₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -255,7 +269,7 @@
     <script src="https://cdn.jsdelivr.net/gh/cashfree/payments-icons-library@latest/dist/image-library.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-
+            $('#remove').hide();
             /*Cashfee*/
             /*let cards = paymentsIcons.getModesIcons('cardschemes', 'svg');
             $.each(cards, function (i, o) {
@@ -338,6 +352,24 @@
                     $("#frm_BookNow").submit();
                 }
             }
+        }
+        function cuponApply(total, discount) { 
+            var discountPrice = total * (discount / 100);
+            $('#total').html(discountPrice);
+            $('#fullPay').text(discountPrice);
+            $('#advancePay').text(discountPrice/2);
+            $('#Booking_IsCouponApply').val(true);
+            $('#apply').hide();
+            $('#remove').show();
+
+        }
+        function cuponRemove(total) {
+            $('#total').html(total);
+            $('#fullPay').text(total);
+            $('#advancePay').text(total/2);
+            $('#apply').show();
+            $('#remove').hide();
+            $('#Booking_IsCouponApply').val(false);
         }
     </script>
 }
