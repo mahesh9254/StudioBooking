@@ -196,9 +196,12 @@ namespace StudioBooking.Areas.Admin.Controllers
 				await _context.ScheduleRequests.AddAsync(request);
 				await _context.SaveChangesAsync();
 
-				var newTotalHours = (DateOnly.Parse(modal.BookingEndDate).ToDateTime(TimeOnly.Parse(modal.EndTime)) - DateOnly.Parse(modal.BookingDate).ToDateTime(TimeOnly.Parse(modal.StartTime))).TotalHours;
-				var oldTotalHours = (booking.BookingEndDate.Add(TimeSpan.Parse(booking.EndTime)) - booking.BookingDate.Add(TimeSpan.Parse(booking.StartTime))).TotalHours;
+				////Commented By Jainam
+				//var newTotalHours = (DateOnly.Parse(modal.BookingEndDate).ToDateTime(TimeOnly.Parse(modal.EndTime)) - DateOnly.Parse(modal.BookingDate).ToDateTime(TimeOnly.Parse(modal.StartTime))).TotalHours;
+				//var oldTotalHours = (booking.BookingEndDate.Add(TimeSpan.Parse(booking.EndTime)) - booking.BookingDate.Add(TimeSpan.Parse(booking.StartTime))).TotalHours;
 
+				var newTotalHours = (DateTime.ParseExact(modal.BookingEndDate + " " + modal.EndTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture) - DateTime.ParseExact(modal.BookingDate + " " + modal.StartTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture)).TotalHours;
+				var oldTotalHours = (DateTime.ParseExact(booking.BookingEndDate + " " + booking.EndTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture) - DateTime.ParseExact(booking.BookingDate + " " + booking.StartTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture)).TotalHours;
 
 				var pendingAmount = booking.Total - booking.Transactions.Where(t => t.Status == (int)TransactionStatus.Success).Sum(b => b.Amount);
 				booking.BookingDate = request.RequestDate ?? DateTime.MinValue;
@@ -616,11 +619,16 @@ namespace StudioBooking.Areas.Admin.Controllers
 		private async Task<Booking> SetBooking(BookingDTO booking)
 		{
 			var servicePrice = await ServicePriceDTO.GetServicePrice(_context, booking.ServicePriceId);
-			var endTime = TimeOnly.Parse(booking.EndTime);
-			var startTime = TimeOnly.Parse(booking.StartTime);
-			var startDate = DateOnly.Parse(booking.BookingDate);
-			var endDate = DateOnly.Parse(booking.BookingEndDate);
-			var totalHours = (endDate.ToDateTime(endTime) - startDate.ToDateTime(startTime)).TotalHours;
+			////Commented By Jainam
+			//var endTime = TimeOnly.Parse(booking.EndTime);
+			//var startTime = TimeOnly.Parse(booking.StartTime);
+			//var startDate = DateOnly.Parse(booking.BookingDate);
+			//var endDate = DateOnly.Parse(booking.BookingEndDate);
+			//var totalHours = (endDate.ToDateTime(endTime) - startDate.ToDateTime(startTime)).TotalHours;
+
+			var startDate = DateTime.ParseExact(booking.BookingDate + " " + booking.StartTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture);
+			var endDate = DateTime.ParseExact(booking.BookingEndDate + " " + booking.EndTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture);
+			var totalHours = (endDate - startDate).TotalHours;
 
 			var customerAddress = await _context.CustomerAddresses.FirstOrDefaultAsync(a => a.IsDefault && a.CustomerId == booking.CustomerId);
 			return new Booking

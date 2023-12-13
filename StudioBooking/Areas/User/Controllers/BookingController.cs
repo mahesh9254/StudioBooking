@@ -12,6 +12,7 @@ using CCA.Util;
 using CCAvenue;
 using Cashfree;
 using System.Net;
+using System.Globalization;
 
 namespace StudioBooking.Areas.User.Controllers
 {
@@ -504,15 +505,18 @@ namespace StudioBooking.Areas.User.Controllers
                     await _context.ScheduleRequests.AddAsync(request);
                     await _context.SaveChangesAsync();
                     modal.Id = request.Id;
-                    //var newTotalHours = ((modal.RequestEndTime ?? DateTime.MinValue) - (modal.RequestStartTime ?? DateTime.MinValue)).TotalHours;
-                    //var oldTotalHours = (DateTime.Parse(booking.EndTime) - DateTime.Parse(booking.StartTime)).TotalHours;
+					//var newTotalHours = ((modal.RequestEndTime ?? DateTime.MinValue) - (modal.RequestStartTime ?? DateTime.MinValue)).TotalHours;
+					//var oldTotalHours = (DateTime.Parse(booking.EndTime) - DateTime.Parse(booking.StartTime)).TotalHours;
+					//var newTotalHours = (modal.RequestEndDate?.Add(TimeSpan.Parse(modal.RequestEndTime)) - modal.RequestDate?.Add(TimeSpan.Parse(modal?.RequestStartTime)))?.TotalHours;
 
-                    //var newTotalHours = (modal.RequestEndDate?.Add(TimeSpan.Parse(modal.RequestEndTime)) - modal.RequestDate?.Add(TimeSpan.Parse(modal?.RequestStartTime)))?.TotalHours;
+					////Commented By Jainam
+					//var newTotalHours = (DateOnly.Parse(modal.RequestEndDate).ToDateTime(TimeOnly.Parse(modal.RequestEndTime)) - DateOnly.Parse(modal.RequestDate).ToDateTime(TimeOnly.Parse(modal.RequestStartTime))).TotalHours;
+					//var oldTotalHours = (booking.BookingEndDate.Add(TimeSpan.Parse(booking.EndTime)) - booking.BookingDate.Add(TimeSpan.Parse(booking.StartTime))).TotalHours;
 
-                    var newTotalHours = (DateOnly.Parse(modal.RequestEndDate).ToDateTime(TimeOnly.Parse(modal.RequestEndTime)) - DateOnly.Parse(modal.RequestDate).ToDateTime(TimeOnly.Parse(modal.RequestStartTime))).TotalHours;
-                    var oldTotalHours = (booking.BookingEndDate.Add(TimeSpan.Parse(booking.EndTime)) - booking.BookingDate.Add(TimeSpan.Parse(booking.StartTime))).TotalHours;
+					var newTotalHours = (DateTime.ParseExact(modal.BookingEndDate + " " + modal.EndTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture) - DateTime.ParseExact(modal.BookingDate + " " + modal.StartTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture)).TotalHours;
+					var oldTotalHours = (DateTime.ParseExact(booking.BookingEndDate + " " + booking.EndTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture) - DateTime.ParseExact(booking.BookingDate + " " + booking.StartTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture)).TotalHours;
 
-                    if (newTotalHours <= oldTotalHours)
+					if (newTotalHours <= oldTotalHours)
                     {
                         var pendingAmount = booking.Total - booking.Transactions.Where(t => t.Status == (int)TransactionStatus.Success).Sum(b => b.Amount);
                         if (pendingAmount <= 0)

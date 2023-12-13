@@ -125,6 +125,7 @@ namespace StudioBooking.Infrastructure
 		public const string CustomerPrefix = "RB/ID/000000";
 		public const string DefaultCurrency = "INR";
 		public const string DefaultDateFormat = "dd/MM/yyyy";
+		public const string DefaultDateTime24Format = "dd/MM/yyyy HH:mm";
 
 		public static object GetBookingStatusCSS(Enums.BookingStatus bookingStatus)
 		{
@@ -171,10 +172,10 @@ namespace StudioBooking.Infrastructure
 			return DateTime.UtcNow;
 		}
 
-        public static DateTime ConvertDateTime(string datetime, string format)
-        {
-            return DateTime.Parse(datetime);
-        }
+		public static DateTime ConvertDateTime(string datetime, string format)
+		{
+			return DateTime.ParseExact(datetime, DefaultDateFormat, CultureInfo.InvariantCulture);
+		}
 
 		public static bool IsDigitsOnly(string str)
 		{

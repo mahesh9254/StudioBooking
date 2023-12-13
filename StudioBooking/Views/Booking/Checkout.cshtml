@@ -1,375 +1,398 @@
 ﻿@using CCAvenue
 @using StudioBooking.Infrastructure
+@using System.Globalization;
 @model StudioBooking.ViewModels.BookingViewModel
 @{
-    Layout = "/Views/Shared/_Layout-eTrade.cshtml";
-    // DateTime endTime, startTime = DateTime.MinValue;
-    double totalHours = 0;
-    if (Model.ServicePrice.ServiceType == Enums.ServiceType.Calculated)
-    {
-        var endTime = TimeOnly.Parse(Model.Cart.EndTime);
-        var startTime = TimeOnly.Parse(Model.Cart.StartTime);
-        var startDate = DateOnly.Parse(Model.Cart.BookingDate);
-        var endDate = DateOnly.Parse(Model.Cart.BookingEndDate);
-        totalHours = (endDate.ToDateTime(endTime) - startDate.ToDateTime(startTime)).TotalHours;
-    }
-    else
-    {
-        totalHours = Model.ServicePrice.MinHours;
-    }
-    var defaultAddress = Model.CustomerAddresses.FirstOrDefault(c => c.IsDefault);
+	Layout = "/Views/Shared/_Layout-eTrade.cshtml";
+	// DateTime endTime, startTime = DateTime.MinValue;
+	double totalHours = 0;
+	if (Model.ServicePrice.ServiceType == Enums.ServiceType.Calculated)
+	{
+		////Commented By Jainam
+		// var endTime = TimeOnly.Parse(Model.Cart.EndTime);
+		// var startTime = TimeOnly.Parse(Model.Cart.StartTime);
+		// var startDate = DateOnly.Parse(Model.Cart.BookingDate);
+		// var endDate = DateOnly.Parse(Model.Cart.BookingEndDate);
+		// totalHours = (endDate.ToDateTime(endTime) - startDate.ToDateTime(startTime)).TotalHours;
+
+		var startDate = (DateTime.Parse(Convert.ToDateTime(Model.Cart.BookingDate).ToString("dd/MM/yyyy")).Add(TimeSpan.Parse(Model.Cart.StartTime)));
+		var endDate = (DateTime.Parse(Convert.ToDateTime(Model.Cart.BookingEndDate).ToString("dd/MM/yyyy")).Add(TimeSpan.Parse(Model.Cart.EndTime)));
+		totalHours = (endDate - startDate).TotalHours;
+	}
+	else
+	{
+		totalHours = Model.ServicePrice.MinHours;
+	}
+	var defaultAddress = Model.CustomerAddresses.FirstOrDefault(c => c.IsDefault);
 }
 @section Style{
-    <style type="text/css">
-        @@media only screen and (max-width: 991px) .header-brand a img {
-            height: auto !important;
-        }
+	<style type="text/css">
+		@@media only screen and (max-width: 991px) .header-brand a img {
+			height: auto !important;
+		}
 
-        .axil-section-gap {
-            padding: 40px 0;
-        }
+		.axil-section-gap {
+			padding: 40px 0;
+		}
 
-        @@media only screen and (max-width: 767px) .axil-section-gap {
-            padding: 10px 0;
-        }
+		@@media only screen and (max-width: 767px) .axil-section-gap {
+			padding: 10px 0;
+		}
 
-        .axil-order-summery.order-checkout-summery .order-payment-method .single-payment {
-            margin-bottom: 5px !important;
-            padding-bottom: 5px !important;
-        }
+		.axil-order-summery.order-checkout-summery .order-payment-method .single-payment {
+			margin-bottom: 5px !important;
+			padding-bottom: 5px !important;
+		}
 
-        .axil-dashboard-address .addrss-header {
-            padding-bottom: 10px !important;
-            margin-bottom: 10px !important;
-        }
-    </style>
+		.axil-dashboard-address .addrss-header {
+			padding-bottom: 10px !important;
+			margin-bottom: 10px !important;
+		}
+	</style>
 }
 <!-- Start Checkout Area  -->
 <div class="axil-checkout-area axil-section-gap">
-    <div class="container">
-        <form asp-action="BookNow" asp-controller="Booking" id="frm_BookNow" asp-antiforgery="true" novalidate>
-            <input asp-for="Cart.Id" type="hidden" />
-            <input asp-for="Customer.Id" type="hidden" />
-            <input asp-for="Booking.PaymentStatus" type="hidden" />
-            <input asp-for="Booking.IsCouponApply" type="hidden" />
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="axil-checkout-billing">
-                        <h4 class="title mb--40">Payment details</h4>
-                        <div class="axil-dashboard-address">
-                            <div class="row row--30">
-                                <input asp-for="Booking.BillingAddressId" type="hidden" value="@(defaultAddress != null ? defaultAddress.Id : 0)" />
-                                @foreach (var address in Model.CustomerAddresses)
-                                {
-                                    <partial name="_CustomerAddressPartial.cshtml" model="address" />
-                                }
-                            </div>
-                        </div>
-                        <div class="form-group different-shippng">
-                            <div class="toggle-bar">
-                                <a href="javascript:void(0)" class="toggle-btn">
-                                    <input type="checkbox" asp-for="DifferentBillingAddress">
-                                    <label for="checkbox2">Different billing address?</label>
-                                </a>
-                            </div>
-                            <div class="toggle-open">
-                                <div class="row mb--30">
-                                    <div class="col-lg-12 fv-row">
-                                        <div class="form-group">
-                                            <label asp-for="CustomerAddress.Name">Name <span>*</span></label>
-                                            <input asp-for="CustomerAddress.Name" class="form-control" required="true" />
-                                            <span asp-validation-for="CustomerAddress.Name" class="invalid-feedback">Please enter billing name</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label asp-for="CustomerAddress.CompanyName">Company Name </label>
-                                            <input asp-for="CustomerAddress.CompanyName" class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>                                
-                                <div class="row mb--30">
-                                    <div class="col-lg-6 fv-row">
-                                        <div class="form-group">
-                                            <label asp-for="CustomerAddress.AddressLine1">Address Line 1 <span>*</span></label>
-                                            <input asp-for="CustomerAddress.AddressLine1" class="form-control" required="true" />
-                                            <span asp-validation-for="CustomerAddress.AddressLine1" class="invalid-feedback">Please enter Addresss Line 1</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label asp-for="CustomerAddress.AddressLine2">Address Line 2</label>
-                                            <input asp-for="CustomerAddress.AddressLine2" class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb--30">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label asp-for="CustomerAddress.Landmark">Landmark</label>
-                                            <input asp-for="CustomerAddress.Landmark" class="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 fv-row">
-                                        <div class="form-group">
-                                            <label asp-for="CustomerAddress.City">City<span>*</span></label>
-                                            <input asp-for="CustomerAddress.City" class="form-control" required="true" />
-                                            <span asp-validation-for="CustomerAddress.City" class="invalid-feedback">Please enter City</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb--30">
-                                    <div class="col-lg-6 fv-row">
-                                        <div class="form-group">
-                                            <label asp-for="CustomerAddress.State">State <span>*</span></label>
-                                            <input asp-for="CustomerAddress.State" class="form-control" required="true" />
-                                            <span asp-validation-for="CustomerAddress.State" class="invalid-feedback">Please enter State</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 fv-row">
-                                        <div class="form-group">
-                                            <label asp-for="CustomerAddress.PinCode">Pincode <span>*</span></label>
-                                            <input asp-for="CustomerAddress.PinCode" class="form-control" required="true" type="number" />
-                                            <span asp-validation-for="CustomerAddress.PinCode" class="invalid-feedback">Please enter pincode</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>                       
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="axil-order-summery order-checkout-summery">
-                        <h5 class="title mb--20">Your Booking</h5>
-                        <div class="summery-table-wrap">
-                            <table class="table summery-table">
-                                <thead>
-                                    <tr>
-                                        <th>Service</th>
-                                        <th>Subtotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="order-product">
-                                        @if (Model.ServicePrice.ServiceType == Enums.ServiceType.Basic)
-                                        {
-                                            <td>@Model.ServicePrice.ServiceName - <span class="quantity">@(totalHours)/hr(s)</span></td>
-                                        }
-                                        else
-                                        {
-                                            <td>
-                                                @Model.ServicePrice.ServiceName - ₹@Model.ServicePrice.Price<span class="quantity">x@(totalHours)/hr(s)</span>
-                                                <br>
-                                                <sub>@Model.Cart.BookingDate : @Model.Cart.StartTime to @Model.Cart.BookingEndDate : @Model.Cart.EndTime</sub>
-                                            </td>
-                                        }
-                                        <td>₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
-                                    </tr>
-                                    <tr class="order-subtotal">
-                                        <td>Subtotal</td>
-                                        <td class="order-subtotal-amount">₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
-                                    </tr>
-                                    <tr>
-                                        @if (Model.Coupon.Discount > 0)
-                                        {
-                                            <tr class="order-subtotal">
-                                                <td>Coupon : @Model.Coupon.Name - @Model.Coupon.Code : @Model.Coupon.Discount %</td>
-                                                <td>
-                                                <button type="button" id="apply" class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="cuponApply(@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price), @Model.Coupon.Discount)"><span id="coupon">Apply</span></button>
-                                                <button type="button" id="remove"  class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="cuponRemove(@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price))"><span id="coupon">Remove</span></button>
+	<div class="container">
+		<form asp-action="BookNow" asp-controller="Booking" id="frm_BookNow" asp-antiforgery="true" novalidate>
+			<input asp-for="Cart.Id" type="hidden" />
+			<input asp-for="Customer.Id" type="hidden" />
+			<input asp-for="Booking.PaymentStatus" type="hidden" />
+			<input asp-for="Booking.IsCouponApply" type="hidden" />
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="axil-checkout-billing">
+						<h4 class="title mb--40">Payment details</h4>
+						<div class="axil-dashboard-address">
+							<div class="row row--30">
+								<input asp-for="Booking.BillingAddressId" type="hidden" value="@(defaultAddress != null ? defaultAddress.Id : 0)" />
+								@foreach (var address in Model.CustomerAddresses)
+								{
+									<partial name="_CustomerAddressPartial.cshtml" model="address" />
+								}
+							</div>
+						</div>
+						<div class="form-group different-shippng">
+							<div class="toggle-bar">
+								<a href="javascript:void(0)" class="toggle-btn">
+									<input type="checkbox" asp-for="DifferentBillingAddress">
+									<label for="checkbox2">Different billing address?</label>
+								</a>
+							</div>
+							<div class="toggle-open">
+								<div class="row mb--30">
+									<div class="col-lg-12 fv-row">
+										<div class="form-group">
+											<label asp-for="CustomerAddress.Name">Name <span>*</span></label>
+											<input asp-for="CustomerAddress.Name" class="form-control" required="true" />
+											<span asp-validation-for="CustomerAddress.Name" class="invalid-feedback">Please enter billing name</span>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label asp-for="CustomerAddress.CompanyName">Company Name </label>
+											<input asp-for="CustomerAddress.CompanyName" class="form-control" />
+										</div>
+									</div>
+								</div>
+								<div class="row mb--30">
+									<div class="col-lg-6 fv-row">
+										<div class="form-group">
+											<label asp-for="CustomerAddress.AddressLine1">Address Line 1 <span>*</span></label>
+											<input asp-for="CustomerAddress.AddressLine1" class="form-control" required="true" />
+											<span asp-validation-for="CustomerAddress.AddressLine1" class="invalid-feedback">Please enter Addresss Line 1</span>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label asp-for="CustomerAddress.AddressLine2">Address Line 2</label>
+											<input asp-for="CustomerAddress.AddressLine2" class="form-control" />
+										</div>
+									</div>
+								</div>
+								<div class="row mb--30">
+									<div class="col-lg-6">
+										<div class="form-group">
+											<label asp-for="CustomerAddress.Landmark">Landmark</label>
+											<input asp-for="CustomerAddress.Landmark" class="form-control" />
+										</div>
+									</div>
+									<div class="col-lg-6 fv-row">
+										<div class="form-group">
+											<label asp-for="CustomerAddress.City">City<span>*</span></label>
+											<input asp-for="CustomerAddress.City" class="form-control" required="true" />
+											<span asp-validation-for="CustomerAddress.City" class="invalid-feedback">Please enter City</span>
+										</div>
+									</div>
+								</div>
+								<div class="row mb--30">
+									<div class="col-lg-6 fv-row">
+										<div class="form-group">
+											<label asp-for="CustomerAddress.State">State <span>*</span></label>
+											<input asp-for="CustomerAddress.State" class="form-control" required="true" />
+											<span asp-validation-for="CustomerAddress.State" class="invalid-feedback">Please enter State</span>
+										</div>
+									</div>
+									<div class="col-lg-6 fv-row">
+										<div class="form-group">
+											<label asp-for="CustomerAddress.PinCode">Pincode <span>*</span></label>
+											<input asp-for="CustomerAddress.PinCode" class="form-control" required="true" type="number" />
+											<span asp-validation-for="CustomerAddress.PinCode" class="invalid-feedback">Please enter pincode</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="axil-order-summery order-checkout-summery">
+						<h5 class="title mb--20">Your Booking</h5>
+						<div class="summery-table-wrap">
+							<table class="table summery-table">
+								<thead>
+									<tr>
+										<th>Service</th>
+										<th>Subtotal</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="order-product">
+										@if (Model.ServicePrice.ServiceType == Enums.ServiceType.Basic)
+										{
+											<td>@Model.ServicePrice.ServiceName - <span class="quantity">@(totalHours)/hr(s)</span></td>
+										}
+										else
+										{
+											<td>
+												@Model.ServicePrice.ServiceName - ₹@Model.ServicePrice.Price<span class="quantity">x@(totalHours)/hr(s)</span>
+												<br>
+												<sub>@Model.Cart.BookingDate : @Model.Cart.StartTime to @Model.Cart.BookingEndDate : @Model.Cart.EndTime</sub>
+											</td>
+										}
+										<td>₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
+									</tr>
+									<tr class="order-subtotal">
+										<td>Subtotal</td>
+										<td class="order-subtotal-amount">₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
+									</tr>
+									<tr>
+										@if (Model.Coupon.Discount > 0)
+										{
+										<tr class="order-subtotal">
+											<td>Coupon : @Model.Coupon.Name - @Model.Coupon.Code : @Model.Coupon.Discount %</td>
+											<td>
+												<button type="button" id="apply" class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="cuponApply(@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price), @Model.Coupon.Discount)"><span id="coupon">Apply</span></button>
+												<button type="button" id="remove" class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="cuponRemove(@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price))"><span id="coupon">Remove</span></button>
 
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tr>
-                                    @if (Model.Wallets.Any(w=> w.BalanceAmount > 0 || w.BalanceHours > 0))
-                                    {
-                                        <tr class="order-shipping">
-                                            <td colspan="2">
-                                                <div class="shipping-amount">
-                                                    <span class="title">Use Wallet ?</span>
-                                                    <span class="amount" id="spnWallet"></span>
-                                                </div>
-                                                <input type="hidden" asp-for="Booking.WalletType">
-                                                @foreach (var wallet in Model.Wallets.Where(w => w.WalletType == Enums.WalletType.Points))
-                                                {
-                                                    <div class="input-group">
-                                                        <input type="checkbox" id="wallet-@wallet.Id" class="wallet" value="@((int)Enums.WalletType.Points)" amount="@wallet.BalanceAmount" hours="@wallet.BalanceHours">
-                                                        <label for="wallet-@wallet.Id">@Enums.WalletType.Points.ToString() - <span class="amount">@wallet.BalanceAmount</span></label>
-                                                        @*<input type="radio" asp-for="Booking.WalletType" id="wallet-@wallet.Id" value="@Enums.WalletType.Points">
-                                                <label for="wallet1">@Enums.WalletType.Points.ToString() - <span class="amount">₹00.00</span></label>*@
-                                                    </div>
-                                                }
-                                                @*<div class="input-group">
-                                            <input type="radio" asp-for="Booking.WalletType" id="wallet2" value="@Enums.WalletType.Hours">
-                                            <label for="wallet2">@Enums.WalletType.Hours.ToString()</label>
-                                            </div>*@
-                                            </td>
-                                        </tr>
-                                    }
-                                    <tr class="order-total">
-                                        <td>Total</td>
-                                        <td class="order-total-amount" id="total">₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="order-payment-method">
-                            @* <div class="single-payment">
-                            <div class="input-group">
-                            <input type="radio" id="radio4" name="payment">
-                            <label for="radio4">Direct bank transfer</label>
-                            </div>
-                            <p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
-                            </div>
-                            <div class="single-payment">
-                            <div class="input-group">
-                            <input type="radio" asp-for="Booking.PaymentMode" id="paymentType1" value="@((int)Enums.PaymentMode.Offline)">
-                            <label for="paymentType1">Offline</label>
-                            </div>
-                            <p>Pay with cash at Studio.</p>
-                            </div>*@
-                            <div class="single-payment">
-                                <div class="input-group justify-content-between align-items-center">
-                                    <input type="radio" asp-for="Booking.PaymentMode" id="paymentType2" value="@((int)Enums.PaymentMode.Online)" checked>
-                                    <input type="hidden" asp-for="Booking.PaymentProvider" value="@((int)Enums.PaymentProvider.CCAvenue)" />
-                                    <label for="paymentType2">CC Avenue</label>
-                                    <img src="https://test.ccavenue.com/images/ccavenue_logo.gif" alt="CCAvenue Payment" />
-                                </div>
-                                <p>Pay via CC Avenue; you can pay with your credit card if you don’t have a CCAvenue account.</p>
-                                @* <table border=0 width="125" cellpadding="0" cellspacing="0">
-                                <tr>
-                                <td align=center valign="top">
-                                <a href="javascript:openLogo(@CCAvenueConfig.MerchantId)"><img src="http://www.ccavenue.com/images/460.gif" border=0></a>
-                                </td>
-                                </tr>
-                                </table>*@
-                            </div>
-                        </div>
-                        @if (Model.ServicePrice.ServiceType == Enums.ServiceType.Basic)
-                        {
-                            <button type="button" class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="payNow(@((int)Enums.PaymentType.Full))">Full Payment - ₹<span id="fullPay">@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</span></button>
-                        }
-                        else
-                        {
-                            <button type="button" class="axil-btn btn-bg-primary checkout-btn mb--20" onclick="payNow(@((int)Enums.PaymentType.Advance))">Advance Payment - (₹<span id="advancePay">@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price / 2)</span>)</button>
-                            <button type="button" class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="payNow(@((int)Enums.PaymentType.Full))">Full Payment - ₹<span id="fullPay">@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</span></button>
-                        }
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+											</td>
+										</tr>
+										}
+									</tr>
+									@if (Model.Wallets.Any(w => w.BalanceAmount > 0 || w.BalanceHours > 0))
+									{
+										<tr class="order-shipping">
+											<td colspan="2">
+												<div class="shipping-amount">
+													<span class="title">Use Wallet ?</span>
+													<span class="amount" id="spnWallet"></span>
+												</div>
+												<input type="hidden" asp-for="Booking.WalletType">
+												@foreach (var wallet in Model.Wallets.Where(w => w.WalletType == Enums.WalletType.Points))
+												{
+													<div class="input-group">
+														<input type="checkbox" id="wallet-@wallet.Id" class="wallet" value="@((int)Enums.WalletType.Points)" amount="@wallet.BalanceAmount" hours="@wallet.BalanceHours">
+														<label for="wallet-@wallet.Id">@Enums.WalletType.Points.ToString() - <span class="amount">@wallet.BalanceAmount</span></label>
+														@*<input type="radio" asp-for="Booking.WalletType" id="wallet-@wallet.Id" value="@Enums.WalletType.Points">
+												<label for="wallet1">@Enums.WalletType.Points.ToString() - <span class="amount">₹00.00</span></label>*@
+													</div>
+												}
+												@*<div class="input-group">
+											<input type="radio" asp-for="Booking.WalletType" id="wallet2" value="@Enums.WalletType.Hours">
+											<label for="wallet2">@Enums.WalletType.Hours.ToString()</label>
+											</div>*@
+											</td>
+										</tr>
+									}
+									<tr class="order-total">
+										<td>
+											Total (GST +18%)
+											<input type="hidden" id="hdnTotalAmount" value="@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)" />
+										</td>
+										<td class="order-total-amount" id="total">₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="order-payment-method">
+							@* <div class="single-payment">
+							<div class="input-group">
+							<input type="radio" id="radio4" name="payment">
+							<label for="radio4">Direct bank transfer</label>
+							</div>
+							<p>Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.</p>
+							</div>
+							<div class="single-payment">
+							<div class="input-group">
+							<input type="radio" asp-for="Booking.PaymentMode" id="paymentType1" value="@((int)Enums.PaymentMode.Offline)">
+							<label for="paymentType1">Offline</label>
+							</div>
+							<p>Pay with cash at Studio.</p>
+							</div>*@
+							<div class="single-payment">
+								<div class="input-group justify-content-between align-items-center">
+									<input type="radio" asp-for="Booking.PaymentMode" id="paymentType2" value="@((int)Enums.PaymentMode.Online)" checked>
+									<input type="hidden" asp-for="Booking.PaymentProvider" value="@((int)Enums.PaymentProvider.CCAvenue)" />
+									<label for="paymentType2">CC Avenue</label>
+									<img src="https://test.ccavenue.com/images/ccavenue_logo.gif" alt="CCAvenue Payment" />
+								</div>
+								<p>Pay via CC Avenue; you can pay with your credit card if you don’t have a CCAvenue account.</p>
+								@* <table border=0 width="125" cellpadding="0" cellspacing="0">
+								<tr>
+								<td align=center valign="top">
+								<a href="javascript:openLogo(@CCAvenueConfig.MerchantId)"><img src="http://www.ccavenue.com/images/460.gif" border=0></a>
+								</td>
+								</tr>
+								</table>*@
+							</div>
+						</div>
+						@if (Model.ServicePrice.ServiceType == Enums.ServiceType.Basic)
+						{
+							<button type="button" class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="payNow(@((int)Enums.PaymentType.Full))">Full Payment - ₹<span id="fullPay">@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</span></button>
+						}
+						else
+						{
+							<button type="button" class="axil-btn btn-bg-primary checkout-btn mb--20" onclick="payNow(@((int)Enums.PaymentType.Advance))">Advance Payment - (₹<span id="advancePay">@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price / 2)</span>)</button>
+							<button type="button" class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="payNow(@((int)Enums.PaymentType.Full))">Full Payment - ₹<span id="fullPay">@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</span></button>
+						}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
 <!-- End Checkout Area  -->
 @section Scripts{
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
-    <script src="~/lib/assets/plugins/custom/bootbox/bootbox.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/cashfree/payments-icons-library@latest/dist/image-library.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#remove').hide();
-            /*Cashfee*/
-            /*let cards = paymentsIcons.getModesIcons('cardschemes', 'svg');
-            $.each(cards, function (i, o) {
-                if (o.icon_name !== 'diners')
-                $("#cardIcons").append('<img src="' + o.icon_url + '" style="max-height:25px" alt="' + o.icon_name + '"/>');
-            });*/
-        });
-        $(document).on("click", ".customer-address", function (e) {
-            e.preventDefault();
-            $(".chk-customer-address").prop("checked", false);
-            $(this).find('input').prop("checked", true);
-            if ($("#DifferentBillingAddress")[0].checked) {
-                $('.toggle-btn').click();
-                $("#DifferentBillingAddress").prop("checked", false);
-            }
-            $("#Booking_BillingAddressId").val($(this).find('input')[0].value);
-        });
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+	<script src="~/lib/assets/plugins/custom/bootbox/bootbox.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/gh/cashfree/payments-icons-library@latest/dist/image-library.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#remove').hide();
+			updateTotalAmountWithGST();
+			/*Cashfee*/
+			/*let cards = paymentsIcons.getModesIcons('cardschemes', 'svg');
+			$.each(cards, function (i, o) {
+				if (o.icon_name !== 'diners')
+				$("#cardIcons").append('<img src="' + o.icon_url + '" style="max-height:25px" alt="' + o.icon_name + '"/>');
+			});*/
+		});
 
-        $(document).on("click", "#DifferentBillingAddress", function (e) {
-            $(".chk-customer-address").prop("checked", false);
-            $("#Booking_BillingAddressId").val(0);
-        });
+		$(document).on("click", ".customer-address", function (e) {
+			e.preventDefault();
+			$(".chk-customer-address").prop("checked", false);
+			$(this).find('input').prop("checked", true);
+			if ($("#DifferentBillingAddress")[0].checked) {
+				$('.toggle-btn').click();
+				$("#DifferentBillingAddress").prop("checked", false);
+			}
+			$("#Booking_BillingAddressId").val($(this).find('input')[0].value);
+		});
 
-        $(document).on("click", ".wallet", function (e) {
-            $("#Booking_WalletType").val(null);
-            let walletType = this.getAttribute('value');
-            if (this.checked) {
-                $(".wallet").prop("checked", false);
-                $(this).prop("checked", true);
-                $("#Booking_WalletType").val(walletType);
-            }
-            if (walletType === '1') {
-                let amount = parseFloat(this.getAttribute('amount'));
-                let subtotal = parseFloat($(".order-subtotal-amount").text().replace(/[^0-9.]/g, ''));
-                let balance = this.checked ? (subtotal - amount) > 0 ? (subtotal - amount) : 0 : subtotal;
-                $(".order-total-amount").text('₹' + balance);
-                $("#spnWallet").text('- ₹' + ((subtotal - amount) > 0 ? amount : subtotal));
-                if ($("#fullPay")) {
-                    $("#fullPay").text(balance);
-                }
-                if ($("#advancePay")) {
-                    $("#advancePay").text(balance / 2);
-                }
-                if (balance <= 1000) {
-                    $(".checkout-btn").hide();
-                    $(".btn-full-payment").show();
-                } else {
-                    $(".checkout-btn").show();
-                    $("#spnWallet").text(null);
-                }
-            }
-            else {
+		$(document).on("click", "#DifferentBillingAddress", function (e) {
+			$(".chk-customer-address").prop("checked", false);
+			$("#Booking_BillingAddressId").val(0);
+		});
 
-            }
-            if (!this.checked) {
-                $("#spnWallet").text(null);
-            }
-        });
+		$(document).on("click", ".wallet", function (e) {
+			$("#Booking_WalletType").val(null);
+			let walletType = this.getAttribute('value');
+			if (this.checked) {
+				$(".wallet").prop("checked", false);
+				$(this).prop("checked", true);
+				$("#Booking_WalletType").val(walletType);
+			}
+			if (walletType === '1') {
+				let amount = parseFloat(this.getAttribute('amount'));
+				let subtotal = parseFloat($(".order-subtotal-amount").text().replace(/[^0-9.]/g, ''));
+				let balance = this.checked ? (subtotal - amount) > 0 ? (subtotal - amount) : 0 : subtotal;
+				$(".order-total-amount").text('₹' + balance);
+				$("#spnWallet").text('- ₹' + ((subtotal - amount) > 0 ? amount : subtotal));
+				if ($("#fullPay")) {
+					$("#fullPay").text(balance);
+				}
+				if ($("#advancePay")) {
+					$("#advancePay").text(balance / 2);
+				}
+				if (balance <= 1000) {
+					$(".checkout-btn").hide();
+					$(".btn-full-payment").show();
+				} else {
+					$(".checkout-btn").show();
+					$("#spnWallet").text(null);
+				}
+			}
+			else {
 
-        function openLogo(ClientID) {
-            var attributes = 'toolbar=0,location=0,directories=0,status=0, menubar=0,scrollbars=1,resizable=1,width=550,height=600,left=0,top=0';
-            sealWin = window.open('http://www.ccavenue.com/verifySeal.jsp?ClientID=' + ClientID, 'win', attributes);
-            self.name = 'mainWin';
-        }
-        function payNow(type) {
-            if ($("#DifferentBillingAddress")[0].checked) {
-                const form = document.getElementById("frm_BookNow");
-                if (form.checkValidity()) {
-                    $("#Booking_PaymentStatus").val(type);
-                    $("#frm_BookNow").submit();
-                }
-                form.classList.add('was-validated');
-            }
-            else {
-                if ($("#Booking_BillingAddressId").val() === '0' || $("#Booking_BillingAddressId").val() === "") {
-                    bootbox.alert("Please select billing address!")
-                }
-                else {
-                    $("#Booking_PaymentStatus").val(type);
-                    $("#frm_BookNow").submit();
-                }
-            }
-        }
-        function cuponApply(total, discount) { 
-            var discountPrice = total * (discount / 100);
-            $('#total').html(discountPrice);
-            $('#fullPay').text(discountPrice);
-            $('#advancePay').text(discountPrice/2);
-            $('#Booking_IsCouponApply').val(true);
-            $('#apply').hide();
-            $('#remove').show();
+			}
+			if (!this.checked) {
+				$("#spnWallet").text(null);
+			}
+		});
 
-        }
-        function cuponRemove(total) {
-            $('#total').html(total);
-            $('#fullPay').text(total);
-            $('#advancePay').text(total/2);
-            $('#apply').show();
-            $('#remove').hide();
-            $('#Booking_IsCouponApply').val(false);
-        }
-    </script>
+		function openLogo(ClientID) {
+			var attributes = 'toolbar=0,location=0,directories=0,status=0, menubar=0,scrollbars=1,resizable=1,width=550,height=600,left=0,top=0';
+			sealWin = window.open('http://www.ccavenue.com/verifySeal.jsp?ClientID=' + ClientID, 'win', attributes);
+			self.name = 'mainWin';
+		}
+
+		function payNow(type) {
+			if ($("#DifferentBillingAddress")[0].checked) {
+				const form = document.getElementById("frm_BookNow");
+				if (form.checkValidity()) {
+					$("#Booking_PaymentStatus").val(type);
+					$("#frm_BookNow").submit();
+				}
+				form.classList.add('was-validated');
+			}
+			else {
+				if ($("#Booking_BillingAddressId").val() === '0' || $("#Booking_BillingAddressId").val() === "") {
+					bootbox.alert("Please select billing address!")
+				}
+				else {
+					$("#Booking_PaymentStatus").val(type);
+					$("#frm_BookNow").submit();
+				}
+			}
+		}
+
+		function cuponApply(total, discount) {
+			var discountPrice = total - (total * (discount / 100));
+			discountPrice = Math.round(discountPrice + (discountPrice * (0.18)));
+			$('#total').html('₹' + discountPrice);
+			$('#fullPay').text(discountPrice);
+			$('#advancePay').text(discountPrice / 2);
+			$('#Booking_IsCouponApply').val(true);
+			$('#apply').hide();
+			$('#remove').show();
+
+		}
+		function cuponRemove(total) {
+			/* $('#total').html('₹' + total);
+			$('#fullPay').text(total);
+			$('#advancePay').text(total / 2); */
+			updateTotalAmountWithGST();
+			$('#apply').show();
+			$('#remove').hide();
+			$('#Booking_IsCouponApply').val(false);
+		}
+
+		function updateTotalAmountWithGST() {
+			var totalAmountVal = parseInt($('#hdnTotalAmount').val());
+			var totalAmountValWithGST = Math.round(totalAmountVal + (totalAmountVal * (0.18)));
+			$('#total').html('₹' + totalAmountValWithGST);
+			$('#fullPay').text(totalAmountValWithGST);
+			$('#advancePay').text(totalAmountValWithGST / 2);
+		}
+	</script>
 }
