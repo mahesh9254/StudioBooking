@@ -54,7 +54,9 @@ namespace StudioBooking.Controllers
 		{
 			userId = string.IsNullOrEmpty(userId) ? GetUserId() : userId;
 			var customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId == userId);
-			var categoryBookings = await BookingDTO.GetBookingsByCategoryId(_context, id, Defaults.ConvertDateTime(date, Defaults.DefaultDateFormat));
+			var splitDate = date.Split('-').Select(Int32.Parse).ToList();
+			DateTime dtFormatted = new(splitDate[2], splitDate[1], splitDate[0]);
+			var categoryBookings = await BookingDTO.GetBookingsByCategoryId(_context, id, dtFormatted);
 
 			var timeslotes = new List<string>();
 			foreach (var bookings in categoryBookings.Where(b => b.BookingStatus != Enums.BookingStatus.OnHold && b.BookingStatus != Enums.BookingStatus.Cancelled && b.BookingStatus != Enums.BookingStatus.Failed && (type == 1 || b.CustomerId != customer.Id)))
@@ -71,7 +73,9 @@ namespace StudioBooking.Controllers
 		{
 			userId = string.IsNullOrEmpty(userId) ? GetUserId() : userId;
 			var customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId == userId);
-			var categoryBookings = await BookingDTO.GetEndBookingsByCategoryId(_context, id, Defaults.ConvertDateTime(date, Defaults.DefaultDateFormat));
+			var splitDate = date.Split('-').Select(Int32.Parse).ToList();
+			DateTime dtFormatted = new(splitDate[2], splitDate[1], splitDate[0]);
+			var categoryBookings = await BookingDTO.GetEndBookingsByCategoryId(_context, id, dtFormatted);
 
 			var timeslotes = new List<string>();
 			foreach (var bookings in categoryBookings.Where(b => b.BookingStatus != Enums.BookingStatus.OnHold && b.BookingStatus != Enums.BookingStatus.Cancelled && b.BookingStatus != Enums.BookingStatus.Failed && (type == 1 || b.CustomerId != customer.Id)))
@@ -86,7 +90,9 @@ namespace StudioBooking.Controllers
 		{
 			userId = string.IsNullOrEmpty(userId) ? GetUserId() : userId;
 			var customer = await _context.Customers.FirstOrDefaultAsync(x => x.UserId == userId);
-			var categoryBookings = await BookingDTO.GetEndBookingsByCategoryId(_context, id, DateTime.Parse(date));
+			var splitDate = date.Split('-').Select(Int32.Parse).ToList();
+			DateTime dtFormatted = new(splitDate[2], splitDate[1], splitDate[0]);
+			var categoryBookings = await BookingDTO.GetEndBookingsByCategoryId(_context, id, dtFormatted);
 			var timeslotes = new List<object>();
 
 			foreach (var bookings in categoryBookings.Where(b => b.BookingStatus != Enums.BookingStatus.OnHold && b.BookingStatus != Enums.BookingStatus.Cancelled && b.BookingStatus != Enums.BookingStatus.Failed && (type == 1 || b.CustomerId != customer.Id)))
@@ -102,12 +108,18 @@ namespace StudioBooking.Controllers
 			var existingBooking = _context.Bookings;
 			foreach (var m in existingBooking)
 			{
-				if (m.BookingDate.Add(TimeSpan.Parse(m.StartTime)) >= (DateTime.Parse(Convert.ToDateTime(model.Cart.BookingDate).ToString("dd/MM/yyyy")).Add(TimeSpan.Parse(model.Cart.StartTime))) && m.BookingEndDate.Add(TimeSpan.Parse(m.EndTime)) <= DateTime.Parse(Convert.ToDateTime(model.Cart.BookingEndDate).ToString("dd/MM/yyyy")).Add(TimeSpan.Parse(model.Cart.EndTime)))
+				var splitStartDate = model.Cart.BookingDate.Split('-').Select(Int32.Parse).ToList();
+				DateTime dtStartFormatted = new(splitStartDate[2], splitStartDate[1], splitStartDate[0]);
+				var splitEndDate = model.Cart.BookingEndDate.Split('-').Select(Int32.Parse).ToList();
+				DateTime dtEndFormatted = new(splitEndDate[2], splitEndDate[1], splitEndDate[0]);
+
+				if (m.BookingDate.Add(TimeSpan.Parse(m.StartTime)) >= (dtStartFormatted.Add(TimeSpan.Parse(model.Cart.StartTime)))
+					&& m.BookingEndDate.Add(TimeSpan.Parse(m.EndTime)) <= dtEndFormatted.Add(TimeSpan.Parse(model.Cart.EndTime)))
 				{
 					return RedirectToAction("Overlapping", "Booking");
 				}
 
-				//            var startDate = m.BookingDate.Add(TimeSpan.Parse(m.StartTime));
+				//var startDate = m.BookingDate.Add(TimeSpan.Parse(m.StartTime));
 				//var endDate = DateTime.ParseExact(m.BookingEndDate + " " + m.EndTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture);
 				//var cartStartDate = DateTime.ParseExact(model.Cart.BookingDate + " " + model.Cart.StartTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture);
 				//var cartEndDate = DateTime.ParseExact(model.Cart.BookingEndDate + " " + model.Cart.EndTime, Defaults.DefaultDateTime24Format, CultureInfo.InvariantCulture);

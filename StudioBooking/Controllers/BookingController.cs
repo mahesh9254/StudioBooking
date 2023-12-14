@@ -452,10 +452,16 @@ namespace StudioBooking.Controllers
 			var endTime = DateTime.Parse(cart.EndTime);
 			var startTime = DateTime.Parse(cart.StartTime);
 			var totalHours = (endTime - startTime).TotalHours;
+
+			var splitStartDate = cart.BookingDate.Split('-').Select(Int32.Parse).ToList();
+			DateTime dtStartFormatted = new(splitStartDate[2], splitStartDate[1], splitStartDate[0]);
+			var splitEndDate = cart.BookingEndDate.Split('-').Select(Int32.Parse).ToList();
+			DateTime dtEndFormatted = new(splitEndDate[2], splitEndDate[1], splitEndDate[0]);
+
 			var booking = new Booking
 			{
-				BookingDate = DateTime.Parse(cart.BookingDate),// DateTime.Parse(cart.BookingDate),
-				BookingEndDate = DateTime.Parse(cart.BookingEndDate),
+				BookingDate = dtStartFormatted,// DateTime.Parse(cart.BookingDate),
+				BookingEndDate = dtEndFormatted,
 				ServicePriceId = servicePrice.Id,
 				RatePerHour = (decimal)servicePrice.Price,
 				StartTime = cart.StartTime,

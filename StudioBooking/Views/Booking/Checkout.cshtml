@@ -15,8 +15,13 @@
 		// var endDate = DateOnly.Parse(Model.Cart.BookingEndDate);
 		// totalHours = (endDate.ToDateTime(endTime) - startDate.ToDateTime(startTime)).TotalHours;
 
-		var startDate = (DateTime.Parse(Convert.ToDateTime(Model.Cart.BookingDate).ToString("dd/MM/yyyy")).Add(TimeSpan.Parse(Model.Cart.StartTime)));
-		var endDate = (DateTime.Parse(Convert.ToDateTime(Model.Cart.BookingEndDate).ToString("dd/MM/yyyy")).Add(TimeSpan.Parse(Model.Cart.EndTime)));
+		var splitStartDate = Model.Cart.BookingDate.Split('-').Select(Int32.Parse).ToList();
+		DateTime dtStartFormatted = new(splitStartDate[2], splitStartDate[1], splitStartDate[0]);
+		var splitEndDate = Model.Cart.BookingEndDate.Split('-').Select(Int32.Parse).ToList();
+		DateTime dtEndFormatted = new(splitEndDate[2], splitEndDate[1], splitEndDate[0]);
+
+		var startDate = dtStartFormatted.Add(TimeSpan.Parse(Model.Cart.StartTime));
+		var endDate = dtEndFormatted.Add(TimeSpan.Parse(Model.Cart.EndTime));
 		totalHours = (endDate - startDate).TotalHours;
 	}
 	else
@@ -166,7 +171,7 @@
 											<td>
 												@Model.ServicePrice.ServiceName - ₹@Model.ServicePrice.Price<span class="quantity">x@(totalHours)/hr(s)</span>
 												<br>
-												<sub>@Model.Cart.BookingDate : @Model.Cart.StartTime to @Model.Cart.BookingEndDate : @Model.Cart.EndTime</sub>
+												<sub>@Model.Cart.BookingDate : @Model.Cart.StartTime to @Model.Cart.BookingEndDate @Model.Cart.EndTime</sub>
 											</td>
 										}
 										<td>₹@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price)</td>
@@ -183,7 +188,6 @@
 											<td>
 												<button type="button" id="apply" class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="cuponApply(@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price), @Model.Coupon.Discount)"><span id="coupon">Apply</span></button>
 												<button type="button" id="remove" class="axil-btn btn-bg-primary checkout-btn btn-full-payment" onclick="cuponRemove(@(Model.ServicePrice.ServiceType == Enums.ServiceType.Basic ? Model.ServicePrice.Price : totalHours * Model.ServicePrice.Price))"><span id="coupon">Remove</span></button>
-
 											</td>
 										</tr>
 										}
@@ -243,7 +247,7 @@
 									<input type="radio" asp-for="Booking.PaymentMode" id="paymentType2" value="@((int)Enums.PaymentMode.Online)" checked>
 									<input type="hidden" asp-for="Booking.PaymentProvider" value="@((int)Enums.PaymentProvider.CCAvenue)" />
 									<label for="paymentType2">CC Avenue</label>
-									<img src="https://test.ccavenue.com/images/ccavenue_logo.gif" alt="CCAvenue Payment" />
+									<img src="https://ccavenue.com/images/ccavenue_logo.gif" alt="CCAvenue Payment" />
 								</div>
 								<p>Pay via CC Avenue; you can pay with your credit card if you don’t have a CCAvenue account.</p>
 								@* <table border=0 width="125" cellpadding="0" cellspacing="0">
