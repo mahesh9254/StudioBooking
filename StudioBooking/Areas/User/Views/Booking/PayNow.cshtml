@@ -189,8 +189,8 @@
                                         </tr>
                                     }
                                     <tr class="order-total">
-                                        <td>Total</td>
-                                        <td class="order-total-amount">₹@(Model.Booking.AdvancePaid > 0 ? (Model.Booking.Total - Model.Booking.AdvancePaid) : Model.Booking.Total)</td>
+                                        <td>Total (GST +18%)</td>
+                                        <td class="order-total-amount"> ₹<span id="total">@(Model.Booking.AdvancePaid > 0 ? (Model.Booking.Total - Model.Booking.AdvancePaid) : Model.Booking.Total)</span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -252,7 +252,7 @@
     <script src="https://cdn.jsdelivr.net/gh/cashfree/payments-icons-library@latest/dist/image-library.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-
+            updateTotalAmountWithGST();
             /*Cashfee*/
             /*let cards = paymentsIcons.getModesIcons('cardschemes', 'svg');
             $.each(cards, function (i, o) {
@@ -344,6 +344,14 @@
                     $("#frm_PayNow").submit();
                 }
             }
+        }
+        function updateTotalAmountWithGST() {
+           
+            var totalAmountVal = parseInt($('#total').text());
+            var totalAmountValWithGST = Math.round(totalAmountVal + (totalAmountVal * (0.18)));           
+            $('#total').text( totalAmountValWithGST);
+            $('#fullPay').text(totalAmountValWithGST);
+            $('#advancePay').text(totalAmountValWithGST / 2);
         }
     </script>
 }
