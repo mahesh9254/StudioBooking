@@ -5,7 +5,7 @@ var KTTransactionList = function () {
             o = document.getElementById("kt_table_transactions");
             o && (o.querySelectorAll("tbody tr").forEach((e => {
                 const t = e.querySelectorAll("td")
-                const l = moment(t[2].innerHTML, "MM/DD/YYYY, LT").format();
+                const l = moment(t[2].innerHTML, "MM-DD-YYYY, LT").format();
                 t[2].setAttribute("data-order", l)
             }
             )),

@@ -4,7 +4,7 @@ var KTBookingList = function (name) {
     var e, o = document.getElementById(name);
     o && (o.querySelectorAll("tbody tr").forEach((e => {
         const t = e.querySelectorAll("td")
-        const date = moment(t[3].innerHTML, "DD/MM/YYYY, LT").format();
+        const date = moment(t[3].innerHTML, "DD-MM-YYYY, LT").format();
         t[3].setAttribute("data-order", date);
         t[0].setAttribute("data-order", t[0].id);
     }

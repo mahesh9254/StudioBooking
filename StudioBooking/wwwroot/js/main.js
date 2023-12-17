@@ -70,7 +70,7 @@ var KTBootstrapDatepicker = function () {
             $(".datepicker").datepicker({
                 rtl: KTUtil.isRTL(),
                 todayHighlight: !0,
-                format: "dd/mm/yyyy",
+                format: "dd-mm-yyyy",
                 orientation: "bottom left",
                 templates: t
             });
