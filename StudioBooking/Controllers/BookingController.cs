@@ -146,7 +146,7 @@ namespace StudioBooking.Controllers
 				{
 					var order = GetOrderRequest(bookingDetail, transaction, user);
 					var ccaCrypto = new CCACrypto();
-					string ccaRequest = "merchant_id=" + CCAvenueConfig.MerchantId + "&order_id=" + bookingDetail.Id.ToString(Defaults.BookingPrefix) + "&amount=" + 1 + "&currency=" + Defaults.DefaultCurrency + "&redirect_url=" + Url.Action("ThankYou", "Booking", new { TXNID = transaction.Id }, Request.Scheme) + "&cancel_url=" + Url.Action("ThankYou", "Booking", new { TXNID = transaction.Id }, Request.Scheme) + "&billing_name=" + customerAddress.Name +
+					string ccaRequest = "language=en&merchant_id=" + CCAvenueConfig.MerchantId + "&order_id=" + bookingDetail.Id.ToString(Defaults.BookingPrefix) + "&amount=" + 1 + "&currency=" + Defaults.DefaultCurrency + "&redirect_url=" + Url.Action("ThankYou", "Booking", new { TXNID = transaction.Id }, Request.Scheme) + "&cancel_url=" + Url.Action("ThankYou", "Booking", new { TXNID = transaction.Id }, Request.Scheme) + "&billing_name=" + customerAddress.Name +
 					"&customer_identifier=" + bookingDetail.CustomerId.ToString() + "&merchant_param1=" + transaction.Id.ToString(Defaults.TransactionPrefix) +
 					"&billing_address=" + CustomerAddressDTO.GetAddress(customerAddress) + "&billing_city=" + customerAddress.City + "&billing_state=" + customerAddress.State + "&billing_zip=" + customerAddress.PinCode + "&billing_country=India&billing_email=" + user.Email + "&billing_tel=" + user.PhoneNumber;
 					strEncRequest = ccaCrypto.Encrypt(ccaRequest, CCAvenueConfig.WorkingKey);
