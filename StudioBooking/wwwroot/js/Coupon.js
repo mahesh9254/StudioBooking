@@ -57,7 +57,7 @@ function addFormValidation() {
     });
     const a = $('[data-kt-coupon-modal-action="submit"]')[0];
     a.addEventListener("click", (function (t) {
-        t.preventDefault(),
+        t.preventDefault(), 
             i && i.validate().then((function (s) {
                 console.log("validated!"),
                     "Valid" == s ? (
@@ -79,7 +79,8 @@ function addFormValidation() {
                                 cancelButton: "btn fw-bold btn-dander"
                             }
                         }).then((function (t) {
-                            if (t.isConfirmed) {
+                            validateCoupon()
+                            if (t.isConfirmed && validateCoupon()) {
                                 $.post("/Admin/Coupon/" + (parseInt($("#Id").val()) > 0 ? 'EditCoupon' : 'AddCoupon') + "", getCouponRequest()).done(function (res) {
                                     if (res.result) {
                                         $("#kt_datatable").KTDatatable().reload();
@@ -333,6 +334,7 @@ function getCouponRequest() {
     return JSON.stringify(request);
 }
 function editCoupon(id) {
+   
     $('#mdlCouponBody').empty();
     $.get("/Admin/Coupon/CreateCouponModal/" + id)
         .done(function (res) {
@@ -351,3 +353,19 @@ function editCoupon(id) {
         });
 }
 
+function validateCoupon() {
+
+    if ($("#Discount").val() < 0 || $("#Discount").val() > 100) {
+        Swal.fire({
+            text: "Sorry, Discount value not in range 0 - 100.",
+            icon: "error",
+            buttonsStyling: !1,
+            confirmButtonText: "Okay!",
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        })
+        return false;
+    }
+    return true;
+}
