@@ -39,7 +39,7 @@
                                     <!--end::Col-->
                                     <div class="col-sm-6">
                                         <!--end::Label-->
-                                        <div class="fw-bold fs-7 text-gray-600 mb-1">BookingId:</div>
+                                        <div class="fw-bold fs-7 text-gray-600 mb-1">Booking Id:</div>
                                         <!--end::Label-->
                                         <!--end::Col-->
                                         <div class="fw-bolder fs-6 text-gray-800">@Model.Booking.BookingId</div>
@@ -66,7 +66,7 @@
                                         <div class="fw-bold fs-7 text-gray-600 mb-1">Customer Details:</div>
                                         <!--end::Label-->
                                         <!--end::Text-->
-                                        <div class="fw-bolder fs-6 text-gray-800">@Model.Customer.Name</div>
+                                        <div class="fw-bolder fs-6 text-gray-600">@Model.Customer.Name</div>
                                         <!--end::Text-->
                                         <!--end::Description-->
                                         <div class="fw-bold fs-7 text-gray-600">
@@ -88,7 +88,7 @@
                                         <div class="fw-bold fs-7 text-gray-600 mb-1">Issued By:</div>
                                         <!--end::Label-->
                                         <!--end::Text-->
-                                        <div class="fw-bolder fs-6 text-gray-800">R&amp;B Studios</div>
+                                        <div class="fw-bolder fs-6 text-gray-800">R & B Studios</div>
                                         <!--end::Text-->
                                         <!--end::Description-->
                                         <div class="fw-bold fs-7 text-gray-600">
@@ -107,28 +107,28 @@
                                             <thead>
                                                 <tr class="border-bottom fs-6 fw-bolder text-muted">
                                                     <th class="min-w-175px pb-2">Service</th>
-                                                    <th class="min-w-70px text-end pb-2">Unit (Hours)</th>
-                                                    <th class="min-w-80px text-end pb-2">Rate</th>
+                                                    <th class="min-w-70px pb-2" style="text-align:center">Unit (Hours)</th>
+                                                    <th class="min-w-80px pb-2" style="text-align:center">Rate</th>
                                                     <th class="min-w-100px text-end pb-2">Amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr class="fw-bolder text-gray-700 fs-5 text-end">
                                                     <td class="d-flex align-items-center pt-6">
-                                                        <i class="fa fa-genderless fs-2 me-2"></i>@Model.Booking.ServiceName
+                                                        <i class="fa fa-solid fa-genderless fa-2xs me-3"></i>@Model.Booking.ServiceName
                                                     </td>
                                                     <td class="pt-6" style="text-align:center">@totalHours</td>
-                                                    <td class="pt-6">₹@Math.Round(Model.Booking.RatePerHour,2)</td>
+                                                    <td class="pt-6" style="text-align:center">₹@Math.Round(Model.Booking.RatePerHour,2)</td>
                                                     <td class="pt-6 text-dark fw-boldest">₹@Math.Round(totalHours * (double)Model.Booking.RatePerHour,2)</td>
                                                 </tr>
                                                 @foreach (var addOn in Model.AddOns)
                                                 {
                                                     <tr class="fw-bolder text-gray-700 fs-5 text-end">
                                                         <td class="d-flex align-items-center pt-6">
-                                                            <i class="fa fa-genderless fs-2 me-2"></i>@addOn.Name
+                                                            <i class="fa fa-solid fa-genderless fa-2xs me-3"></i>@addOn.Name
                                                         </td>
-                                                        <td class="pt-6"><sub>N/A</sub></td>
-                                                        <td class="pt-6"><sub>N/A</sub></td>
+                                                        <td class="pt-6" style="text-align:center"><sub>N/A</sub></td>
+                                                        <td class="pt-6" style="text-align:center"><sub>N/A</sub></td>
                                                         <td class="pt-6 text-dark fw-boldest">@(addOn.AdjustmentType == (int)Enums.AdjustmentType.Deduct ? "-" : "") ₹@addOn.Amount</td>
                                                     </tr>
                                                 }
@@ -184,6 +184,21 @@
                     <!--end::Content-->
                 </div>
                 <!--end::Layout-->
+                <!--begin::Footer-->
+                <div class="footer bg-white py-4 d-flex flex-lg-column" style="margin-top:20%" id="kt_footer">
+                    <!--begin::Container-->
+                    <div class="container-fluid d-flex flex-column align-items-center justify-content-between">
+                        <!--begin::Copyright-->
+                        <div class="text-dark order-2 order-md-1 text-center">
+                            <span class="text-muted font-weight-bold mr-2">E & O.E.</span>
+                            <br />
+                            <span class="text-muted font-weight-bold mr-2">This is computer generated payment receipt no signature required.</span>
+                        </div>
+                        <!--end::Copyright-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Footer-->
             </div>
             <!--end::Body-->
         </div>
